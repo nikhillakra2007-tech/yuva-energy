@@ -101,8 +101,8 @@ INSERT INTO public.crop_growth_stages (crop_id, stage_code, stage_name, stage_or
 ((SELECT id FROM public.crops WHERE code = 'TOMATO'), 'INITIAL', 'Initial / Establishment', 1, 25, 0.60, 0.25, 0.40),
 ((SELECT id FROM public.crops WHERE code = 'TOMATO'), 'DEVELOPMENT', 'Vegetative Growth', 2, 35, 0.85, 0.50, 0.40),
 ((SELECT id FROM public.crops WHERE code = 'TOMATO'), 'MID_SEASON', 'Flowering & Fruit Set', 3, 40, 1.15, 0.80, 0.40),
-((SELECT id FROM public.crops WHERE code = 'LATE_SEASON'), 'Harvest / Ripening', 4, 20, 0.80, 0.80, 0.50)
-ON CONFLICT DO NOTHING;
+((SELECT id FROM public.crops WHERE code = 'TOMATO'), 'LATE_SEASON', 'Late Season / Harvesting & Ripening', 4, 20, 0.80, 0.80, 0.50)
+ON CONFLICT (crop_id, stage_code) DO NOTHING;
 
 -- FAO-56 Base Parameters for Wheat and Rice
 INSERT INTO public.crop_parameters (crop_id, version_tag, kc_initial, kc_mid, kc_end, min_root_depth_meters, max_root_depth_meters, critical_depletion_fraction_p, yield_response_factor_ky, max_height_meters) VALUES
@@ -110,4 +110,4 @@ INSERT INTO public.crop_parameters (crop_id, version_tag, kc_initial, kc_mid, kc
 ((SELECT id FROM public.crops WHERE code = 'RICE_PADDY'), 'FAO-56-DEFAULT', 1.05, 1.20, 0.90, 0.20, 0.60, 0.20, 1.10, 1.00),
 ((SELECT id FROM public.crops WHERE code = 'MAIZE'), 'FAO-56-DEFAULT', 0.30, 1.20, 0.50, 0.30, 1.20, 0.55, 1.25, 2.00),
 ((SELECT id FROM public.crops WHERE code = 'TOMATO'), 'FAO-56-DEFAULT', 0.60, 1.15, 0.80, 0.25, 1.00, 0.40, 1.05, 0.80)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (crop_id, version_tag) DO NOTHING;

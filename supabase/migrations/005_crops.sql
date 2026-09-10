@@ -103,7 +103,8 @@ CREATE TABLE IF NOT EXISTS public.crop_parameters (
     is_active BOOLEAN NOT NULL DEFAULT true,
     metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+    CONSTRAINT uq_crop_parameters UNIQUE (crop_id, version_tag)
 );
 
 -- Regional Historical Statistics
