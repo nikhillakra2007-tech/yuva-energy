@@ -10,3 +10,6 @@
 /backups/
 yuva-energy-backup-*.zip
 yuva-energy-latest.zip
+
+# Supabase CLI local cache
+/supabase/.temp/
