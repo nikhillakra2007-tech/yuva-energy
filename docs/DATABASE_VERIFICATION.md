@@ -9,12 +9,12 @@ See DATABASE_TEST_RESULTS.json for the actual run timestamp and versions. Postgr
 - All 22 unchanged historical migrations executed on a fresh database.
 - Before the fix, synthetic farmer A saw one field directly but two summary rows. Own zones returned zero rows. 46 application tables lacked RLS.
 - The guarded forward migration executes successfully and the final table-name set equals docs/APPROVED_ENTITIES.txt exactly: 77 application tables, excluding extension-owned spatial_ref_sys.
-- Fresh individual sequence (23 files): **59 behavioral assertions passed**.
-- Fresh generated apply_all.sql: **59 behavioral assertions passed**.
+- Fresh individual sequence (24 files): **59 core + 24 domain assertions passed**.
+- Fresh generated apply_all.sql: **59 core + 24 domain assertions passed**.
 - Nonempty user_roles and custom roles each abort reconciliation, preserve data and roll back the transaction.
 - Test-run databases are deleted only after success. On failure the runner retains its own databases and writes their names into the result report.
 
-The assertions cover table RLS coverage, invoker view settings, profile identity protection, two-user field/view isolation, cross-owner writes/reassignment/feedback, no-claim and anonymous denial, raw-pipeline access denial, positive zone/crop flows, area/centroid/perimeter, spatial intersections/indexes, geometry validity and containment, crop-variety FK consistency, date checks, reference data, timestamp correctness, and the valid-input Hargreaves helper. The ground-truth check currently verifies the constraint definition; actual training-row tests remain to be added.
+The assertions cover table RLS coverage, invoker view settings, profile identity protection, two-user field/view isolation, cross-owner writes/reassignment/feedback, no-claim and anonymous denial, raw-pipeline access denial, positive zone/crop flows, area/centroid/perimeter, spatial intersections/indexes, geometry validity and containment, crop-variety FK consistency, date checks, reference data, timestamp correctness, and the valid-input Hargreaves helper. The domain suite inserts actual transactional label rows: calculated/model-derived ground-truth claims are rejected, valid observed-label fixtures are accepted, duplicate targets and cross-split duplicate snapshots are rejected. It also verifies crop-stage consistency, prediction-to-snapshot field identity, schedule/optimization/recommendation relationships, pump/zone ownership and parent-update protection.
 
 ## Reproduce on Windows
 
@@ -36,10 +36,12 @@ To regenerate the aggregate after migration edits, run `node scripts/build_migra
 ## Remaining gate before application work
 
 - Establish real Supabase Auth/profile provisioning and test JWT/PostgREST behavior on a disposable Supabase project or full local stack. SQL claim simulation is not authentication validation.
-- Finish the audit's cross-parent integrity checks for pumps/systems/zones, recommendation/schedule references, stage/crop compatibility and derived-record references. Core FK tests are not exhaustive coverage of all 77 tables.
+- Finish cross-parent integrity coverage for executed irrigation events, hydraulic irrigation_zones, energy assets and satellite assets. Core crop/stage, system/farm, pump/system, schedule/zone/pump, recommendation and feature/prediction links are now constrained and tested; this is not exhaustive coverage of all 77 tables.
 - Test/fix invalid-input scientific helper behavior, nullable deduplication keys, provenance defaults, deterministic view ranking and cycle alignment.
-- Add behavioral tests for observed/calculated training labels, remaining seed semantics, field updates and farm coordinate consistency.
+- Add broader tests for remaining seed semantics, field updates and farm coordinate consistency. Observed/calculated label-row tests now pass.
 - Decide crop parameter variety/version uniqueness and overlapping crop-cycle semantics; do not silently choose assumptions for agronomic behavior.
 - Configure migration history/deployment and pin the target Supabase PostgreSQL version. Local PG18 evidence does not establish PG15/17 deployment compatibility.
 
 No weather, satellite, soil, ML or energy readings in these tests are production data. Fixtures are explicitly synthetic and rolled back. No external service, live database, model evaluation or hardware integration is claimed.
+
+The domain-integrity migration also refuses a preexisting crop-stage/crop mismatch; a dedicated upgrade test verifies that the original row remains and new schema changes roll back. Existing inconsistent application data requires a deliberate correction workflow; the migration never silently replaces scientific observations.

@@ -128,3 +128,7 @@ This section describes the planned application. It is not implemented by the tab
 - Core client writes cover farms, fields, zones, crop cycles, preferences and feedback. Profile updates are limited to selected display/contact columns. Irrigation/energy setup and derived outputs are currently read-only for clients; future backend endpoints must enforce ownership when writing them.
 - The four dashboard views use security_invoker. The identity helper uses caller permissions, not SECURITY DEFINER. Service-role execution is reserved for trusted future backend workers; no worker is implemented yet.
 - Local PostgreSQL/PostGIS tests verify the core two-farmer flow. Actual Supabase Auth/JWT/PostgREST validation and the remaining audit backlog are still pending; see DATABASE_VERIFICATION.md.
+
+## Domain relationship constraints
+
+The forward domain-integrity migration adds crop_id to crop_stage_observations (derived from its cycle), and field_id/farm_id to irrigation_schedule_items (derived from its schedule). Composite FKs validate their parents and prevent later parent reassignment from invalidating the relationship. Existing mismatched data aborts the transaction rather than being silently repaired. These are relational identifiers, not inferred measurements. Training targets must hold exactly one numeric/class value, and an example/target-code pair is unique; snapshots cannot appear twice in the same dataset's splits. See DATABASE_VERIFICATION.md for tested scope and remaining constraints.

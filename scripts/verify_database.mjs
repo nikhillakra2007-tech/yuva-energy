@@ -56,10 +56,13 @@ try {
     const assertionOutput = executeFile(db, 'tests/database/regression.sql');
     const passed = Number(assertionOutput.trim().split(/\r?\n/).at(-1));
     if (!Number.isInteger(passed) || passed < 59) throw new Error(`${mode}: regression assertion count missing`);
+    const domainOutput = executeFile(db, 'tests/database/domain_integrity.sql');
+    const domainPassed = Number(domainOutput.trim().split(/\r?\n/).at(-1));
+    if (!Number.isInteger(domainPassed) || domainPassed < 24) throw new Error(`${mode}: domain assertion count missing`);
     results.postgresql = query(db, 'SHOW server_version');
     results.postgis = query(db, 'SELECT postgis_lib_version()');
-    results.suites.push({ name: mode, result: 'PASS', migrations: migrations.length, approved_entities: actual.length, assertions: passed });
-    console.log(`PASS ${mode}: ${actual.length} exact entities, ${passed} behavioral assertions`);
+    results.suites.push({ name: mode, result: 'PASS', migrations: migrations.length, approved_entities: actual.length, assertions: passed, domain_assertions: domainPassed });
+    console.log(`PASS ${mode}: ${actual.length} exact entities, ${passed} core + ${domainPassed} domain assertions`);
   }
   const db = create('guards');
   for (const file of migrations.filter(f => /^\d{3}_/.test(f))) executeFile(db, path.join(migrationDir, file));
@@ -74,6 +77,23 @@ try {
   if (!customError.includes('Custom roles exist') || query(db, 'SELECT count(*) FROM public.roles') !== '6') throw new Error('Custom role preservation failed');
   results.suites.push({ name: 'upgrade_guards', result: 'PASS', cases: ['nonempty memberships preserved', 'custom roles preserved', 'failed migration rolls back'] });
   console.log('PASS upgrade guards: membership/custom-role data preserved, migration rolled back');
+  const legacyDb = create('legacy');
+  const integrityIndex = migrations.findIndex(f => f.includes('enforce_domain_relationship_integrity'));
+  if (integrityIndex < 0) throw new Error('Domain integrity migration missing');
+  for (const file of migrations.slice(0, integrityIndex)) executeFile(legacyDb, path.join(migrationDir, file));
+  query(legacyDb, `INSERT INTO public.users(id,full_name) VALUES('00000000-0000-0000-0000-000000000001','TEST legacy');
+    INSERT INTO public.farms(id,user_id,name) VALUES('20000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000001','TEST legacy');
+    INSERT INTO public.fields(id,farm_id,name,boundary) VALUES('30000000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','TEST legacy',ST_GeomFromText('POLYGON((77 28,77.001 28,77.001 28.001,77 28.001,77 28))',4326));
+    INSERT INTO public.crop_cycles(id,field_id,crop_id,season,cycle_year,sowing_date) SELECT '40000000-0000-0000-0000-000000000001','30000000-0000-0000-0000-000000000001',id,'RABI',2026,'2026-09-01' FROM public.crops WHERE code='WHEAT';
+    INSERT INTO public.crop_stage_observations(crop_cycle_id,growth_stage_id,provenance) SELECT '40000000-0000-0000-0000-000000000001',s.id,'FARMER_CONFIRMED' FROM public.crop_growth_stages s JOIN public.crops c ON c.id=s.crop_id WHERE c.code='TOMATO' AND s.stage_code='INITIAL'`);
+  const legacyError = executeFile(legacyDb, path.join(migrationDir, migrations[integrityIndex]), true);
+  if (!legacyError.includes('fk_observation_stage_crop')
+      || query(legacyDb, 'SELECT count(*) FROM public.crop_stage_observations') !== '1'
+      || query(legacyDb, "SELECT count(*) FROM information_schema.columns WHERE table_schema='public' AND table_name='crop_stage_observations' AND column_name='crop_id'") !== '0') {
+    throw new Error('Invalid legacy crop stage was not preserved transactionally');
+  }
+  results.suites.push({ name: 'legacy_integrity_guard', result: 'PASS', cases: ['invalid preexisting crop-stage relationship blocks migration', 'original row preserved', 'schema changes rolled back'] });
+  console.log('PASS legacy integrity guard: incompatible data preserved and migration rolled back');
   success = true;
   results.result = 'PASS';
 } catch (error) {
