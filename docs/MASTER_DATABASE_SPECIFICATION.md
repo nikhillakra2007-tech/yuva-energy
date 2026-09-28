@@ -15,9 +15,7 @@ The architecture encompasses **77 entities** across **13 core domains**, built s
 
 | Table Name | Domain | Purpose | Priority |
 | :--- | :--- | :--- | :---: |
-| `roles` | 1. User & Access | Master system-level roles (Farmer, Agronomist, Admin, etc.) | P0 |
 | `users` | 1. User & Access | Application user identities linked to Supabase Auth | P0 |
-| `user_roles` | 1. User & Access | N:M junction mapping users to security roles | P0 |
 | `farms` | 1. User & Access | Agricultural landholdings owned or managed by farmers | P0 |
 | `administrative_areas` | 2. Geography | Geospatial administrative hierarchy (Country to Village) | P1 |
 | `fields` | 2. Geography | Primary management boundary storing PostGIS polygon geometry | P0 |
@@ -92,12 +90,14 @@ The architecture encompasses **77 entities** across **13 core domains**, built s
 | `notification_channels` | 13. Notifications | Delivery channels (In-App, WhatsApp, SMS, IVR, Email) | P0 |
 | `notifications` | 13. Notifications | Outbound alert log with delivery state tracking | P0 |
 | `user_preferences` | 13. Notifications | Farmer language selection, units, and quiet hour schedules | P0 |
+| `farmer_feedback` | 13. Farmer Interaction | General app/field feedback with submitting-user and field ownership checks | P0 |
+| `audit_logs` | 12. Audit & Provenance | Server-written action metadata, excluding credentials and personal-data snapshots | P0 |
 
 ---
 
 ## Section B: PostGIS Spatial Architecture
 - **Fields (`fields.boundary`):** Stored as `GEOMETRY(Polygon, 4326)`. Spatial index: `idx_fields_boundary` (GiST).
-- **Field Centroid (`fields.centroid`):** Automatically computed by trigger `sync_fields_spatial_trigger` using `ST_Centroid(boundary)`.
+- **Field Centroid (`fields.centroid`):** Automatically computed by trigger `trg_fields_spatial_sync` using `ST_Centroid(boundary)`.
 - **Field Area (`fields.area_hectares`):** Automatically calculated via ellipsoidal geography casting: `ROUND((ST_Area(boundary::geography) / 10000.0)::numeric, 4)`.
 - **Farm Pin (`farms.location`):** Stored as `GEOMETRY(Point, 4326)`. Spatial index: `idx_farms_location` (GiST).
 - **Satellite Footprints (`satellite_scenes.footprint`):** Stored as `GEOMETRY(Polygon, 4326)` for instant spatial intersection queries with farmer fields.
@@ -105,6 +105,7 @@ The architecture encompasses **77 entities** across **13 core domains**, built s
 ---
 
 ## Section C: Machine Learning & Agricultural Science Workflow
+This section describes the planned application. It is not implemented by the table definitions. See IMPLEMENTATION_STATUS.md for verified progress.
 1. **Physical Baseline (FAO-56):**
    - Reference Evapotranspiration: $ET_0$ calculated via Penman-Monteith (or Hargreaves-Samani fallback).
    - Crop Evapotranspiration: $ET_c = K_c \times ET_0 \times K_s$.
@@ -122,6 +123,8 @@ The architecture encompasses **77 entities** across **13 core domains**, built s
 ---
 
 ## Section D: Row Level Security (RLS) & Multi-Tenant Protection
-- All farmer holdings (`farms`, `fields`, `crop_cycles`, `irrigation_systems`, `energy_systems`, `recommendations`, `notifications`) are restricted to the owning farmer via `auth.uid() = users.auth_id`.
-- Reference tables (`crops`, `crop_parameters`, `irrigation_methods`, `weather_sources`, etc.) are readable publicly by authenticated users.
-- Automated ETL background pipelines utilize Supabase `service_role` execution.
+- Forward migration `20260928131232_reconcile_entities_and_tenant_security.sql` reconciles the final approved 77 names. Historical migrations still create the retired role tables before the forward migration removes them. Nonempty memberships or custom roles stop the migration; original role reference definitions are archived in audit_logs.
+- All 77 application tables enable RLS. Anonymous clients receive no application table/view grants. Signed-in farmers access holdings through ownership predicates; catalogs are readable by authenticated clients. Pipeline and training internals remain server-only.
+- Core client writes cover farms, fields, zones, crop cycles, preferences and feedback. Profile updates are limited to selected display/contact columns. Irrigation/energy setup and derived outputs are currently read-only for clients; future backend endpoints must enforce ownership when writing them.
+- The four dashboard views use security_invoker. The identity helper uses caller permissions, not SECURITY DEFINER. Service-role execution is reserved for trusted future backend workers; no worker is implemented yet.
+- Local PostgreSQL/PostGIS tests verify the core two-farmer flow. Actual Supabase Auth/JWT/PostgREST validation and the remaining audit backlog are still pending; see DATABASE_VERIFICATION.md.

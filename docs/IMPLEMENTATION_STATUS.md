@@ -7,7 +7,7 @@ The master brief in MASTER_IMPLEMENTATION_PROMPT.md is the accepted scope. Schem
 | Phase | Status | Exit evidence required |
 | --- | --- | --- |
 | 0: Repository audit | Source audit complete | IMPLEMENTATION_AUDIT.md and checkpoint |
-| 1: Database reconciliation and verification | Pending | Exact 77 entities, migration/geometry/constraint/RLS runtime tests |
+| 1: Database reconciliation and verification | Partially complete; local core tests pass | Exact 77 entities; 59 assertions pass on both fresh sequence and bundle; upgrade guards pass. Broader integrity tests and actual Supabase integration remain |
 | 2: Backend foundation | Not started | FastAPI config, authentication and tested DB access |
 | 3: Weather | Not started | Real historical and forecast fetch, persistence, retries, deduplication |
 | 4: Satellite | Not started | Field polygon to usable scene, masked NDVI/EVI, provenance |

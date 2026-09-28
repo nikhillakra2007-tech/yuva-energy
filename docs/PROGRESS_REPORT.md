@@ -1,55 +1,57 @@
 # Current Session
 
 ## Date/Time
-2026-09-29T00:35:09.0326734+05:30
+2026-09-29T00:45:02.2919460+05:30
 
 ## Current Phase
-Phase 1: database reconciliation and runtime verification. STATUS: PARTIALLY COMPLETE.
+Phase 1, local database reconciliation/regression verification. Overall STATUS: PARTIALLY COMPLETE.
 
 ## Current Slice
-Preserve the interrupted reconciliation/security migration and baseline runtime evidence before continuing regression tests.
+Reproducible fresh-sequence and combined-bundle database tests, exact entity reconciliation and safe upgrade guards.
 
 ## Completed
-- Audit checkpoint 27d9669 was pushed to main and verified.
-- Started an isolated PostgreSQL 18 / PostGIS 3.6.2 cluster at 127.0.0.1:55432, outside the repo under ../.runtime/yuva-audit-pg. Existing server on 5432 was not modified.
-- All 22 baseline migrations executed successfully in disposable database yuva_baseline with a test-only auth.uid() shim.
-- Baseline audit reproduced: farmer A sees 1 field directly but 2 summary-view rows; own field zones are invisible; 46 application tables lack RLS.
-- Baseline polygon trigger produced area 1.0900 hectares and the correct centroid for each synthetic test polygon.
-- Generated migration 20260928131232_reconcile_entities_and_tenant_security.sql with pinned Supabase CLI 2.118.0.
-- Applied the forward migration successfully to the disposable baseline database. It replaces unused roles with farmer_feedback/audit_logs, archives role definitions, guards assignments/custom roles, enables RLS on the approved tables, restricts grants, makes views invoker-based, and adds core geometry/label/crop checks.
-- Retrieved Supabase changelog via HTTPS and inspected the September 25 breaking-change notice. No matching legacy cipher/ltree/custom operator usage was found in this schema.
-- Saved an initial source ZIP before this report update. Final ZIP is refreshed and byte-verified before committing.
+- Audit checkpoint 27d9669 and interrupted migration checkpoint 8879fb5 were pushed and verified on main.
+- Preserved historical migrations and reconciled final application schema to the exact 77 approved names.
+- Reproduced original view leak and missing-zone-access defects; new two-user tests confirm the covered paths are fixed.
+- All 77 application tables enable RLS; four views use caller permissions. Core ownership writes, restricted profile edits and private pipeline data are tested.
+- Added deterministic bundle generation/checking; apply_all.sql now contains all 23 migrations and preserves UTF-8 attribution.
+- Ran fresh individual sequence: PASS, 59 behavioral assertions and exact 77-name comparison.
+- Ran fresh combined bundle: PASS, 59 behavioral assertions and exact 77-name comparison.
+- Tested populated membership and custom-role upgrade guards; both abort without discarding data, with transactional rollback.
+- Updated master specification, phase status, audit, file map, deployment notes and detailed verification report.
+- Stored actual PostgreSQL 18.6 / PostGIS 3.6.2 results in docs/DATABASE_TEST_RESULTS.json.
+- Created/verified source ZIP before updating this report; final ZIP is byte-verified before commit.
 
 ## Partially Completed
-- New migration has executed, but its behavioral regression suite has not yet been written/run. Do not call Phase 1 complete.
-- apply_all.sql still contains only historical migrations; regeneration and parity tests are pending.
-- Master specification and file map still need reconciliation updates.
-- Local test Auth shim does not verify actual Supabase Auth, JWT validation or PostgREST.
+Phase 1 is not fully complete: broader cross-parent/derived-record integrity and scientific/provenance tests remain. SQL auth-claim tests do not verify real Supabase Auth/JWT/PostgREST. Database deployment history/version compatibility remains pending.
 
 ## Not Started
-Phases 2–16: backend, real ingestion, science, features, ML, optimization, advice, frontend, end-to-end testing, deployment and demo.
+Backend, live ingestion, agricultural engine, features, trained ML, optimizer, recommendation engine, frontend, full user journey and deployment (phases 2–16).
 
 ## Files Changed
-.gitignore; supabase/migrations/20260928131232_reconcile_entities_and_tenant_security.sql; tests/database/auth_shim.sql; tests/database/baseline_audit.sql; this report.
+scripts/build_migration_bundle.mjs; scripts/verify_database.mjs; tests/database/regression.sql; supabase/migrations/apply_all.sql; docs/DATABASE_TEST_RESULTS.json; docs/DATABASE_VERIFICATION.md; docs/MASTER_DATABASE_SPECIFICATION.md; docs/IMPLEMENTATION_AUDIT.md; docs/IMPLEMENTATION_STATUS.md; docs/ARCHITECTURE_FILE_MAP.md; docs/DEPLOYMENT.md; this report.
 
 ## Database Changes
-Forward migration applied only to yuva_baseline on isolated port 55432. No production database changes. See migration for exact DDL, grants and policies; original migrations remain intact.
+Only isolated local test databases on 127.0.0.1:55432 were used. Runner-created databases were deleted after success; yuva_baseline remains for follow-up testing. No production data or existing port-5432 database was touched. No credentials are in the repository.
 
 ## External Data Sources
-Registrations only. No production observations, provider integrations or ML metrics added.
+All provider entries remain registrations only. No live weather, satellite, soil, model metrics, savings or hardware integration is claimed.
 
 ## Tests
-22 baseline migrations: PASS. Baseline audit: vulnerabilities reproduced as expected; fixtures rolled back. New forward migration execution: PASS. Regression/security/upgrade-guard/bundle tests: PENDING.
+node scripts/build_migration_bundle.mjs --check: PASS (23 files).
+node scripts/verify_database.mjs: PASS (59 assertions on each of two fresh databases, exact entity names, membership/custom-role guards).
+git diff --check: PASS.
+Detailed scope and limitations: docs/DATABASE_VERIFICATION.md. Ground-truth constraint is currently inspected by definition; actual training-row tests remain pending.
 
 ## Known Issues
-Full audit backlog remains in IMPLEMENTATION_AUDIT.md. Not every relationship is yet protected by a cross-parent constraint. Ingestion deduplication, scientific validation, view ranking and provenance defaults remain unresolved. Sandbox pg_ctl cannot create the required Windows token; elevated startup succeeded. The isolated cluster uses loopback-only trust auth and synthetic fixtures; stop it when tests finish. Supabase CLI cache is ignored.
+Remaining database gate is enumerated in DATABASE_VERIFICATION.md: cross-parent links, stage/crop integrity, ingestion deduplication, science invalid-input handling, misleading defaults, view ordering/cycle alignment and actual Supabase integration. This is not a complete application.
 
 ## Next Exact Action
-Write and run transactional two-user/anonymous regression tests against yuva_baseline: exact 77 application tables, RLS on all, invoker views, no cross-owner read/write/reassignment, core farm-field-zone-crop flow, invalid geometry/crop rejection, label rules, indexes/seeds/functions. Then regenerate apply_all.sql and test fresh sequence plus fresh bundle independently. Checkpoint before starting any application logic.
+Read DATABASE_VERIFICATION.md and implement/test the remaining database integrity gate, starting with actual training-label rows and cross-parent constraints. Keep each unit small and checkpoint before backend implementation. If the isolated cluster is stopped, start it with the documented pg_ctl command; never initialize over its data directory.
 
 ## Recovery Instructions
 Working directory: C:/Users/nikhi/OneDrive/Documents/ChatGPT/ENERGY/yuva-energy.
-Initial ZIP: C:\Users\nikhi\OneDrive\Documents\ChatGPT\ENERGY\backups\yuva-energy-backup-2026-09-29-003416-database-partial.zip
-Final ZIP: C:\Users\nikhi\OneDrive\Documents\ChatGPT\ENERGY\backups\yuva-energy-backup-2026-09-29-003416-database-partial-final.zip
-Checkpoint message: checkpoint: preserve partial database reconciliation and runtime evidence.
-Resolve the saved commit via git log -1 --format=%H -- docs/PROGRESS_REPORT.md. Compare local HEAD to git ls-remote origin refs/heads/main. The receipt beside the ZIP records the verified remote hash and checksum after push. ZIP excludes .git, CLI cache, secrets and database data. The test cluster can be recreated from SQL; never use its auth shim in production.
+Initial ZIP: C:\Users\nikhi\OneDrive\Documents\ChatGPT\ENERGY\backups\yuva-energy-backup-2026-09-29-004409-database-tests.zip
+Final ZIP: C:\Users\nikhi\OneDrive\Documents\ChatGPT\ENERGY\backups\yuva-energy-backup-2026-09-29-004409-database-tests-final.zip
+Commit message: checkpoint: verify reconciled database and tenant isolation.
+The saved commit is the commit containing this report (git log -1 --format=%H -- docs/PROGRESS_REPORT.md). Compare local HEAD with git ls-remote origin refs/heads/main. ZIP receipt records the actual pushed hash and archive checksum. ZIP excludes .git, CLI cache, secrets and database files. Recover source from ZIP or Git; recreate synthetic databases from tests. The isolated cluster uses loopback-only trust authentication and should be stopped after tests.

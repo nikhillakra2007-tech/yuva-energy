@@ -57,3 +57,9 @@ Runtime requires PostgreSQL, PostGIS, pgcrypto, uuid-ossp and the Supabase auth.
 Before backend implementation: run a fresh isolated database, reproduce defects, reconcile entities using guarded forward changes, test ownership with two users plus anonymous access, validate geometry/triggers/views/seeds, and document remaining failures. Never apply test fixtures to a user's live database.
 
 Security reference consulted: [Supabase RLS documentation](https://supabase.com/docs/guides/database/postgres/row-level-security). The changelog markdown fetch was attempted but the browser rejected its content type; retrieve it by HTTPS before implementing Supabase-specific changes.
+
+## Runtime follow-up (2026-09-29 IST)
+
+The initial audit above is retained as baseline evidence. See DATABASE_VERIFICATION.md and DATABASE_TEST_RESULTS.json for current runtime scope. Forward reconciliation now yields the exact approved 77 entities; role catalog definitions are preserved in audit_logs and membership/custom-role removal is guarded. All application tables enable RLS, the four views use caller permissions, identity updates are column-restricted, and core farmer/field/zone/crop/feedback isolation is tested. Timestamp defaults, invalid field/zone geometry and crop-variety mismatch checks were added. This resolves the reproduced view leak and missing zone access in the covered cases. Other findings remain open as listed in DATABASE_VERIFICATION.md; no full application/database-completion claim is made.
+
+Changelog follow-up: HTTPS retrieval succeeded. The 2026-09-25 notice about legacy pgcrypto ciphers, ltree/btree_gist indexes and custom operators was reviewed; no such application usage exists in the baseline SQL. PostgreSQL 18.6/PostGIS 3.6.2 was used for local verification.

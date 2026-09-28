@@ -36,3 +36,16 @@ All docs are read by developers/operators, import no code, call no APIs and chan
 ## Dependency flow
 
 Database -> backend -> ingestion -> agriculture -> features -> ML -> optimization -> recommendations -> frontend. Only SQL definitions exist at the audit checkpoint. There are no application imports/callers or runtime external API calls yet.
+
+## Reconciliation and verification additions
+
+| Path | Purpose / inputs / outputs | Imports, callers, callees and dependencies | Failure modes / removal impact |
+| --- | --- | --- | --- |
+| supabase/migrations/20260928131232_reconcile_entities_and_tenant_security.sql | Reconcile exact entities, preserve retired role definitions, fix core security/geometry; consumes baseline schema and roles; produces guarded final schema | Called by psql/deployment; calls PostGIS/auth.uid/current_app_user_id; accesses all 77 approved tables, retiring roles/user_roles; no external APIs | Aborts on existing memberships/custom roles, unexpected dependencies or incompatible data; removal restores known authorization gaps |
+| scripts/build_migration_bundle.mjs | Reads numbered migrations, creates or checks apply_all.sql | Node fs/path/url; called manually and by verify_database; no database/API connection | Fails on stale bundle or I/O; removing it permits silent aggregate drift |
+| scripts/verify_database.mjs | Creates isolated test DBs, checks exact entities, runs suites, writes DATABASE_TEST_RESULTS.json | Node fs/path/url/child_process; invokes psql and bundle builder; consumes auth shim, migrations, approved names and regression tests | Rejects wrong cluster, stops on SQL/assertion failures, retains failed DBs; removal loses reproducibility |
+| tests/database/auth_shim.sql | Simulates auth.uid from a SQL session claim and creates test roles | Disposable runner only; auth schema; no JWT or external authentication | Never deploy to Supabase; removal prevents plain PostgreSQL policy tests |
+| tests/database/baseline_audit.sql | Transactional synthetic baseline reproduction; prints original leak/denial counts and rolls back | psql on original schema; users, farms, fields, field_zones, view and catalogs | Intended only before reconciliation; removal loses reproduction recipe |
+| tests/database/regression.sql | Transactional behavioral assertions with two users and anonymous role; count output and rollback | psql runner; core tables, all 77 via catalog inventory, four views, spatial/auth helpers; no external APIs | Any assertion/error aborts run; removal loses security/geometry regression coverage |
+| docs/DATABASE_VERIFICATION.md | Evidence, exact commands and remaining verification gate | Developers/operators; depends on actual test report; no runtime callers | Staleness could overstate readiness |
+| docs/DATABASE_TEST_RESULTS.json | Machine-written actual versions, timestamp, suites and results | Written by verify_database; read by reviewers; no secrets | A passing report applies only to the recorded local run/scope |
