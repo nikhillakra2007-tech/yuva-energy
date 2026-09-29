@@ -58,7 +58,7 @@ try {
     if (!Number.isInteger(passed) || passed < 59) throw new Error(`${mode}: regression assertion count missing`);
     const domainOutput = executeFile(db, 'tests/database/domain_integrity.sql');
     const domainPassed = Number(domainOutput.trim().split(/\r?\n/).at(-1));
-    if (!Number.isInteger(domainPassed) || domainPassed < 24) throw new Error(`${mode}: domain assertion count missing`);
+    if (!Number.isInteger(domainPassed) || domainPassed < 33) throw new Error(`${mode}: domain assertion count missing`);
     results.postgresql = query(db, 'SHOW server_version');
     results.postgis = query(db, 'SELECT postgis_lib_version()');
     results.suites.push({ name: mode, result: 'PASS', migrations: migrations.length, approved_entities: actual.length, assertions: passed, domain_assertions: domainPassed });

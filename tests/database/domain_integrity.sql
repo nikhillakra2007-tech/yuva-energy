@@ -82,5 +82,34 @@ INSERT INTO public.recommendations(field_id,irrigation_schedule_id,optimization_
 SELECT pg_temp.expect_error('UPDATE public.recommendations SET field_id=''30000000-0000-0000-0000-000000000002''','23503','recommendation cannot mismatch linked field');
 SELECT pg_temp.ok((SELECT count(*)=1 FROM public.recommendations),'valid recommendation linkage retained');
 
+-- Executed irrigation events cross-parent integrity
+INSERT INTO public.irrigation_events(id,field_id,irrigation_system_id,pump_id,started_at)
+ VALUES('f0000000-0000-0000-0000-000000000001','30000000-0000-0000-0000-000000000001','50000000-0000-0000-0000-000000000001','60000000-0000-0000-0000-000000000001',now());
+SELECT pg_temp.ok((SELECT farm_id='20000000-0000-0000-0000-000000000001' FROM public.irrigation_events WHERE id='f0000000-0000-0000-0000-000000000001'),'irrigation event farm derived');
+SELECT pg_temp.expect_error('UPDATE public.irrigation_events SET pump_id=''60000000-0000-0000-0000-000000000002'' WHERE id=''f0000000-0000-0000-0000-000000000001''','23503','event cannot use pump from other farm');
+SELECT pg_temp.expect_error('INSERT INTO public.water_measurements(irrigation_event_id,field_id,measurement_type,volume_cubic_meters,volume_litres,provenance) VALUES(''f0000000-0000-0000-0000-000000000001'',''30000000-0000-0000-0000-000000000002'',''PHYSICAL_FLOW_METER'',1,1000,''MEASURED'')','23503','water measurement cannot mismatch event field');
+
+-- Energy systems & assets cross-parent integrity
+INSERT INTO public.energy_systems(id,farm_id,name,primary_source_id)
+ SELECT 'f1000000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','TEST energy',id FROM public.energy_sources WHERE code='GRID_3_PHASE' OR is_renewable IS NOT NULL LIMIT 1;
+INSERT INTO public.energy_assets(id,energy_system_id,pump_id,name,asset_type)
+ VALUES('f2000000-0000-0000-0000-000000000001','f1000000-0000-0000-0000-000000000001','60000000-0000-0000-0000-000000000001','TEST inverter','SOLAR_PUMP_INVERTER');
+SELECT pg_temp.ok((SELECT farm_id='20000000-0000-0000-0000-000000000001' FROM public.energy_assets WHERE id='f2000000-0000-0000-0000-000000000001'),'energy asset farm derived');
+SELECT pg_temp.expect_error('UPDATE public.energy_assets SET pump_id=''60000000-0000-0000-0000-000000000002'' WHERE id=''f2000000-0000-0000-0000-000000000001''','23503','energy asset cannot link to pump of other farm');
+INSERT INTO public.energy_systems(id,farm_id,name,primary_source_id)
+ SELECT 'f1000000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000002','TEST energy B',id FROM public.energy_sources WHERE code='GRID_3_PHASE' OR is_renewable IS NOT NULL LIMIT 1;
+SELECT pg_temp.expect_error('INSERT INTO public.energy_observations(energy_system_id,asset_id,observed_at) VALUES(''f1000000-0000-0000-0000-000000000002'',''f2000000-0000-0000-0000-000000000001'',now())','23503','observation rejects asset from other system');
+
+-- Satellite asset integrity
+INSERT INTO public.satellite_scenes(id,collection_id,provider_scene_id,acquired_at)
+ SELECT 'f3000000-0000-0000-0000-000000000001',id,'TEST_SCENE_1',now() FROM public.satellite_collections LIMIT 1;
+INSERT INTO public.satellite_observations(id,field_id,scene_id,acquired_at)
+ VALUES('f4000000-0000-0000-0000-000000000001','30000000-0000-0000-0000-000000000001','f3000000-0000-0000-0000-000000000001',now());
+SELECT pg_temp.expect_error('INSERT INTO public.satellite_assets(satellite_observation_id,field_id,asset_type,storage_path) VALUES(''f4000000-0000-0000-0000-000000000001'',''30000000-0000-0000-0000-000000000002'',''NDVI_MAP'',''/test/ndvi.tif'')','23503','satellite asset rejects mismatching observation field');
+
+-- Hardened scientific calculation check
+SELECT pg_temp.ok(public.estimate_hargreaves_et0(25,30,20,15) IS NULL,'Hargreaves rejects unphysical t_max < t_min');
+SELECT pg_temp.ok(public.estimate_hargreaves_et0(25,20,30,-5) IS NULL,'Hargreaves rejects negative radiation');
+
 SELECT count(*) AS passed_assertions FROM assertions;
 ROLLBACK;
