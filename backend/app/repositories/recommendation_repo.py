@@ -57,11 +57,11 @@ class RecommendationRepository:
                 return None
             res = dict(row)
             cur.execute(
-                "SELECT * FROM public.recommendation_reasons WHERE recommendation_id = %s ORDER BY weight DESC NULLS LAST;",
+                "SELECT * FROM public.recommendation_reasons WHERE recommendation_id = %s ORDER BY display_order ASC;",
                 (str(rec_id),)
             )
             res["reasons"] = [dict(reason) for reason in cur.fetchall()]
-            res["drivers"] = [reason["description_vernacular"] for reason in res["reasons"]]
+            res["drivers"] = [reason.get("headline") or reason.get("detail_text") or "Agronomic moisture balance" for reason in res["reasons"]]
             res["limitations"] = ["Derived from meteorological & satellite telemetry; local soil validation advised."]
             return res
 
@@ -71,8 +71,10 @@ class RecommendationRepository:
         recommendation_id: UUID,
         user_id: UUID,
         action_taken: str,
-        actual_water_volume_litres: Optional[float] = None,
-        farmer_notes: Optional[str] = None
+        actual_irrigation_duration_minutes: Optional[float] = None,
+        farmer_comments: Optional[str] = None,
+        feedback_rating: Optional[int] = None,
+        rejection_reason_code: Optional[str] = None
     ) -> Dict[str, Any]:
         feedback_id = uuid4()
         with conn.cursor() as cur:
@@ -80,12 +82,17 @@ class RecommendationRepository:
                 """
                 INSERT INTO public.recommendation_feedback (
                     id, recommendation_id, user_id, action_taken,
-                    actual_water_volume_litres, farmer_notes
+                    actual_irrigation_duration_minutes, farmer_comments,
+                    feedback_rating, rejection_reason_code
                 )
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING *;
                 """,
-                (str(feedback_id), str(recommendation_id), str(user_id), action_taken, actual_water_volume_litres, farmer_notes)
+                (
+                    str(feedback_id), str(recommendation_id), str(user_id), action_taken,
+                    actual_irrigation_duration_minutes, farmer_comments,
+                    feedback_rating, rejection_reason_code
+                )
             )
             row = cur.fetchone()
             return dict(row)

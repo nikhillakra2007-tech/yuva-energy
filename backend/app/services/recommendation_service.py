@@ -33,7 +33,7 @@ class RecommendationService:
         # Enforce that user owns this recommendation
         RecommendationService.get_recommendation(conn, rec_id, user_id)
         
-        valid_actions = ["APPLIED_FULL", "APPLIED_PARTIAL", "DEFERRED", "REJECTED", "IGNORED"]
+        valid_actions = ["FOLLOWED_EXACTLY", "FOLLOWED_PARTIALLY", "DEFERRED", "REJECTED_DISAGREED", "REJECTED_INFRA_ISSUE"]
         if data.action_taken not in valid_actions:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -45,6 +45,8 @@ class RecommendationService:
             recommendation_id=rec_id,
             user_id=user_id,
             action_taken=data.action_taken,
-            actual_water_volume_litres=data.actual_water_volume_litres,
-            farmer_notes=data.farmer_notes
+            actual_irrigation_duration_minutes=data.actual_irrigation_duration_minutes,
+            farmer_comments=data.farmer_comments,
+            feedback_rating=data.feedback_rating,
+            rejection_reason_code=data.rejection_reason_code
         )
