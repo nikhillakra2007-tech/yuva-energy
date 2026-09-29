@@ -49,32 +49,42 @@ Phases 3–9: Live data pipelines (Open-Meteo weather adapter, SoilGrids, Sentin
 - `backend/app/repositories/*.py`
 - `backend/app/services/*.py`
 - `backend/app/routers/*.py`
+- `backend/app/ingestion/*.py`
 - `backend/requirements.txt`
 - `backend/tests/conftest.py`
 - `backend/tests/test_backend_api.py`
+- `backend/tests/test_ingestion.py`
 - `docs/API_MAP.md`
 - `docs/IMPLEMENTATION_STATUS.md`
 - `docs/PROGRESS_REPORT.md`
 
 ## Database Changes
-No schema modifications; verified all queries against the existing 77 entities in `yuva_dev`.
+No schema modifications. Aligned pipeline data models and operations with existing PostgreSQL check constraints and foreign keys:
+- `ingestion_jobs.target_domain` validated against `('WEATHER_OBSERVATION', 'WEATHER_FORECAST', 'SATELLITE_SCENE', 'SOILGRIDS', 'SOLAR_FORECAST')`.
+- `ingestion_runs.status` set to `'RUNNING'`, `'COMPLETED'`, or `'FAILED'`.
+- `weather_observations.provenance` set to `'EXTERNAL_RETRIEVED'`.
+- `soil_observations.provenance` set to `'EXTERNAL_RETRIEVED'`.
+- `satellite_observations.data_quality_status` set to `'VALID'` or `'CLOUDY'`.
 
 ## External Data Sources
-Open-Meteo, SoilGrids, and Copernicus provider contracts defined. Next phase connects live data ingestion pipelines with provenance and retries.
+- **Open-Meteo REST API**: Live hourly weather observations, solar radiation, wind, reference ET0, and 7-day daily forecasts with exponential backoff (3 retries).
+- **SoilGrids 250m REST API**: Physical soil taxonomy (sand, silt, clay, organic carbon, pH, bulk density) and Saxton-Rawls pedotransfer hydraulic calculations (wilting point, field capacity, saturation, available water capacity).
+- **Copernicus Sentinel-2 L2A**: Cloud-filtered surface reflectance granules, multi-spectral index calculation (NDVI, EVI, NDRE), and scene metadata.
+- **Audit & Provenance**: Raw payload archived with SHA-256 checksums in `raw_data_records`, execution runs tracked in `ingestion_runs`.
 
 ## Tests
-- `python -m pytest backend/tests -v`: PASS (6/6 test suites passed).
+- `python -m pytest backend/tests -v`: PASS (10/10 test suites passed in 71s).
 - `node scripts/build_migration_bundle.mjs --check`: PASS (25 migrations).
 - `git diff --check`: PASS (clean diff).
 
 ## Known Issues
-None in backend or database layers.
+None. All ingestion tests pass against active PostgreSQL database with RLS tenant checks and system worker permissions.
 
 ## Next Exact Action
-Begin Phase 3: Live Data Pipelines. Implement provider abstractions, Open-Meteo weather ingestion, SoilGrids adapter, Sentinel-2 metadata ingestion, retries, caching, deduplication, and provenance tracking.
+Phase 4: Agricultural Intelligence Engine. Implement deterministic FAO-56 Penman-Monteith ET0, dynamic crop coefficient $K_c$, effective rainfall, root zone soil water balance, and stress index calculations with complete traceability chain ($Input \to Calculation \to Assumption \to Output \to Confidence \to Limitations$).
 
 ## Recovery Instructions
 Working directory: `c:\Users\nikhi\OneDrive\Desktop\coding\ENERGY`.
 Backup directory: `c:\Users\nikhi\OneDrive\Desktop\coding\backups`.
-Latest backup: `../backups/yuva-energy-backup-2026-09-29-phase2-complete.zip`.
+Latest backup: `../backups/yuva-energy-backup-2026-09-29-phase3-complete.zip`.
 Git checkpoint committed to local main.

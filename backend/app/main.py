@@ -14,6 +14,7 @@ from backend.app.routers.weather import router as weather_router
 from backend.app.routers.soil import soil_router, satellite_router
 from backend.app.routers.recommendations import router as recommendations_router
 from backend.app.routers.analytics import router as analytics_router
+from backend.app.routers.ingestion import router as ingestion_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("yuva-energy-backend")
@@ -83,6 +84,7 @@ app.include_router(soil_router, prefix=settings.API_PREFIX)
 app.include_router(satellite_router, prefix=settings.API_PREFIX)
 app.include_router(recommendations_router, prefix=settings.API_PREFIX)
 app.include_router(analytics_router, prefix=settings.API_PREFIX)
+app.include_router(ingestion_router, prefix=settings.API_PREFIX)
 
 @app.get("/")
 def root():

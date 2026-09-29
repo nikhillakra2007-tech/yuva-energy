@@ -13,3 +13,11 @@ yuva-energy-latest.zip
 
 # Supabase CLI local cache
 /supabase/.temp/
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
