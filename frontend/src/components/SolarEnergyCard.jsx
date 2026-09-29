@@ -1,0 +1,161 @@
+import React from 'react';
+import { Sun, Zap, Fuel, DollarSign, Leaf, Clock, CheckCircle } from 'lucide-react';
+
+export default function SolarEnergyCard({ weather, lang = 'en' }) {
+  const t = {
+    en: {
+      title: "Solar Irrigation & Grid Decoupling",
+      pvStatus: "Solar PV Output",
+      peakWindow: "Optimal Solar Pumping Window",
+      peakTime: "11:00 AM – 03:30 PM",
+      peakDesc: "100% solar drive available. Pumping during this window eliminates all grid electricity and diesel consumption.",
+      savingsSummary: "Cumulative Season Impact",
+      gridAvoided: "Grid Power Avoided",
+      dieselSaved: "Diesel Fuel Saved",
+      costSavings: "Direct Cost Saved",
+      carbonOffset: "CO₂ Emissions Prevented",
+      solarReady: "Solar Array Operating Nominally"
+    },
+    hi: {
+      title: "सौर सिंचाई एवं ग्रिड बिजली बचत",
+      pvStatus: "सौर पीवी उत्पादन",
+      peakWindow: "सर्वश्रेष्ठ सौर पम्पिंग समय",
+      peakTime: "सुबह 11:00 – दोपहर 03:30",
+      peakDesc: "100% सौर ऊर्जा उपलब्ध। इस समय पम्प चलाने से ग्रिड बिजली और डीजल का खर्च पूरी तरह बचता है।",
+      savingsSummary: "इस मौसम की कुल बचत",
+      gridAvoided: "ग्रिड बिजली बचत",
+      dieselSaved: "डीजल बचत",
+      costSavings: "कुल आर्थिक बचत",
+      carbonOffset: "CO₂ उत्सर्जन में कमी",
+      solarReady: "सौर पैनल सामान्य रूप से कार्यरत"
+    }
+  }[lang] || {};
+
+  // PV calculations based on solar irradiance
+  const solarRadiation = weather?.solar_radiation_w_m2 || 650;
+  // Assume a 5 HP (3.7 kW) pump backed by a 5.0 kWp solar PV array
+  const currentPvKw = Math.min(5.0, (solarRadiation / 1000) * 5.0 * 0.82);
+
+  // Cumulative metrics for demonstration
+  const gridAvoidedKwh = 1420;
+  const dieselLiters = 412;
+  const directSavingsInr = 38500;
+  const co2AvoidedKg = 1160;
+
+  return (
+    <div className="glass-panel" style={{ padding: '24px', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Sun size={20} color="var(--solar-amber)" />
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>{t.title}</h3>
+        </div>
+        <span className="badge badge-solar">
+          <CheckCircle size={13} />
+          {t.solarReady}
+        </span>
+      </div>
+
+      {/* Real-Time Generation Spotlight */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.05) 100%)',
+        border: '1px solid var(--border-solar)',
+        borderRadius: 'var(--radius-md)',
+        padding: '16px',
+        marginBottom: '20px'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t.pvStatus}</span>
+          <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--solar-amber)' }}>
+            {currentPvKw.toFixed(2)} <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>kW / 5.0 kWp</span>
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
+          <Clock size={16} color="var(--solar-amber)" />
+          <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>{t.peakWindow}:</strong>
+          <span style={{ fontSize: '0.85rem', color: '#fbbf24', fontWeight: 600 }}>{t.peakTime}</span>
+        </div>
+        <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.4 }}>
+          {t.peakDesc}
+        </p>
+      </div>
+
+      {/* Environmental & Financial ROI Grid */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(2, 1fr)', 
+        gap: '12px',
+        marginBottom: 'auto'
+      }}>
+        {/* Cost Savings */}
+        <div style={{ 
+          background: 'rgba(16, 185, 129, 0.08)', 
+          border: '1px solid rgba(16, 185, 129, 0.2)', 
+          borderRadius: 'var(--radius-md)', 
+          padding: '14px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-emerald)' }}>
+            <DollarSign size={16} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>{t.costSavings}</span>
+          </div>
+          <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+            ₹{directSavingsInr.toLocaleString('en-IN')}
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Zero grid tariff applied</div>
+        </div>
+
+        {/* Grid Avoided */}
+        <div style={{ 
+          background: 'rgba(14, 165, 233, 0.08)', 
+          border: '1px solid rgba(14, 165, 233, 0.2)', 
+          borderRadius: 'var(--radius-md)', 
+          padding: '14px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--sky-blue)' }}>
+            <Zap size={16} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>{t.gridAvoided}</span>
+          </div>
+          <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+            {gridAvoidedKwh} <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>kWh</span>
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Off-grid solar direct drive</div>
+        </div>
+
+        {/* Diesel Saved */}
+        <div style={{ 
+          background: 'rgba(217, 119, 6, 0.08)', 
+          border: '1px solid rgba(217, 119, 6, 0.2)', 
+          borderRadius: 'var(--radius-md)', 
+          padding: '14px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--solar-amber)' }}>
+            <Fuel size={16} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>{t.dieselSaved}</span>
+          </div>
+          <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+            {dieselLiters} <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>L</span>
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Generator fuel replaced</div>
+        </div>
+
+        {/* Carbon Offset */}
+        <div style={{ 
+          background: 'rgba(52, 211, 153, 0.08)', 
+          border: '1px solid rgba(52, 211, 153, 0.2)', 
+          borderRadius: 'var(--radius-md)', 
+          padding: '14px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#34d399' }}>
+            <Leaf size={16} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>{t.carbonOffset}</span>
+          </div>
+          <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+            {co2AvoidedKg} <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>kg</span>
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Clean energy transition</div>
+        </div>
+      </div>
+    </div>
+  );
+}
