@@ -1,17 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Lenis from 'lenis';
 import Navbar from './sections/navigation/Navbar';
+import LandingHero from './sections/landing/LandingHero';
+import LandingFeatures from './sections/landing/LandingFeatures';
+import AuthSection from './sections/auth/AuthSection';
+import VoiceAssistant from './sections/voice/VoiceAssistant';
 import HeroRibbon from './sections/hero/HeroRibbon';
 import FieldMap from './sections/geospatial/FieldMap';
 import WaterBalanceCard from './sections/water-balance/WaterBalanceCard';
 import SolarEnergyCard from './sections/solar-energy/SolarEnergyCard';
 import RecommendationsFeed from './sections/recommendations/RecommendationsFeed';
-import AuthModal from './sections/modals/AuthModal';
 import FieldModal from './sections/modals/FieldModal';
 import Footer from './sections/footer/Footer';
 import { api, getAuthToken, getCurrentUser, removeAuthToken } from './services/api';
+import { ArrowLeft, Compass, LayoutDashboard, Mic, ShieldCheck } from 'lucide-react';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'auth' | 'dashboard'
   const [lang, setLang] = useState('en');
+  const [fontScale, setFontScale] = useState(1);
+  const [isHighContrast, setIsHighContrast] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+
   const [user, setUser] = useState(getCurrentUser());
   const [farms, setFarms] = useState([]);
   const [fields, setFields] = useState([]);
@@ -24,10 +34,43 @@ export default function App() {
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showFieldModal, setShowFieldModal] = useState(false);
 
-  // Initialize and load user farms, fields, and ensure initial plot
+  // Initialize Lenis Smooth Scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    const rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
+
+  // Sync fontScale CSS variable
+  useEffect(() => {
+    document.documentElement.style.setProperty('--font-scale', fontScale.toString());
+  }, [fontScale]);
+
+  // Toggle High Contrast Mode on body
+  useEffect(() => {
+    if (isHighContrast) {
+      document.body.classList.add('high-contrast');
+    } else {
+      document.body.classList.remove('high-contrast');
+    }
+  }, [isHighContrast]);
+
+  // Auto-seed and load farms & fields
   const loadFarmsAndFields = useCallback(async () => {
     try {
       const farmsRes = await api.listFarms();
@@ -35,7 +78,6 @@ export default function App() {
 
       let fieldsRes = await api.listFields();
 
-      // If user has no fields yet, auto-create a default model field so the UI is immediately alive
       if (!fieldsRes || fieldsRes.length === 0) {
         let farmId = farmsRes?.[0]?.id;
         if (!farmId) {
@@ -65,12 +107,11 @@ export default function App() {
           }
         });
 
-        // Trigger initial sync and agronomic evaluation
         try {
           await api.syncField(newField.id, ['WEATHER', 'SOIL', 'SATELLITE']);
           await api.evaluateField(newField.id);
         } catch {
-          // Non-fatal on first boot
+          // non-fatal
         }
 
         fieldsRes = [newField];
@@ -81,16 +122,16 @@ export default function App() {
         setSelectedField(fieldsRes[0]);
       }
     } catch (err) {
-      console.warn('Could not load farms/fields with current credentials:', err.message);
+      console.warn('Farms/Fields load notice:', err.message);
     }
   }, []);
 
+  // Initialize demo credentials in background so console is instantly available
   useEffect(() => {
     const token = getAuthToken();
     if (token) {
       loadFarmsAndFields();
     } else {
-      // Auto demo sign-in for seamless first load
       api.login({ email: 'farmer@example.com', password: 'Password123!' })
         .then((res) => {
           localStorage.setItem('yuva_token', res.access_token);
@@ -102,18 +143,18 @@ export default function App() {
           api.register({
             email: 'farmer@example.com',
             password: 'Password123!',
-            full_name: 'Rajesh Kumar'
+            full_name: 'Rajesh Kumar (Karnal Basmati)'
           }).then((res) => {
             localStorage.setItem('yuva_token', res.access_token);
             localStorage.setItem('yuva_user', JSON.stringify(res.user));
             setUser(res.user);
             loadFarmsAndFields();
-          }).catch((e) => console.log('Demo initialization note:', e.message));
+          }).catch((e) => console.log('Demo registration note:', e.message));
         });
     }
   }, [loadFarmsAndFields]);
 
-  // Load telemetry & agronomic balance when selected field changes
+  // Load field telemetry & hydrologic balance
   const loadFieldData = useCallback(async (fieldId) => {
     if (!fieldId) return;
 
@@ -145,7 +186,7 @@ export default function App() {
         setRecommendations(fieldRecs.length > 0 ? fieldRecs : recList);
       }
     } catch (err) {
-      console.warn('Telemetry load error:', err.message);
+      console.warn('Field data load notice:', err.message);
     }
   }, []);
 
@@ -155,7 +196,7 @@ export default function App() {
     }
   }, [selectedField, loadFieldData]);
 
-  // Handle live pipeline sync
+  // Telemetry Sync
   const handleSync = async () => {
     if (!selectedField?.id) return;
     setIsSyncing(true);
@@ -169,7 +210,7 @@ export default function App() {
     }
   };
 
-  // Handle agronomic engine evaluation
+  // Agronomic Evaluation
   const handleEvaluate = async () => {
     if (!selectedField?.id) return;
     setIsEvaluating(true);
@@ -186,90 +227,223 @@ export default function App() {
   const handleLogout = () => {
     removeAuthToken();
     setUser(null);
+    setCurrentView('landing');
   };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Navigation Header */}
+      {/* Universal Top Navigation Header */}
       <Navbar
-        user={user}
+        currentView={currentView}
+        onChangeView={(view) => {
+          setCurrentView(view);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         fields={fields}
         selectedField={selectedField}
         onSelectField={setSelectedField}
         lang={lang}
         onToggleLang={() => setLang(lang === 'en' ? 'hi' : 'en')}
-        onOpenAuth={() => setShowAuthModal(true)}
+        user={user}
+        onOpenAuth={() => {
+          setCurrentView('auth');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         onLogout={handleLogout}
         onSync={handleSync}
         isSyncing={isSyncing}
         onNewField={() => setShowFieldModal(true)}
+        onOpenVoice={() => setShowVoiceModal(true)}
+        fontScale={fontScale}
+        onChangeFontScale={setFontScale}
+        isHighContrast={isHighContrast}
+        onToggleHighContrast={() => setIsHighContrast(!isHighContrast)}
       />
 
-      {/* Main Workspace Container */}
-      <main style={{ maxWidth: '1440px', margin: '0 auto', width: '100%', padding: '24px 20px', flex: 1 }}>
-        {/* Real-Time Agro-Solar Hero Ribbon */}
-        <HeroRibbon
-          field={selectedField}
-          weather={weather}
-          waterBalance={waterBalance}
-          lang={lang}
-          onEvaluate={handleEvaluate}
-          isEvaluating={isEvaluating}
-        />
+      {/* Main Viewport Container */}
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {/* TIER 1: LANDING PAGE VIEW */}
+        {currentView === 'landing' && (
+          <div className="view-transition">
+            <LandingHero
+              onEnterConsole={() => {
+                setCurrentView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onOpenAuth={() => {
+                setCurrentView('auth');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onOpenVoice={() => setShowVoiceModal(true)}
+              lang={lang}
+            />
 
-        {/* Core Layout: Geospatial Field Map + Soil & Solar Diagnostics */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-          gap: '24px',
-          alignItems: 'stretch'
-        }}>
-          {/* Left Column: Interactive Leaflet Map */}
-          <div style={{ minHeight: '440px' }}>
-            <FieldMap
+            <LandingFeatures
+              onEnterConsole={() => {
+                setCurrentView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              lang={lang}
+            />
+          </div>
+        )}
+
+        {/* TIER 2: AUTHENTICATION SECTION VIEW */}
+        {currentView === 'auth' && (
+          <div className="view-transition">
+            <AuthSection
+              onSuccess={(u) => {
+                setUser(u);
+                loadFarmsAndFields();
+                setCurrentView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onBackToLanding={() => {
+                setCurrentView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              lang={lang}
+            />
+          </div>
+        )}
+
+        {/* TIER 3: FARM CONSOLE & WORKING DASHBOARD VIEW */}
+        {currentView === 'dashboard' && (
+          <div className="view-transition" style={{ maxWidth: '1440px', margin: '0 auto', width: '100%', padding: '24px 24px 64px 24px' }}>
+            {/* Reverse Breadcrumb: Back to Overview */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '16px',
+              marginBottom: '24px'
+            }}>
+              <button
+                onClick={() => {
+                  setCurrentView('landing');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="btn-secondary"
+                style={{ padding: '8px 18px', fontSize: '0.9rem' }}
+              >
+                <ArrowLeft size={16} />
+                <span>{lang === 'hi' ? '← मुख्य परिचय पृष्ठ' : '← Return to Platform Overview'}</span>
+              </button>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button
+                  onClick={() => setShowVoiceModal(true)}
+                  className="btn-solar"
+                  style={{ padding: '8px 18px', fontSize: '0.9rem' }}
+                >
+                  <Mic size={16} />
+                  <span>{lang === 'hi' ? 'वॉयस सहायक से पूछें' : 'Consult Voice Assistant'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Farm Banner & Weather Telemetry Ribbon */}
+            <HeroRibbon
               field={selectedField}
-              waterBalance={waterBalance}
-              soil={soil}
-              lang={lang}
-            />
-          </div>
-
-          {/* Right Column: Water Balance & Solar Coupling Cards */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <WaterBalanceCard
-              waterBalance={waterBalance}
-              soil={soil}
-              lang={lang}
-            />
-            <SolarEnergyCard
               weather={weather}
+              waterBalance={waterBalance}
+              lang={lang}
+              onEvaluate={handleEvaluate}
+              isEvaluating={isEvaluating}
+            />
+
+            {/* Core Working Layout: Geospatial Satellite Map + Water & Solar Balances */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+              gap: '32px',
+              alignItems: 'stretch',
+              marginBottom: '40px'
+            }}>
+              {/* Left Column: Interactive Map */}
+              <div style={{ minHeight: '480px' }}>
+                <FieldMap
+                  field={selectedField}
+                  waterBalance={waterBalance}
+                  soil={soil}
+                  lang={lang}
+                />
+              </div>
+
+              {/* Right Column: Hydrologic & Solar Energy Cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                <WaterBalanceCard
+                  waterBalance={waterBalance}
+                  soil={soil}
+                  lang={lang}
+                />
+                <SolarEnergyCard
+                  weather={weather}
+                  lang={lang}
+                />
+              </div>
+            </div>
+
+            {/* Actionable Agronomic Recommendations Feed */}
+            <RecommendationsFeed
+              recommendations={recommendations}
+              onRefresh={() => selectedField && loadFieldData(selectedField.id)}
               lang={lang}
             />
           </div>
-        </div>
-
-        {/* Actionable Recommendations Feed with Traceability & Audio Narration */}
-        <RecommendationsFeed
-          recommendations={recommendations}
-          onRefresh={() => selectedField && loadFieldData(selectedField.id)}
-          lang={lang}
-        />
+        )}
       </main>
 
-      {/* Footer */}
+      {/* Persistent Footer */}
       <Footer />
 
-      {/* Modals */}
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onAuthSuccess={(u) => {
-          setUser(u);
-          loadFarmsAndFields();
-        }}
+      {/* Floating Voice Assistant Trigger */}
+      <div style={{
+        position: 'fixed',
+        bottom: '28px',
+        right: '28px',
+        zIndex: 90
+      }}>
+        <button
+          id="floating-voice-btn"
+          onClick={() => setShowVoiceModal(true)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+            color: '#06120d',
+            padding: '16px 24px',
+            borderRadius: 'var(--radius-full)',
+            border: '2px solid rgba(255, 255, 255, 0.4)',
+            boxShadow: '0 8px 32px rgba(245, 158, 11, 0.55)',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-heading)',
+            fontWeight: 800,
+            fontSize: '1rem',
+            transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05) translateY(-3px)'}
+          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1) translateY(0)'}
+          title="Open Vernacular Voice AI Assistant"
+        >
+          <Mic size={22} />
+          <span>{lang === 'hi' ? 'बोलकर पूछें' : 'Voice Assistant'}</span>
+        </button>
+      </div>
+
+      {/* Voice Assistant Modal */}
+      <VoiceAssistant
+        isOpen={showVoiceModal}
+        onClose={() => setShowVoiceModal(false)}
+        field={selectedField}
+        waterBalance={waterBalance}
+        weather={weather}
         lang={lang}
       />
 
+      {/* Add Field Modal */}
       <FieldModal
         farms={farms}
         isOpen={showFieldModal}
