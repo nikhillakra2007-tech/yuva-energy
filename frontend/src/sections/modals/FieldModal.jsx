@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { X, Plus, MapPin } from 'lucide-react';
-import { api } from '../services/api';
+import { X, Plus } from 'lucide-react';
+import { api } from '../../services/api';
 
 export default function FieldModal({ farms = [], isOpen, onClose, onCreated, lang = 'en' }) {
   const [farmId, setFarmId] = useState(farms[0]?.id || '');
   const [name, setName] = useState('');
   const [cropName, setCropName] = useState('Basmati Rice (Pusa 1121)');
-  const [areaHa, setAreaHa] = useState('2.4');
-  const [lat, setLat] = useState('29.9695');
-  const [lon, setLon] = useState('76.8783');
+  const [areaHa, setAreaHa] = useState('2.5');
+  const [lat, setLat] = useState('29.6857');
+  const [lon, setLon] = useState('76.9905');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -57,7 +57,7 @@ export default function FieldModal({ farms = [], isOpen, onClose, onCreated, lan
       // If no farms exist, create a default farm first
       if (!selectedFarm) {
         const newFarm = await api.createFarm({
-          name: "Yuva Model Agricultural Farm",
+          name: "Yuva Model Agro-Solar Estate",
           latitude: parseFloat(lat),
           longitude: parseFloat(lon),
           total_area_hectares: parseFloat(areaHa) * 2
@@ -65,13 +65,25 @@ export default function FieldModal({ farms = [], isOpen, onClose, onCreated, lan
         selectedFarm = newFarm.id;
       }
 
+      const pLat = parseFloat(lat);
+      const pLon = parseFloat(lon);
+      const deltaLat = 0.0016;
+      const deltaLon = 0.0018;
+
       const newField = await api.createField({
         farm_id: selectedFarm,
         name,
-        crop_name: cropName,
-        area_hectares: parseFloat(areaHa),
-        latitude: parseFloat(lat),
-        longitude: parseFloat(lon)
+        soil_type: "SANDY_CLAY_LOAM",
+        boundary: {
+          type: "Polygon",
+          coordinates: [[
+            [pLon - deltaLon, pLat - deltaLat],
+            [pLon + deltaLon, pLat - deltaLat],
+            [pLon + deltaLon, pLat + deltaLat],
+            [pLon - deltaLon, pLat + deltaLat],
+            [pLon - deltaLon, pLat - deltaLat]
+          ]]
+        }
       });
 
       onCreated(newField);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, ThumbsUp, ThumbsDown, MessageSquare, Clock } from 'lucide-react';
-import { api } from '../services/api';
+import { X, CheckCircle } from 'lucide-react';
+import { api } from '../../services/api';
 
 export default function FeedbackModal({ recommendation, isOpen, onClose, onSuccess, lang = 'en' }) {
   const [actionTaken, setActionTaken] = useState('FOLLOWED_EXACTLY');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droplets, Activity, Layers, HelpCircle, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Droplets, Layers } from 'lucide-react';
 
 export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
   const t = {

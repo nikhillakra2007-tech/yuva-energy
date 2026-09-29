@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polygon, Marker, Popup, LayersControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Layers, MapPin, Eye, Info } from 'lucide-react';
+import { MapPin, Eye } from 'lucide-react';
 
 // Fix Leaflet marker icons in React bundles
 delete L.Icon.Default.prototype._getIconUrl;
@@ -30,16 +30,16 @@ export default function FieldMap({
 }) {
   const [showNdvi, setShowNdvi] = useState(false);
 
-  // Extract coordinates from field. If not provided or invalid, default to North Indian agro-belt (Haryana/Punjab)
-  let lat = 29.9695;
-  let lon = 76.8783;
+  // Extract coordinates from field or default to Karnal, Haryana
+  let lat = 29.6857;
+  let lon = 76.9905;
 
   if (field?.latitude != null && field?.longitude != null) {
     lat = parseFloat(field.latitude);
     lon = parseFloat(field.longitude);
-  } else if (field?.boundary_geojson?.coordinates) {
+  } else if (field?.boundary?.coordinates) {
     try {
-      const coords = field.boundary_geojson.coordinates[0];
+      const coords = field.boundary.coordinates[0];
       if (coords && coords.length > 0) {
         lon = coords[0][0];
         lat = coords[0][1];
@@ -50,12 +50,10 @@ export default function FieldMap({
   }
 
   // Construct polygon coordinates for the field boundary
-  // If field has real boundary_geojson, convert [lon, lat] to Leaflet [lat, lon]
   let polygonPositions = [];
-  if (field?.boundary_geojson?.coordinates?.[0]) {
-    polygonPositions = field.boundary_geojson.coordinates[0].map(pt => [pt[1], pt[0]]);
+  if (field?.boundary?.coordinates?.[0]) {
+    polygonPositions = field.boundary.coordinates[0].map(pt => [pt[1], pt[0]]);
   } else {
-    // Generate an authentic field boundary around the centroid (~2.4 hectares polygon)
     const deltaLat = 0.0016;
     const deltaLon = 0.0018;
     polygonPositions = [
@@ -154,7 +152,7 @@ export default function FieldMap({
                   {field?.name || 'Active Plot'}
                 </h4>
                 <p style={{ margin: '4px 0 8px 0', fontSize: '0.8rem', color: '#475569' }}>
-                  Crop: {field?.crop_name || 'Basmati Rice'} ({field?.area_hectares || 2.4} ha)
+                  Crop: {field?.crop_name || 'Basmati Rice'} ({field?.area_hectares || 2.5} ha)
                 </p>
                 <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '6px', fontSize: '0.78rem' }}>
                   <div><strong>Soil:</strong> {soil?.soil_type || 'Sandy Clay Loam'}</div>

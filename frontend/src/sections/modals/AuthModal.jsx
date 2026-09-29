@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Lock, Mail, User, ShieldCheck } from 'lucide-react';
-import { api, setAuthToken, setCurrentUser } from '../services/api';
+import { api, setAuthToken, setCurrentUser } from '../../services/api';
 
 export default function AuthModal({ isOpen, onClose, onAuthSuccess, lang = 'en' }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -47,7 +47,6 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, lang = 'en' 
     setLoading(true);
     setError(null);
     try {
-      // Login with standard test credentials or create one
       const res = await api.login({
         email: 'farmer@example.com',
         password: 'Password123!'
@@ -57,7 +56,6 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, lang = 'en' 
       onAuthSuccess(res.user);
       onClose();
     } catch {
-      // If demo user does not exist yet, register it
       try {
         const regRes = await api.register({
           email: 'farmer@example.com',

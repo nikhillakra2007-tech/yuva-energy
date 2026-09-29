@@ -1,15 +1,33 @@
 // API client for Yuva Energy backend
 const API_BASE = '/api/v1';
 
-export const getAuthToken = () => localStorage.getItem('yuva_token');
-export const setAuthToken = (token) => localStorage.setItem('yuva_token', token);
-export const removeAuthToken = () => localStorage.removeItem('yuva_token');
+export const getAuthToken = () => {
+  const token = localStorage.getItem('yuva_token');
+  if (!token || token === 'undefined' || token === 'null') return null;
+  return token;
+};
+export const setAuthToken = (token) => {
+  if (token) localStorage.setItem('yuva_token', token);
+  else localStorage.removeItem('yuva_token');
+};
+export const removeAuthToken = () => {
+  localStorage.removeItem('yuva_token');
+  localStorage.removeItem('yuva_user');
+};
 
 export const getCurrentUser = () => {
-  const user = localStorage.getItem('yuva_user');
-  return user ? JSON.parse(user) : null;
+  try {
+    const user = localStorage.getItem('yuva_user');
+    if (!user || user === 'undefined' || user === 'null') return null;
+    return JSON.parse(user);
+  } catch {
+    return null;
+  }
 };
-export const setCurrentUser = (user) => localStorage.setItem('yuva_user', JSON.stringify(user));
+export const setCurrentUser = (user) => {
+  if (user) localStorage.setItem('yuva_user', JSON.stringify(user));
+  else localStorage.removeItem('yuva_user');
+};
 
 async function request(endpoint, options = {}) {
   const token = getAuthToken();

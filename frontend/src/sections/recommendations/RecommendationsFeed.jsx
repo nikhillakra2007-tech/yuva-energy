@@ -8,11 +8,6 @@ import {
   ChevronUp, 
   Clock, 
   Droplet, 
-  Sun, 
-  ShieldCheck, 
-  AlertTriangle,
-  Info,
-  Calendar,
   MessageSquare
 } from 'lucide-react';
 import FeedbackModal from './FeedbackModal';
@@ -94,10 +89,10 @@ export default function RecommendationsFeed({
         rec.action_type === 'IRRIGATE_IMMEDIATELY' ? 'तुरंत सिंचाई करें' :
         rec.action_type === 'SCHEDULE_IRRIGATION' ? 'निर्धारित समय पर सिंचाई करें' :
         rec.action_type === 'HOLD_FOR_RAIN' ? 'बारिश की संभावना के कारण सिंचाई रोकें' : 'सिंचाई की आवश्यकता नहीं है'
-      }। सुझाई गई मात्रा ${rec.recommended_volume_liters || 0} लीटर है। पम्प चलाने का समय लगभग ${rec.recommended_duration_minutes || 0} मिनट है।`;
+      }। सुझाई गई मात्रा ${rec.recommended_volume_litres || 0} लीटर है। पम्प चलाने का समय लगभग ${rec.recommended_duration_minutes || 0} मिनट है।`;
     } else {
       textToSpeak = `Irrigation Advisory: ${rec.action_type.replace(/_/g, ' ')}. Recommended water volume is ${
-        (rec.recommended_volume_liters || 0).toLocaleString()
+        (rec.recommended_volume_litres || 0).toLocaleString()
       } liters, running for approximately ${rec.recommended_duration_minutes || 0} minutes aligned with solar power.`;
     }
 
@@ -166,11 +161,11 @@ export default function RecommendationsFeed({
 
                     <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <Clock size={14} />
-                      {new Date(rec.generated_at).toLocaleString()}
+                      {new Date(rec.generated_at || rec.created_at || Date.now()).toLocaleString()}
                     </span>
 
                     <span style={{ fontSize: '0.8rem', color: 'var(--solar-amber)', fontWeight: 600 }}>
-                      {t.urgency}: {rec.urgency_score != null ? rec.urgency_score.toFixed(2) : '0.50'}
+                      {t.urgency}: {rec.urgency_level || rec.urgency_score || 'MEDIUM'}
                     </span>
                   </div>
 
@@ -211,10 +206,7 @@ export default function RecommendationsFeed({
                   <div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.targetWater}</div>
                     <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-emerald)', marginTop: '2px' }}>
-                      {rec.water_depth_mm != null ? `${rec.water_depth_mm.toFixed(1)} mm` : '0 mm'}
-                      <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-secondary)', marginLeft: '6px' }}>
-                        ({(rec.recommended_volume_liters || 0).toLocaleString()} L)
-                      </span>
+                      {(rec.recommended_volume_litres || 0).toLocaleString()} <span style={{ fontSize: '0.85rem' }}>L</span>
                     </div>
                   </div>
 
@@ -228,9 +220,9 @@ export default function RecommendationsFeed({
                   <div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.solarWindow}</div>
                     <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--solar-amber)', marginTop: '4px' }}>
-                      {rec.window_start_time ? new Date(rec.window_start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '11:00 AM'}
+                      {rec.action_window_start ? new Date(rec.action_window_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '11:00 AM'}
                       {' - '}
-                      {rec.window_end_time ? new Date(rec.window_end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '02:30 PM'}
+                      {rec.action_window_end ? new Date(rec.action_window_end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '02:30 PM'}
                     </div>
                   </div>
                 </div>
