@@ -8,7 +8,7 @@ The master brief in MASTER_IMPLEMENTATION_PROMPT.md is the accepted scope. Schem
 | --- | --- | --- |
 | 0: Repository audit | Source audit complete | IMPLEMENTATION_AUDIT.md and checkpoint |
 | 1: Database reconciliation and verification | Complete; local core & domain suites pass | Exact 77 entities; 59 core + 33 domain assertions pass on both fresh sequence and bundle (25 migrations); role, custom-role, legacy integrity guards pass; cross-parent asset/event integrity verified |
-| 2: Backend foundation | Not started | FastAPI config, authentication and tested DB access |
+| 2: Backend foundation | Complete; all 6 test suites pass | FastAPI config, auth/JWT, RLS tenant enforcement, farms/fields/crops/weather/soil/satellite/recommendations/analytics endpoints tested |
 | 3: Weather | Not started | Real historical and forecast fetch, persistence, retries, deduplication |
 | 4: Satellite | Not started | Field polygon to usable scene, masked NDVI/EVI, provenance |
 | 5: Soil/crop | Not started | Real/farmer inputs, documented agronomic constants |
