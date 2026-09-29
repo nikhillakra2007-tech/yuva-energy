@@ -1,6 +1,6 @@
 # API Map
 
-STATUS: PHASE 2 IMPLEMENTED AND TESTED.
+STATUS: ALL PHASES IMPLEMENTED AND VERIFIED (Phases 1 through 9).
 
 All endpoints are hosted by FastAPI with OpenAPI / Swagger UI documentation at `/api/v1/docs` and JSON schema at `/api/v1/openapi.json`.
 Every authenticated route enforces multi-tenant identity via Bearer JWT and sets the PostgreSQL session context (`set_config('role', 'authenticated', true)` and `set_config('request.jwt.claim.sub', auth_id, true)`), strictly activating Row-Level Security on all 77 database entities.
@@ -59,26 +59,33 @@ Every authenticated route enforces multi-tenant identity via Bearer JWT and sets
 | `GET` | `/api/v1/weather/fields/{id}/history` | Bearer JWT | Query `limit` | `List[WeatherObservationResponse]` | `public.weather_observations` | 401 Unauthorized, 403 Forbidden |
 | `GET` | `/api/v1/weather/fields/{id}/forecast` | Bearer JWT | Path UUID | `List[Dict]` | `public.weather_forecasts` | 401 Unauthorized, 403 Forbidden |
 
-## 7. Soil & Satellite
+## 7. Soil & Satellite Telemetry
 
 | Method | Path | Auth | Input Schema | Output Schema | Target Tables | Error States |
 |---|---|---|---|---|---|---|
 | `GET` | `/api/v1/soil/fields/{id}` | Bearer JWT | Path UUID | `SoilObservationResponse` | `public.soil_observations` | 401 Unauthorized, 403 Forbidden |
-| `GET` | `/api/v1/soil/fields/{id}/moisture` | Bearer JWT | Query `limit` | `List[SoilMoistureObservationResponse]` | `public.soil_moisture_observations` | 401 Unauthorized, 403 Forbidden |
-| `GET` | `/api/v1/satellite/fields/{id}/indices` | Bearer JWT | Path UUID | `List[VegetationIndexResponse]` | `public.vegetation_indices` | 401 Unauthorized, 403 Forbidden |
-| `GET` | `/api/v1/satellite/fields/{id}/scenes` | Bearer JWT | Query `limit` | `List[Dict]` | `public.satellite_observations` | 401 Unauthorized, 403 Forbidden |
+| `GET` | `/api/v1/satellite/fields/{id}` | Bearer JWT | Path UUID | `SatelliteObservationResponse` | `public.satellite_observations` | 401 Unauthorized, 403 Forbidden |
 
-## 8. Recommendations & Feedback
+## 8. Ingestion & Automated Pipelines
 
 | Method | Path | Auth | Input Schema | Output Schema | Target Tables | Error States |
 |---|---|---|---|---|---|---|
-| `GET` | `/api/v1/recommendations` | Bearer JWT | None | `List[RecommendationResponse]` | `public.recommendations`, `public.recommendation_reasons` | 401 Unauthorized |
-| `GET` | `/api/v1/recommendations/{id}` | Bearer JWT | Path UUID | `RecommendationResponse` | `public.recommendations` | 401 Unauthorized, 403 Forbidden, 404 Not Found |
-| `POST` | `/api/v1/recommendations/{id}/feedback` | Bearer JWT | `RecommendationFeedbackCreate` | `RecommendationFeedbackResponse` | `public.recommendation_feedback` | 401 Unauthorized, 403 Forbidden, 422 Invalid Action |
-| `GET` | `/api/v1/alerts` | Bearer JWT | None | `List[RecommendationResponse]` | `public.recommendations` | 401 Unauthorized |
+| `POST` | `/api/v1/ingestion/fields/{id}/sync` | Bearer JWT | `SyncRequest` (domains, force_mode) | `SyncResponse` (field_id, domains_synced, summary) | `public.weather_observations`, `public.soil_observations`, `public.satellite_observations`, `public.raw_data_records`, `public.ingestion_runs` | 401 Unauthorized, 403/404 Forbidden |
+| `GET` | `/api/v1/ingestion/fields/{id}/freshness` | Bearer JWT | Path UUID | `Dict` (weather, soil, satellite freshness) | Ingestion views & tables | 401 Unauthorized, 404 Not Found |
+| `GET` | `/api/v1/ingestion/runs` | Bearer JWT | Query `limit` | `List[Dict]` (recent runs, status, records count) | `public.ingestion_runs` | 401 Unauthorized |
 
-## 9. Dashboard Analytics
+## 9. Agronomic Intelligence & Recommendations
 
 | Method | Path | Auth | Input Schema | Output Schema | Target Tables | Error States |
 |---|---|---|---|---|---|---|
-| `GET` | `/api/v1/analytics/dashboard` | Bearer JWT | None | `DashboardSummaryResponse` | `public.farms`, `public.fields`, `public.recommendations`, `public.farm_states` | 401 Unauthorized |
+| `POST` | `/api/v1/recommendations/fields/{id}/evaluate` | Bearer JWT | Path UUID | `EvaluationResponse` (recommendation_id, farm_state_id, action_type, volume, duration, traceability) | `public.farm_states`, `public.recommendations`, `public.recommendation_reasons` | 401 Unauthorized, 404 Not Found |
+| `GET` | `/api/v1/recommendations/fields/{id}/water-balance` | Bearer JWT | Path UUID | `FarmStateResponse` (depletion, CWSI, ETc, canopy cover) | `public.farm_states` | 401 Unauthorized, 404 Not Found |
+| `GET` | `/api/v1/recommendations` | Bearer JWT | None | `List[RecommendationResponse]` | `public.recommendations` | 401 Unauthorized |
+| `GET` | `/api/v1/recommendations/{id}` | Bearer JWT | Path UUID | `RecommendationResponse` (with reasons & drivers) | `public.recommendations`, `public.recommendation_reasons` | 401 Unauthorized, 404 Not Found |
+| `POST` | `/api/v1/recommendations/{id}/feedback` | Bearer JWT | `RecommendationFeedbackCreate` (action_taken, duration, rating, comments) | `RecommendationFeedbackResponse` | `public.recommendation_feedback` | 401 Unauthorized, 404 Not Found, 422 Validation |
+
+## 10. Dashboard Analytics
+
+| Method | Path | Auth | Input Schema | Output Schema | Target Tables | Error States |
+|---|---|---|---|---|---|---|
+| `GET` | `/api/v1/analytics/dashboard` | Bearer JWT | Optional `farm_id` | `DashboardSummaryResponse` (total_area, active_crops, latest_et0, latest_soil_moisture, pending_recommendations_count) | Aggregated across schema | 401 Unauthorized |

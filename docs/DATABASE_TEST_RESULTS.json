@@ -1,5 +1,5 @@
 {
-  "tested_at": "2026-09-29T16:12:15.432Z",
+  "tested_at": "2026-09-29T17:22:50.829Z",
   "scope": "Disposable PostgreSQL with SQL auth shim; not Supabase Auth/JWT/PostgREST",
   "suites": [
     {
