@@ -62,44 +62,45 @@ export default function HeroRibbon({
   const isWarning = cwsi > 0.40 && cwsi <= 0.65;
 
   return (
-    <div style={{ marginBottom: '24px' }}>
+    <div style={{ marginBottom: '32px' }}>
       {/* Top Banner Ribbon */}
       <div 
-        className="glass-panel" 
         style={{ 
-          padding: '24px 28px',
-          background: 'linear-gradient(135deg, rgba(14, 36, 27, 0.95) 0%, rgba(8, 20, 15, 0.9) 100%)',
-          border: '1px solid var(--border-active)'
+          padding: '28px 34px',
+          background: 'var(--bg-surface)',
+          border: '1.5px solid var(--border-card)',
+          borderRadius: 'var(--radius-xl)',
+          boxShadow: 'var(--shadow-card)'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
               <div className="pulse-dot"></div>
-              <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--primary-emerald)', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.92rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary-emerald-light)', fontWeight: 800 }}>
                 {t.fieldOverview}
               </span>
-              <span style={{ color: 'var(--text-tertiary)', fontSize: '0.8rem' }}>•</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              <span style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>•</span>
+              <span style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
                 {field ? `${field.name} (${field.area_hectares} ha)` : 'Main Plot (2.4 ha)'}
               </span>
             </div>
             
-            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '6px' }}>
+            <h1 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '8px', color: '#ffffff' }}>
               {field?.crop_name ? field.crop_name : 'Basmati Rice (Pusa 1121)'} 
-              <span style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-secondary)', marginLeft: '12px' }}>
+              <span style={{ fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '14px' }}>
                 Stage: {field?.crop_growth_stage || 'Mid-Season Vegetative'} (Kc: {waterBalance?.kc_actual || 1.15})
               </span>
             </h1>
             
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', maxWidth: '780px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', maxWidth: '820px', lineHeight: 1.65 }}>
               Dual crop-coefficient FAO-56 mass balance continuously synchronized with Open-Meteo microclimate, ISRIC SoilGrids hydraulics, and solar generation modeling.
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <div className={`badge ${isCritical ? 'badge-critical' : isWarning ? 'badge-warning' : 'badge-optimal'}`}>
-              {isCritical ? <AlertCircle size={14} /> : <ShieldCheck size={14} />}
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className={`badge ${isCritical ? 'badge-critical' : isWarning ? 'badge-warning' : 'badge-optimal'}`} style={{ padding: '8px 16px', fontSize: '0.92rem' }}>
+              {isCritical ? <AlertCircle size={16} /> : <ShieldCheck size={16} />}
               {isCritical ? t.statusCritical : isWarning ? t.statusWarning : t.statusOptimal}
             </div>
 
@@ -107,9 +108,9 @@ export default function HeroRibbon({
               className="btn-primary" 
               onClick={onEvaluate} 
               disabled={isEvaluating}
-              style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+              style={{ padding: '12px 22px', fontSize: '0.98rem' }}
             >
-              <Zap size={15} />
+              <Zap size={17} />
               {isEvaluating ? t.evaluating : t.evalEngine}
             </button>
           </div>
@@ -118,11 +119,11 @@ export default function HeroRibbon({
         {/* Telemetry Grid */}
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', 
-          gap: '16px', 
-          marginTop: '24px',
-          paddingTop: '20px',
-          borderTop: '1px solid rgba(52, 211, 153, 0.1)'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', 
+          gap: '18px', 
+          marginTop: '28px',
+          paddingTop: '24px',
+          borderTop: '1px solid var(--border-subtle)'
         }}>
           {/* Temperature */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

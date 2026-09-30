@@ -23,7 +23,7 @@ export default function App() {
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [showVoiceModal, setShowVoiceModal] = useState(false);
 
-  const [user, setUser] = useState(() => getCurrentUser() || DEMO_PROFILES[0]);
+  const [user, setUser] = useState(() => getCurrentUser() || null);
   const [farms, setFarms] = useState([]);
   const [fields, setFields] = useState([]);
   const [selectedField, setSelectedField] = useState(null);
@@ -248,13 +248,11 @@ export default function App() {
     }
   }, [user, lang]);
 
-  // Initialize demo credentials and baseline profile
+  // Initialize user profile only if one was previously authenticated
   useEffect(() => {
     const existing = getCurrentUser();
     if (existing) {
       handleApplyProfileData(existing);
-    } else {
-      handleApplyProfileData(DEMO_PROFILES[0]);
     }
     loadFarmsAndFields();
   }, [loadFarmsAndFields, handleApplyProfileData]);

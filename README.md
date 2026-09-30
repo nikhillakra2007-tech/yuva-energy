@@ -34,6 +34,8 @@
   - **Rajasthan (कोटा)**: Ramcharan Meena — 5.0 HP Solar DC Drip Pump, Mustard/Oilseed, ₹78,400/yr saved.
   - **Central Admin (National Agronomy Council)**: Dr. Vandana Sharma — Managing 31.7 hectare distributed solar fleet across all states with ₹4,85,600/yr collective savings.
 
+![Yuva Energy Farm Console & Verified Farmer Telemetry](docs/assets/farm_console_showcase.jpg)
+
 ### 2. ⚡ Live Telemetry & Weather Simulation Engine
 - Interactive live simulation buttons right inside the console to test dynamic environmental responses:
   - **`☀️ Peak Sun (820 W/m²)`**: Simulates peak solar noon, active 5HP daylight solar pumping, and ₹0 grid cost.
@@ -59,6 +61,8 @@
 - **10-Meter Sentinel-2 Satellite Canopy Scanner**: 4-Band spectral switcher (NDVI, CWSI, NDRE, True Color) with animated radar sweep and spatial crosshairs.
 - **FAQ Accordion**: Bilingual agronomy and solar microgrid explanations.
 - **Lenis Smooth Scrolling**: Hardware-accelerated fluid scroll dynamics.
+
+![Yuva Energy Solar Irrigation ROI Calculator & Sentinel-2 Scanner](docs/assets/solar_scanner_showcase.jpg)
 
 ---
 

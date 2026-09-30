@@ -167,9 +167,9 @@ export default function Navbar({
           <nav style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: '6px',
             background: 'var(--bg-surface)',
-            padding: '4px 6px',
+            padding: '6px 8px',
             borderRadius: 'var(--radius-full)',
             border: '1px solid var(--border-subtle)'
           }} className="desktop-nav">
@@ -181,20 +181,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
+                gap: '8px',
+                padding: '10px 18px',
                 borderRadius: 'var(--radius-full)',
                 background: currentView === 'landing' ? 'var(--primary-emerald)' : 'transparent',
                 color: currentView === 'landing' ? '#ffffff' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '0.85rem',
+                fontSize: '1.02rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
             >
-              <Compass size={14} />
+              <Compass size={17} />
               <span>{t.landingTab}</span>
             </button>
 
@@ -203,20 +203,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
+                gap: '8px',
+                padding: '10px 18px',
                 borderRadius: 'var(--radius-full)',
                 background: 'transparent',
                 color: 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '0.85rem',
+                fontSize: '1.02rem',
                 cursor: 'pointer',
                 transition: 'color 0.2s'
               }}
             >
-              <Calculator size={14} />
+              <Calculator size={17} />
               <span>{t.calcTab}</span>
             </button>
 
@@ -225,20 +225,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
+                gap: '8px',
+                padding: '10px 18px',
                 borderRadius: 'var(--radius-full)',
                 background: 'transparent',
                 color: 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '0.85rem',
+                fontSize: '1.02rem',
                 cursor: 'pointer',
                 transition: 'color 0.2s'
               }}
             >
-              <Satellite size={14} />
+              <Satellite size={17} />
               <span>{t.scannerTab}</span>
             </button>
 
@@ -251,42 +251,42 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '8px 16px',
+                gap: '8px',
+                padding: '10px 20px',
                 borderRadius: 'var(--radius-full)',
                 background: currentView === 'dashboard' ? 'var(--primary-emerald)' : 'transparent',
                 color: currentView === 'dashboard' ? '#ffffff' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '0.85rem',
+                fontSize: '1.02rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
             >
-              <LayoutDashboard size={14} />
+              <LayoutDashboard size={17} />
               <span>{t.consoleTab}</span>
             </button>
           </nav>
 
-          {/* Right Toolbar: Streamlined & Unclustered */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Right Toolbar: Streamlined & Highly Visible */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             {/* 1. Voice AI Assistant Button */}
             <button
               id="nav-voice-assistant-btn"
               onClick={onOpenVoice}
               className="btn-solar"
               style={{
-                padding: '8px 14px',
-                fontSize: '0.82rem',
+                padding: '10px 18px',
+                fontSize: '0.98rem',
                 borderRadius: 'var(--radius-full)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '8px'
               }}
               title="Open Vernacular Voice Assistant"
             >
-              <Mic size={15} />
+              <Mic size={18} />
               <span>{t.voiceBtn}</span>
             </button>
 
@@ -300,17 +300,17 @@ export default function Navbar({
                 }}
                 className="btn-secondary"
                 style={{
-                  padding: '8px 12px',
-                  fontSize: '0.82rem',
+                  padding: '10px 16px',
+                  fontSize: '0.98rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px'
+                  gap: '8px'
                 }}
                 title="Language & Hindi Transliterator"
               >
-                <Languages size={15} color="var(--primary-emerald-light)" />
+                <Languages size={18} color="var(--primary-emerald-light)" />
                 <span>{lang === 'hi' ? 'हिन्दी' : 'English'}</span>
-                <ChevronDown size={13} />
+                <ChevronDown size={15} />
               </button>
 
               {showLangMenu && (
@@ -479,23 +479,23 @@ export default function Navbar({
 
             {/* 4. Farmer User Chip & State Badge / Login Button */}
             {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  background: 'rgba(16, 185, 129, 0.12)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  gap: '10px',
+                  background: 'var(--bg-surface-elevated)',
+                  border: '1px solid var(--border-active)',
                   borderRadius: 'var(--radius-full)',
-                  padding: '6px 14px'
+                  padding: '8px 18px'
                 }}>
-                  <User size={14} color="var(--primary-emerald-light)" />
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
-                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>
+                  <User size={18} color="var(--primary-emerald-light)" />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15 }}>
+                    <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>
                       {user.full_name?.split('(')[0].trim() || 'Farmer'}
                     </span>
-                    <span style={{ fontSize: '0.68rem', color: 'var(--solar-amber)', fontWeight: 600 }}>
-                      {user.state || 'Haryana'}
+                    <span style={{ fontSize: '0.82rem', color: 'var(--solar-amber)', fontWeight: 700 }}>
+                      {lang === 'hi' ? (user.stateHi || user.state) : (user.state || 'Haryana')}
                     </span>
                   </div>
                 </div>
@@ -504,22 +504,42 @@ export default function Navbar({
                   id="logout-btn"
                   onClick={onLogout}
                   className="btn-secondary"
-                  style={{ padding: '8px', borderRadius: '50%' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '10px 16px',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.92rem',
+                    fontWeight: 700
+                  }}
                   title="Sign Out"
                 >
-                  <LogOut size={14} />
+                  <LogOut size={16} />
+                  <span>{lang === 'hi' ? 'लॉगआउट' : 'Sign Out'}</span>
                 </button>
               </div>
             ) : (
               <button
+                id="nav-signin-btn"
                 onClick={() => {
                   if (onOpenAuth) onOpenAuth();
                   else onChangeView('auth');
                 }}
                 className="btn-primary"
-                style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 22px',
+                  fontSize: '1.02rem',
+                  fontWeight: 800,
+                  borderRadius: 'var(--radius-full)',
+                  boxShadow: '0 4px 20px rgba(16, 185, 129, 0.45)'
+                }}
               >
-                {lang === 'hi' ? 'लॉग इन' : 'Sign In'}
+                <User size={18} />
+                <span>{lang === 'hi' ? 'किसान लॉगिन' : 'Farmer Sign In'}</span>
               </button>
             )}
 
