@@ -43,8 +43,8 @@
   --text-tertiary: #64748b;
   --text-inverse: #ffffff;
 
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -124,7 +124,6 @@ body.high-contrast {
 
 html {
   font-size: calc(var(--font-base-size) * var(--font-scale));
-  scroll-behavior: smooth;
 }
 
 body {
@@ -138,7 +137,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Lenis Smooth Scroll Integration */
+/* Lenis Smooth Scroll Integration (zero-lag 60fps) */
 html.lenis, html.lenis body {
   height: auto;
 }

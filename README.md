@@ -1,5 +1,6 @@
 # 🌱 YUVA ENERGY — Autonomous Agricultural Intelligence & Solar Irrigation Platform
 
+[![Live Vercel Site](https://img.shields.io/badge/Live_Site-frontend--six--woad--12.vercel.app-059669?logo=vercel&logoColor=white)](https://frontend-six-woad-12.vercel.app)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-yuva--energy-10B981?logo=github&logoColor=white)](https://github.com/nikhillakra2007-tech/yuva-energy)
 [![Local Site](https://img.shields.io/badge/Live_Local_Site-localhost:5173-F59E0B?logo=vite&logoColor=white)](http://localhost:5173/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -16,7 +17,8 @@
 
 | Asset / Endpoint | Live URL | Description |
 |:---|:---|:---|
-| **🌾 Web Application** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform & farm console |
+| **🚀 Production Deployed Site** | **[https://frontend-six-woad-12.vercel.app](https://frontend-six-woad-12.vercel.app)** | Live Vercel web application (ScrapSetu clean light theme) |
+| **🌾 Local Web Application** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform & farm console |
 | **📦 GitHub Repository** | **[https://github.com/nikhillakra2007-tech/yuva-energy](https://github.com/nikhillakra2007-tech/yuva-energy)** | Official GitHub source repository & releases |
 | **📑 API Swagger Docs** | **[http://localhost:8000/api/v1/docs](http://localhost:8000/api/v1/docs)** | Interactive Swagger / OpenAPI 3.1 documentation |
 | **🩺 Backend Health** | **[http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health)** | Database, PostGIS, and orchestrator health probe |

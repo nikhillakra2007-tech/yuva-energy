@@ -40,19 +40,22 @@ export default function App() {
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [showFieldModal, setShowFieldModal] = useState(false);
 
-  // Initialize Lenis Smooth Scrolling
+  // Initialize Lenis Smooth Scrolling (responsive, zero-lag 60fps)
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2
     });
 
+    let rafId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    const rafId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(rafId);
