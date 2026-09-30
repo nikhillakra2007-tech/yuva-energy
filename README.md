@@ -1,13 +1,64 @@
 # 🌱 YUVA ENERGY — Autonomous Agricultural Intelligence & Solar Irrigation Platform
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-yuva--energy-10B981?logo=github&logoColor=white)](https://github.com/nikhillakra2007-tech/yuva-energy)
+[![Local Site](https://img.shields.io/badge/Live_Local_Site-localhost:5173-F59E0B?logo=vite&logoColor=white)](http://localhost:5173/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React_19_+_Vite_8-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL_18_+_PostGIS_3.6-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![FAO-56](https://img.shields.io/badge/Agronomy-FAO--56_Penman--Monteith-10B981)](https://www.fao.org/3/x0490e/x0490e00.htm)
 [![Docker](https://img.shields.io/badge/Deployment-Docker_+_Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
-[![License](https://img.shields.io/badge/License-Proprietary-amber)](#)
 
-> **Yuva Energy** is a full-stack precision agriculture and renewable irrigation intelligence platform. It fuses real-time microclimate observations, pedotransfer soil hydraulics, and satellite canopy indices with deterministic **FAO-56 Penman-Monteith** evapotranspiration physics to synchronize solar-powered irrigation pumps—decoupling agricultural water pumping from grid electricity tariffs and diesel generators while preserving freshwater aquifers.
+> **Yuva Energy** is India's 1st autonomous precision agriculture and renewable irrigation intelligence setu. It fuses real-time microclimate observations, pedotransfer soil hydraulics, and 10-meter Copernicus Sentinel-2 satellite canopy monitoring with deterministic **FAO-56 Penman-Monteith** evapotranspiration physics to synchronize solar-powered irrigation pumps—decoupling agricultural water pumping from costly grid electricity and diesel gensets while preserving groundwater aquifers.
+
+---
+
+## 🔗 Quick Site & Repository Access Links
+
+| Asset / Endpoint | Live URL | Description |
+|:---|:---|:---|
+| **🌾 Web Application** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform & farm console |
+| **📦 GitHub Repository** | **[https://github.com/nikhillakra2007-tech/yuva-energy](https://github.com/nikhillakra2007-tech/yuva-energy)** | Official GitHub source repository & releases |
+| **📑 API Swagger Docs** | **[http://localhost:8000/api/v1/docs](http://localhost:8000/api/v1/docs)** | Interactive Swagger / OpenAPI 3.1 documentation |
+| **🩺 Backend Health** | **[http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health)** | Database, PostGIS, and orchestrator health probe |
+
+---
+
+## 🌟 Key Features & Innovations
+
+### 1. 👨‍🌾 Working Farmer Login & Identity Card
+- **Prominent Farmer Identity**: Displays full verified farmer details immediately upon logging in—State badge, registered phone, farm name, solar pump specifications, and annual grid tariff savings.
+- **Multi-State Farm Network**: Instant 1-click switching across 4 benchmark agricultural states plus National Admin:
+  - **Haryana (करनाल)**: Rajesh Kumar — 5.0 HP Submersible Solar Pump, Basmati Rice, ₹94,200/yr saved.
+  - **Punjab (लुधियाना)**: Sardar Gurpreet Singh — 7.5 HP High-Discharge Solar Pump, Sharbati Wheat, ₹1,28,000/yr saved.
+  - **Uttar Pradesh (मेरठ)**: Devendra Yadav — 10.0 HP Dual Agro-Solar Grid, Sugarcane, ₹1,85,000/yr saved.
+  - **Rajasthan (कोटा)**: Ramcharan Meena — 5.0 HP Solar DC Drip Pump, Mustard/Oilseed, ₹78,400/yr saved.
+  - **Central Admin (National Agronomy Council)**: Dr. Vandana Sharma — Managing 31.7 hectare distributed solar fleet across all states with ₹4,85,600/yr collective savings.
+
+### 2. ⚡ Live Telemetry & Weather Simulation Engine
+- Interactive live simulation buttons right inside the console to test dynamic environmental responses:
+  - **`☀️ Peak Sun (820 W/m²)`**: Simulates peak solar noon, active 5HP daylight solar pumping, and ₹0 grid cost.
+  - **`🌧️ Rainfall (18mm)`**: Simulates active monsoon downpour, replenishes the crop root zone, reduces CWSI stress to 0.02, and puts pumps on standby to conserve groundwater.
+  - **`🏜️ Dry Heatwave`**: Simulates 41.8°C arid heat, breaches allowable depletion limits (CWSI 0.54), and triggers an immediate high-urgency solar emergency irrigation recommendation.
+  - **`🔄 Reset Baseline`**: Restores the baseline state profile telemetry.
+
+### 3. 🇮🇳 Dedicated Hindi Converter Transliterator
+- Real-time Hinglish-to-Devanagari transliteration engine with built-in agricultural dictionary (`khet` $\to$ `खेत`, `paani` $\to$ `पानी`, `motor` $\to$ `मोटर`, `fasal` $\to$ `फसल`, `dhaan` $\to$ `धान`, etc.).
+- Integrated Web Speech API synthesis to hear transliterations aloud in Hindi.
+- 1-click quick-chips for agricultural phrases and instant copy-to-clipboard functionality.
+
+### 4. 🎛️ Clean De-Clustered Navigation & Accessibility Settings
+- Streamlined top navigation bar with separated, uncluttered modules:
+  - Voice AI assistant quick trigger.
+  - Language dropdown with direct Hindi Converter launch option.
+  - Display settings popover with **Sunlight High Contrast Mode** toggle and **Font Size Scaling** controls (`+` / `-`).
+  - Active farmer user chip with state badge and logout.
+
+### 5. 🛰️ ScrapSetu-Grade Interactive Modules
+- **Live Regional Telemetry Ticker**: Continuous marquee displaying solar radiation, aquifer savings, and pump status across Karnal, Ludhiana, Indore, Solapur, and Kota.
+- **Solar Irrigation & Yield Value Estimator**: Interactive calculator modeling crop coefficients, acreage sliders (1–50 acres), and instant financial ROI vs grid & diesel costs.
+- **10-Meter Sentinel-2 Satellite Canopy Scanner**: 4-Band spectral switcher (NDVI, CWSI, NDRE, True Color) with animated radar sweep and spatial crosshairs.
+- **FAQ Accordion**: Bilingual agronomy and solar microgrid explanations.
+- **Lenis Smooth Scrolling**: Hardware-accelerated fluid scroll dynamics.
 
 ---
 
@@ -54,14 +105,15 @@ flowchart TB
         JWT --> ROUTERS
     end
 
-    subgraph FRONTEND["5. High-Aesthetics Modular Frontend (React 19 + Vite)"]
+    subgraph FRONTEND["5. High-Aesthetics Modular Frontend (React 19 + Vite + Lenis)"]
         direction TB
-        NAV["sections/navigation/ (Navbar, Live Pulse, Field Selector, EN/HI Toggle)"]
-        HERO["sections/hero/ (HeroRibbon, Microclimate Telemetry, Solar Window)"]
-        MAP["sections/geospatial/ (Leaflet Polygon Boundary & Sentinel-2 NDVI Overlay)"]
-        DIAG["sections/water-balance/ & sections/solar-energy/ (Depletion Bar, CWSI, Grid/Diesel ROI)"]
-        RECS["sections/recommendations/ (Traceable Advisories, Web Speech Audio, Feedback)"]
-        MODALS["sections/modals/ (AuthModal, FieldModal)"]
+        NAV["sections/navigation/ (Unclustered Navbar, Display Settings, Lang Menu)"]
+        ID["sections/hero/ (FarmerIdentityCard, State Switcher, Live Sim)"]
+        HERO["sections/landing/ (LandingHero, Solar ROI Calculator, Satellite Scanner)"]
+        MAP["sections/geospatial/ (Leaflet Polygon Boundary & Sentinel-2 Overlay)"]
+        DIAG["sections/water-balance/ & sections/solar-energy/ (Depletion Bar, CWSI, Solar Pumping)"]
+        RECS["sections/recommendations/ (Traceable Advisories, Web Speech Audio)"]
+        MODALS["sections/modals/ (HindiConverterModal, FieldModal)"]
         FOOTER["sections/footer/ (Footer)"]
     end
 
@@ -128,18 +180,19 @@ YUVA-ENERGY/
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── sections/          # Modular component sections (1-2 files per section)
-│   │   │   ├── navigation/    # Navbar.jsx
-│   │   │   ├── hero/          # HeroRibbon.jsx
+│   │   ├── sections/          # Modular component sections
+│   │   │   ├── navigation/    # Navbar.jsx (Unclustered toolbar, display settings, lang dropdown)
+│   │   │   ├── hero/          # FarmerIdentityCard.jsx, HeroRibbon.jsx
+│   │   │   ├── landing/       # LandingHero.jsx, SolarAgroCalculator.jsx, SatelliteCanopyScanner.jsx
 │   │   │   ├── geospatial/    # FieldMap.jsx (Leaflet + NDVI)
 │   │   │   ├── water-balance/ # WaterBalanceCard.jsx (FAO-56 Depletion & CWSI)
 │   │   │   ├── solar-energy/  # SolarEnergyCard.jsx (PV Output & ROI)
 │   │   │   ├── recommendations/ # RecommendationsFeed.jsx & FeedbackModal.jsx
-│   │   │   ├── modals/        # AuthModal.jsx & FieldModal.jsx
+│   │   │   ├── modals/        # HindiConverterModal.jsx & FieldModal.jsx
 │   │   │   └── footer/        # Footer.jsx
-│   │   ├── services/api.js    # Resilient API client with error handling
-│   │   ├── App.jsx            # Master UI coordinator & auto-seeding bootstrapper
-│   │   └── index.css          # Design system tokens, glassmorphism, Google Fonts
+│   │   ├── services/api.js    # Resilient multi-state profiles & offline fallback client
+│   │   ├── App.jsx            # Master UI coordinator, Lenis scrolling & live simulation
+│   │   └── index.css          # Obsidian slate theme, font scaling & responsive design
 │   ├── Dockerfile             # Multi-stage Node 20 build + Nginx SPA reverse proxy
 │   └── vite.config.js         # Vite configuration with 0.0.0.0 host and API proxy
 ├── supabase/migrations/       # 25 verified PostgreSQL & PostGIS migrations
@@ -158,29 +211,25 @@ YUVA-ENERGY/
 - Node.js 20+
 - PostgreSQL 16+ with PostGIS extension
 
-### 1. Start the FastAPI Backend
-```bash
-# Set up Python virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Or on Windows: .venv\Scripts\activate
-pip install -r backend/requirements.txt
-
-# Launch FastAPI server
-python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-### 2. Start the React Frontend
+### 1. Start the React Frontend
 ```bash
 cd frontend
 npm install
 npm run dev -- --host 0.0.0.0 --port 5173
 ```
+Open **[http://localhost:5173/](http://localhost:5173/)** in your browser. The application will load with pre-seeded demo state profiles and immediate telemetry.
 
-Open **[http://localhost:5173/](http://localhost:5173/)** in your browser. The application will automatically authenticate a demo farmer session and initialize an interactive plot in Karnal, Haryana.
-
-### 3. Run with Docker Compose
+### 2. Start the FastAPI Backend
 ```bash
-# Spin up PostGIS, Backend, and Nginx Frontend in one command
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r backend/requirements.txt
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+Swagger UI will be available at `http://localhost:8000/api/v1/docs`.
+
+### 3. Run Full Stack with Docker Compose
+```bash
 docker-compose up --build
 ```
 - Frontend: `http://localhost:80`
@@ -214,17 +263,6 @@ backend/tests/test_ingestion.py::test_satellite_provider_indices PASSED  [ 93%]
 backend/tests/test_ingestion.py::test_end_to_end_pipeline_sync_and_deduplication PASSED [100%]
 ====================== 15 passed in 53s =======================
 ```
-
----
-
-## 🔗 Live Links & Access Points
-
-| Resource | Local URL | Description |
-|:---|:---|:---|
-| **Web Dashboard** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform |
-| **API Documentation** | **[http://localhost:8000/api/v1/docs](http://localhost:8000/api/v1/docs)** | Interactive Swagger / OpenAPI explorer |
-| **Health Check** | **[http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health)** | System health and PostGIS connectivity |
-| **GitHub Repository** | **[https://github.com/nikhillakra2007-tech/yuva-energy](https://github.com/nikhillakra2007-tech/yuva-energy)** | Source repository and release branch |
 
 ---
 
