@@ -12,6 +12,7 @@ import SolarEnergyCard from './sections/solar-energy/SolarEnergyCard';
 import RecommendationsFeed from './sections/recommendations/RecommendationsFeed';
 import FieldModal from './sections/modals/FieldModal';
 import ScientificDetailModal from './sections/modals/ScientificDetailModal';
+import FarmerConsoleShowcase from './sections/dashboard/FarmerConsoleShowcase';
 import Footer from './sections/footer/Footer';
 import { api, getCurrentUser, removeAuthToken, DEMO_PROFILES } from './services/api';
 import { ArrowLeft, Mic } from 'lucide-react';
@@ -446,64 +447,16 @@ export default function App() {
               </div>
             </div>
 
-            {/* Benchmark State Profile & Logged-in Farmer Identity Card */}
-            <FarmerIdentityCard
+            {/* Farmer Command Console (Exact Match to Image 2) */}
+            <FarmerConsoleShowcase
               user={user}
               field={selectedField}
               weather={weather}
               waterBalance={waterBalance}
+              soil={soil}
               lang={lang}
               onOpenScientificModal={() => setShowScientificModal(true)}
               onLogout={handleLogout}
-            />
-
-            {/* Farm Banner & Weather Telemetry Ribbon */}
-            <HeroRibbon
-              field={selectedField}
-              weather={weather}
-              waterBalance={waterBalance}
-              lang={lang}
-              onEvaluate={handleEvaluate}
-              isEvaluating={isEvaluating}
-            />
-
-            {/* Core Working Layout: Geospatial Satellite Map + Water & Solar Balances */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-              gap: '32px',
-              alignItems: 'stretch',
-              marginBottom: '40px'
-            }}>
-              {/* Left Column: Interactive Map */}
-              <div style={{ minHeight: '480px' }}>
-                <FieldMap
-                  field={selectedField}
-                  waterBalance={waterBalance}
-                  soil={soil}
-                  lang={lang}
-                />
-              </div>
-
-              {/* Right Column: Hydrologic & Solar Energy Cards */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                <WaterBalanceCard
-                  waterBalance={waterBalance}
-                  soil={soil}
-                  lang={lang}
-                />
-                <SolarEnergyCard
-                  weather={weather}
-                  lang={lang}
-                />
-              </div>
-            </div>
-
-            {/* Actionable Agronomic Recommendations Feed */}
-            <RecommendationsFeed
-              recommendations={recommendations}
-              onRefresh={() => selectedField && loadFieldData(selectedField.id)}
-              lang={lang}
             />
           </div>
         )}

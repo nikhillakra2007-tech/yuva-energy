@@ -11,7 +11,9 @@ import {
   Bot, 
   User, 
   HelpCircle,
-  CheckCircle2
+  CheckCircle2,
+  Sliders,
+  Settings
 } from 'lucide-react';
 
 export default function VoiceAssistant({
@@ -124,12 +126,86 @@ export default function VoiceAssistant({
     }
   };
 
+  const [voices, setVoices] = useState([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState(() => localStorage.getItem('kisanurja_voice_uri') || '');
+  const [speechRate, setSpeechRate] = useState(() => parseFloat(localStorage.getItem('kisanurja_voice_rate')) || 0.95);
+  const [speechPitch, setSpeechPitch] = useState(() => parseFloat(localStorage.getItem('kisanurja_voice_pitch')) || 1.0);
+  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
+
+  // Load available speech synthesis voices
+  useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
+
+    const populateVoices = () => {
+      const allVoices = window.speechSynthesis.getVoices();
+      if (allVoices && allVoices.length > 0) {
+        setVoices(allVoices);
+        const saved = localStorage.getItem('kisanurja_voice_uri');
+        if (saved && allVoices.some(v => v.voiceURI === saved)) {
+          setSelectedVoiceURI(saved);
+        } else {
+          // Find closest matching voice for Hindi or English
+          const matched = allVoices.find(v => 
+            lang === 'hi' 
+              ? (v.lang.toLowerCase().includes('hi') || v.name.toLowerCase().includes('hindi')) 
+              : (v.lang.toLowerCase().includes('in') || v.lang.toLowerCase().includes('en-gb') || v.lang.toLowerCase().includes('en-us'))
+          ) || allVoices[0];
+          if (matched) setSelectedVoiceURI(matched.voiceURI);
+        }
+      }
+    };
+
+    populateVoices();
+    window.speechSynthesis.onvoiceschanged = populateVoices;
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = null;
+      }
+    };
+  }, [lang]);
+
+  const handleVoiceChange = (uri) => {
+    setSelectedVoiceURI(uri);
+    localStorage.setItem('kisanurja_voice_uri', uri);
+  };
+
+  const handleRateChange = (newRate) => {
+    setSpeechRate(newRate);
+    localStorage.setItem('kisanurja_voice_rate', newRate.toString());
+  };
+
+  const handlePitchChange = (newPitch) => {
+    setSpeechPitch(newPitch);
+    localStorage.setItem('kisanurja_voice_pitch', newPitch.toString());
+  };
+
+  const testCurrentVoice = () => {
+    const testPhrase = lang === 'hi'
+      ? "नमस्ते! किसान ऊर्जा में आपका स्वागत है। आपकी फसल और सिंचाई सुरक्षित है।"
+      : "Hello! Welcome to KisanUrja. Your crop hydrologic balance and solar pumps are running smoothly.";
+    speakText(testPhrase);
+  };
+
   const speakText = (text) => {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
-    utterance.rate = 0.95;
+    
+    // Attach selected voice
+    if (voices.length > 0) {
+      const currentVoice = voices.find(v => v.voiceURI === selectedVoiceURI);
+      if (currentVoice) {
+        utterance.voice = currentVoice;
+        utterance.lang = currentVoice.lang;
+      } else {
+        utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+      }
+    } else {
+      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+    }
+
+    utterance.rate = speechRate;
+    utterance.pitch = speechPitch;
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
@@ -230,6 +306,202 @@ export default function VoiceAssistant({
           >
             <X size={24} />
           </button>
+        </div>
+
+        {/* Voice Changer & Audio Settings Bar */}
+        <div style={{
+          marginBottom: '16px',
+          background: 'rgba(255, 255, 255, 0.03)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--radius-md)',
+          padding: '10px 14px'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Volume2 size={18} color="var(--primary-emerald)" />
+              <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                {lang === 'hi' ? 'आवाज व उच्चारण सेटिंग्स' : 'Voice Persona & Speech Settings'}
+              </span>
+              <span style={{
+                fontSize: '0.74rem',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
+                background: 'rgba(16, 185, 129, 0.15)',
+                color: 'var(--primary-emerald-light)',
+                fontWeight: 600
+              }}>
+                {voices.length > 0 ? `${voices.length} Voices Available` : 'Browser Synthesizer'}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={testCurrentVoice}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(245, 158, 11, 0.15)',
+                  border: '1px solid rgba(245, 158, 11, 0.4)',
+                  color: '#fbbf24',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                <Volume2 size={14} />
+                <span>{lang === 'hi' ? 'आवाज सुनें (Test)' : 'Test Voice'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowVoiceSettings(prev => !prev)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: showVoiceSettings ? 'var(--primary-emerald)' : 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid var(--border-subtle)',
+                  color: showVoiceSettings ? '#ffffff' : 'var(--text-secondary)',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                <Sliders size={14} />
+                <span>{showVoiceSettings ? (lang === 'hi' ? 'छुपाएं' : 'Hide') : (lang === 'hi' ? 'आवाज बदलें' : 'Change Voice')}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Expandable Voice Customization Drawer */}
+          {showVoiceSettings && (
+            <div style={{
+              marginTop: '12px',
+              paddingTop: '12px',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
+              {/* Voice Selector Dropdown */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '4px', fontWeight: 600 }}>
+                  {lang === 'hi' ? 'सिस्टम में उपलब्ध आवाज चुनें:' : 'Select Speech Synthesis Voice:'}
+                </label>
+                <select
+                  value={selectedVoiceURI}
+                  onChange={(e) => handleVoiceChange(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'var(--bg-surface-elevated)',
+                    border: '1px solid var(--border-card)',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.85rem',
+                    fontFamily: 'inherit',
+                    outline: 'none'
+                  }}
+                >
+                  {voices.map((v, idx) => (
+                    <option key={idx} value={v.voiceURI}>
+                      {v.name} ({v.lang}) {v.default ? ' [Default]' : ''}
+                    </option>
+                  ))}
+                  {voices.length === 0 && (
+                    <option value="">Default OS Synthesis Voice</option>
+                  )}
+                </select>
+              </div>
+
+              {/* Speed Rate & Pitch Controls */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '16px'
+              }}>
+                {/* Speech Speed */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    <span>{lang === 'hi' ? 'बोलने की गति (Speed)' : 'Speech Rate'}</span>
+                    <strong style={{ color: 'var(--primary-emerald-light)' }}>{speechRate}x</strong>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    {[
+                      { label: lang === 'hi' ? 'धीमी (0.8x)' : 'Slow (0.8x)', val: 0.8 },
+                      { label: lang === 'hi' ? 'सामान्य (0.95x)' : 'Normal (0.95x)', val: 0.95 },
+                      { label: lang === 'hi' ? 'तेज (1.15x)' : 'Fast (1.15x)', val: 1.15 }
+                    ].map((rate) => (
+                      <button
+                        key={rate.val}
+                        type="button"
+                        onClick={() => handleRateChange(rate.val)}
+                        style={{
+                          flex: 1,
+                          padding: '6px 4px',
+                          borderRadius: '6px',
+                          border: speechRate === rate.val ? '1px solid var(--primary-emerald)' : '1px solid rgba(255, 255, 255, 0.1)',
+                          background: speechRate === rate.val ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.03)',
+                          color: speechRate === rate.val ? 'var(--primary-emerald-light)' : 'var(--text-secondary)',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {rate.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Speech Pitch */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    <span>{lang === 'hi' ? 'आवाज की टोन (Pitch)' : 'Voice Pitch'}</span>
+                    <strong style={{ color: 'var(--solar-amber-light)' }}>{speechPitch.toFixed(1)}</strong>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    {[
+                      { label: lang === 'hi' ? 'गंभीर (0.9)' : 'Deep (0.9)', val: 0.9 },
+                      { label: lang === 'hi' ? 'संतुलित (1.0)' : 'Natural (1.0)', val: 1.0 },
+                      { label: lang === 'hi' ? 'तीखी (1.2)' : 'Bright (1.2)', val: 1.2 }
+                    ].map((pitch) => (
+                      <button
+                        key={pitch.val}
+                        type="button"
+                        onClick={() => handlePitchChange(pitch.val)}
+                        style={{
+                          flex: 1,
+                          padding: '6px 4px',
+                          borderRadius: '6px',
+                          border: speechPitch === pitch.val ? '1px solid var(--solar-amber)' : '1px solid rgba(255, 255, 255, 0.1)',
+                          background: speechPitch === pitch.val ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.03)',
+                          color: speechPitch === pitch.val ? '#fbbf24' : 'var(--text-secondary)',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {pitch.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Conversation Body */}

@@ -46,6 +46,25 @@ export default function Navbar({
   const [showHindiConverter, setShowHindiConverter] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Auto-hide header when scrolling down, show when scrolling up or at top
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY > 30 && currentY > lastScrollY) {
+        setShowHeader(false); // Disappears when scrolling down
+      } else {
+        setShowHeader(true); // Re-appears when scrolling up or at top
+      }
+      setLastScrollY(currentY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   const indicLanguages = [
     { code: 'hi', label: 'हिन्दी', region: 'North India / Haryana / UP / Rajasthan' },
     { code: 'en', label: 'English', region: 'Pan-India Technical' },
@@ -109,10 +128,15 @@ export default function Navbar({
         top: 0,
         zIndex: 100,
         backgroundColor: 'var(--bg-glass)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--border-subtle)',
-        padding: '12px 24px'
+        padding: '6px 18px',
+        transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+        transition: 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease',
+        opacity: showHeader ? 1 : 0,
+        pointerEvents: showHeader ? 'auto' : 'none',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)'
       }}>
         <div style={{
           maxWidth: '1440px',
@@ -120,8 +144,8 @@ export default function Navbar({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '16px'
+          flexWrap: 'nowrap',
+          gap: '10px'
         }}>
           {/* Left: Brand Identity */}
           <div 
@@ -129,39 +153,39 @@ export default function Navbar({
               onChangeView('landing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', flexShrink: 0 }}
             title="Return to KisanUrja Overview"
           >
             <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
               background: 'linear-gradient(135deg, #10b981 0%, #f59e0b 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)'
+              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.4)'
             }}>
-              <Sprout size={22} color="#ffffff" strokeWidth={2.5} />
+              <Sprout size={17} color="#ffffff" strokeWidth={2.5} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: '1.25rem',
+                  fontSize: '1.02rem',
                   fontWeight: '800',
                   letterSpacing: '-0.025em',
                   color: 'var(--text-primary)'
                 }}>
                   KISAN <span style={{ color: 'var(--solar-amber)' }}>URJA</span>
                 </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <span className="pulse-dot" style={{ width: '7px', height: '7px' }} />
-                  <span style={{ fontSize: '0.7rem', color: 'var(--primary-emerald)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span className="pulse-dot" style={{ width: '6px', height: '6px' }} />
+                  <span style={{ fontSize: '0.62rem', color: 'var(--primary-emerald)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
                 </div>
               </div>
-              <p style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
-                {lang === 'hi' ? 'किसान ऊर्जा — सौर कृषि स्वावलंबन' : 'Multi-State Solar Precision Agronomy'}
+              <p style={{ fontSize: '0.62rem', color: 'var(--text-tertiary)', margin: 0, lineHeight: 1 }}>
+                {lang === 'hi' ? 'सौर कृषि स्वावलंबन' : 'Solar Precision Agronomy'}
               </p>
             </div>
           </div>
@@ -170,11 +194,12 @@ export default function Navbar({
           <nav style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '6px',
+            gap: '4px',
             background: 'var(--bg-surface)',
-            padding: '6px 8px',
+            padding: '3px 5px',
             borderRadius: 'var(--radius-full)',
-            border: '1px solid var(--border-subtle)'
+            border: '1px solid var(--border-subtle)',
+            flexShrink: 0
           }} className="desktop-nav">
             <button
               onClick={() => {
@@ -184,20 +209,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
+                gap: '6px',
+                padding: '6px 12px',
                 borderRadius: 'var(--radius-full)',
                 background: currentView === 'landing' ? 'var(--primary-emerald)' : 'transparent',
                 color: currentView === 'landing' ? '#ffffff' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '1.02rem',
+                fontSize: '0.84rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
             >
-              <Compass size={17} />
+              <Compass size={14} />
               <span>{t.landingTab}</span>
             </button>
 
@@ -206,20 +231,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
+                gap: '6px',
+                padding: '6px 12px',
                 borderRadius: 'var(--radius-full)',
                 background: 'transparent',
                 color: 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '1.02rem',
+                fontSize: '0.84rem',
                 cursor: 'pointer',
                 transition: 'color 0.2s'
               }}
             >
-              <Calculator size={17} />
+              <Calculator size={14} />
               <span>{t.calcTab}</span>
             </button>
 
@@ -228,20 +253,20 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
+                gap: '6px',
+                padding: '6px 12px',
                 borderRadius: 'var(--radius-full)',
                 background: 'transparent',
                 color: 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '1.02rem',
+                fontSize: '0.84rem',
                 cursor: 'pointer',
                 transition: 'color 0.2s'
               }}
             >
-              <Satellite size={17} />
+              <Satellite size={14} />
               <span>{t.scannerTab}</span>
             </button>
 
@@ -254,42 +279,42 @@ export default function Navbar({
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '10px 20px',
+                gap: '6px',
+                padding: '6px 14px',
                 borderRadius: 'var(--radius-full)',
                 background: currentView === 'dashboard' ? 'var(--primary-emerald)' : 'transparent',
                 color: currentView === 'dashboard' ? '#ffffff' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '1.02rem',
+                fontSize: '0.84rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
             >
-              <LayoutDashboard size={17} />
+              <LayoutDashboard size={14} />
               <span>{t.consoleTab}</span>
             </button>
           </nav>
 
-          {/* Right Toolbar: Streamlined & Highly Visible */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Right Toolbar: Streamlined & Compact */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             {/* 1. Voice AI Assistant Button */}
             <button
               id="nav-voice-assistant-btn"
               onClick={onOpenVoice}
               className="btn-solar"
               style={{
-                padding: '10px 18px',
-                fontSize: '0.98rem',
+                padding: '6px 12px',
+                fontSize: '0.82rem',
                 borderRadius: 'var(--radius-full)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '6px'
               }}
               title="Open Vernacular Voice Assistant"
             >
-              <Mic size={18} />
+              <Mic size={14} />
               <span>{t.voiceBtn}</span>
             </button>
 
@@ -303,17 +328,17 @@ export default function Navbar({
                 }}
                 className="btn-secondary"
                 style={{
-                  padding: '10px 16px',
-                  fontSize: '0.98rem',
+                  padding: '6px 10px',
+                  fontSize: '0.82rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '6px'
                 }}
                 title="Language & Hindi Transliterator"
               >
-                <Languages size={18} color="var(--primary-emerald-light)" />
+                <Languages size={14} color="var(--primary-emerald-light)" />
                 <span>{lang === 'hi' ? 'हिन्दी' : 'English'}</span>
-                <ChevronDown size={15} />
+                <ChevronDown size={13} />
               </button>
 
               {showLangMenu && (
@@ -401,26 +426,27 @@ export default function Navbar({
               onClick={onToggleTheme}
               className="btn-secondary"
               style={{
-                padding: '8px 12px',
+                padding: '5px 9px',
                 borderRadius: 'var(--radius-full)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '5px',
+                fontSize: '0.8rem'
               }}
               title={theme === 'light' ? "Switch to Dark Slate Theme" : "Switch to ScrapSetu Clean Light Theme"}
             >
               {theme === 'light' ? (
                 <>
-                  <Moon size={16} />
-                  <span style={{ fontSize: '0.84rem', fontWeight: 700 }}>
-                    {lang === 'hi' ? 'डार्क मोड' : 'Dark'}
+                  <Moon size={14} />
+                  <span style={{ fontWeight: 700 }}>
+                    {lang === 'hi' ? 'डार्क' : 'Dark'}
                   </span>
                 </>
               ) : (
                 <>
-                  <SunMedium size={16} color="var(--solar-amber)" />
-                  <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--solar-amber)' }}>
-                    {lang === 'hi' ? 'लाइट मोड' : 'Light'}
+                  <SunMedium size={14} color="var(--solar-amber)" />
+                  <span style={{ fontWeight: 700, color: 'var(--solar-amber)' }}>
+                    {lang === 'hi' ? 'लाइट' : 'Light'}
                   </span>
                 </>
               )}
@@ -435,10 +461,10 @@ export default function Navbar({
                   setShowLangMenu(false);
                 }}
                 className="btn-secondary"
-                style={{ padding: '8px 10px', fontSize: '0.82rem' }}
+                style={{ padding: '5px 8px', fontSize: '0.8rem' }}
                 title="Display & Font Accessibility Settings"
               >
-                <Sliders size={15} />
+                <Sliders size={14} />
               </button>
 
               {showDisplaySettings && (
@@ -513,22 +539,22 @@ export default function Navbar({
 
             {/* 5. Farmer User Chip & State Badge / Login Button */}
             {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '6px',
                   background: 'var(--bg-surface-elevated)',
                   border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-full)',
-                  padding: '8px 18px'
+                  padding: '4px 10px'
                 }}>
-                  <User size={18} color="var(--primary-emerald)" />
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15 }}>
-                    <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                  <User size={14} color="var(--primary-emerald)" />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                       {user.full_name?.split('(')[0].trim() || 'Farmer'}
                     </span>
-                    <span style={{ fontSize: '0.82rem', color: 'var(--solar-amber)', fontWeight: 700 }}>
+                    <span style={{ fontSize: '0.68rem', color: 'var(--solar-amber)', fontWeight: 700 }}>
                       {lang === 'hi' ? (user.stateHi || user.state) : (user.state || 'Haryana')}
                     </span>
                   </div>
@@ -541,15 +567,15 @@ export default function Navbar({
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    padding: '10px 16px',
+                    gap: '4px',
+                    padding: '5px 10px',
                     borderRadius: 'var(--radius-full)',
-                    fontSize: '0.92rem',
+                    fontSize: '0.78rem',
                     fontWeight: 700
                   }}
                   title="Sign Out"
                 >
-                  <LogOut size={16} />
+                  <LogOut size={13} />
                   <span>{lang === 'hi' ? 'लॉगआउट' : 'Sign Out'}</span>
                 </button>
               </div>
@@ -564,15 +590,15 @@ export default function Navbar({
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 22px',
-                  fontSize: '1.02rem',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  fontSize: '0.84rem',
                   fontWeight: 800,
                   borderRadius: 'var(--radius-full)',
-                  boxShadow: '0 4px 20px rgba(16, 185, 129, 0.45)'
+                  boxShadow: '0 2px 12px rgba(16, 185, 129, 0.4)'
                 }}
               >
-                <User size={18} />
+                <User size={14} />
                 <span>{lang === 'hi' ? 'किसान लॉगिन' : 'Farmer Sign In'}</span>
               </button>
             )}

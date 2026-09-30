@@ -1,52 +1,60 @@
 # Current Session
 
 ## Date/Time
-2026-09-30T21:52:00.0000000+05:30
+2026-09-30T22:26:00.0000000+05:30
 
 ## Current Phase
-Platform Rebranding to KisanUrja (किसान ऊर्जा), Custom Domain Aliases, Codebase & README Updates, and Live Vercel Production Deployment — FULLY COMPLETE.
+Farmer Dashboard (Pic 2 Layout & All 6 Working Sidebar Sections), Showcase Dashboard (Pic 1 Landing Feature), Voice Synthesizer Selector, Slim Navbar, and Disappear-on-Scroll Implementation — FULLY COMPLETE.
 
 ## Current Slice
-Completed full platform rebranding across all assets:
-1. **Brand Identity Transition to KisanUrja (किसान ऊर्जा)**:
-   - Updated platform branding across all UI modules:
-     - Navigation Bar logo (`KISAN URJA` with solar amber glow & live status badge).
-     - Hero Section audio narration and platform tagline in English and Hindi.
-     - Voice AI Assistant greetings and conversation prompts.
-     - Solar & Agro-Hydrologic ROI Calculator narration.
-     - Agronomy FAQ Accordion and Operational Process Flow.
-     - Authentication Section login headers, demo placeholders, and fallback credentials (`@kisanurja.in`).
-     - Footer platform identity and HTML `<title>` / `<meta>` description.
-   - Updated storage keys with backwards compatibility (`kisanurja_token`, `kisanurja_user`, `kisanurja_theme`).
+1. **Showcase Dashboard Landing Feature (Matching Picture 1)**:
+   - Created `frontend/src/sections/landing/AgriShowcaseDashboard.jsx`.
+   - Side-by-side layout: Solar Irrigation & Yield Value Calculator on the left with crop pills, acreage slider, water source toggles, and dynamic savings; Copernicus Sentinel-2 Satellite Canopy Scanner (10m) on the right with animated scan radar and vigor diagnostics.
+   - Retained all existing landing components in `LandingFeatures.jsx` (`LiveTelemetryTicker`, `SolarAgroCalculator`, `SatelliteCanopyScanner`, `FaqSection`).
 
-2. **Custom Vercel Production Domains & Aliases**:
-   - Primary Live Production URL: **[https://kisanurja.vercel.app](https://kisanurja.vercel.app)**
-   - Secondary Hyphenated Alias: **[https://kisan-urja.vercel.app](https://kisan-urja.vercel.app)**
-   - Canonical Deployment Target: `https://frontend-six-woad-12.vercel.app`
+2. **Farmer Console Overview (Matching Picture 2)**:
+   - Modularized into `frontend/src/sections/dashboard/FarmerOverviewTab.jsx`.
+   - Top 3 cards: Farm Console (Active Field Plots), Verified Farmer Identity Card, Solar Pump Telemetry.
+   - Middle 4 cards: Water Balance Gauges (3-ring radial indicators), FAO-56 Root Zone Depletion bar chart, CWSI Water Stress Index speedometer gauge, Real-Time Weather with 3-day forecast.
+   - Bottom row: Actionable Agronomic Advisory (3 guidance cards).
 
-3. **Documentation & GitHub Repository**:
-   - Rebranded `README.md` with official KisanUrja badges, architecture links, and access table.
+3. **All 6 Left Sidebar Navigation Sections Functional**:
+   - `frontend/src/sections/dashboard/FarmerConsoleShowcase.jsx` (Root console layout & navigation)
+   - `frontend/src/sections/dashboard/FarmerOverviewTab.jsx` (Overview Dashboard)
+   - `frontend/src/sections/dashboard/FarmerFieldsTab.jsx` (Interactive Leaflet Map, plot switcher, NDVI toggle)
+   - `frontend/src/sections/dashboard/FarmerWeatherTab.jsx` (IMD AWS microclimate, FAO-56 Penman-Monteith ETc, 5-day solar pumping forecast)
+   - `frontend/src/sections/dashboard/FarmerPumpsTab.jsx` (PM-KUSUM 7.5 HP telemetry, daylight generation curve, test run & emergency stop controls)
+   - `frontend/src/sections/dashboard/FarmerReportsTab.jsx` (Root zone water balance statement, carbon certificate, export PDF)
+   - `frontend/src/sections/dashboard/FarmerProfileTab.jsx` (Verified farmer identity, subsidized PM-KUSUM connection, rural safety & panel maintenance protocols)
 
-## Completed Deliverables
-- `frontend/index.html` (rebranded title and meta descriptions)
-- `frontend/src/sections/navigation/Navbar.jsx` (KISAN URJA logo & bilingual subtext)
-- `frontend/src/sections/landing/LandingHero.jsx` (bilingual audio scripts)
-- `frontend/src/sections/voice/VoiceAssistant.jsx` (KisanUrja AI voice assistant branding)
-- `frontend/src/sections/landing/SolarAgroCalculator.jsx` (bilingual voice narration)
-- `frontend/src/sections/landing/FaqSection.jsx` (bilingual KisanUrja FAQs)
-- `frontend/src/sections/landing/AgronomyProcessFlow.jsx` (bilingual process flow descriptions)
-- `frontend/src/sections/footer/Footer.jsx` (KisanUrja Platform attribution)
-- `frontend/src/sections/auth/AuthSection.jsx` (rebranded login & @kisanurja.in demo placeholders)
-- `frontend/src/sections/modals/AuthModal.jsx` (Sign in to KisanUrja)
-- `frontend/src/sections/modals/FieldModal.jsx` (KisanUrja Model Farm)
-- `frontend/src/services/api.js` (demo profile emails & storage keys)
-- `frontend/src/App.jsx` (theme key migration)
-- `frontend/src/index.css` (KisanUrja design system header)
-- `README.md` (rebranded header, badges, access links)
-- `docs/PROGRESS_REPORT.md` (session documentation)
+4. **Vernacular Voice Assistant with Voice Changing**:
+   - Updated `frontend/src/sections/voice/VoiceAssistant.jsx`.
+   - Dynamically loads speech synthesis voices (`speechSynthesis.getVoices()`).
+   - Voice selector dropdown with language and persona tagging.
+   - Speech speed (0.8x slow, 0.95x normal, 1.15x fast) and pitch controls.
+   - Live Voice Test button (`आवाज सुनें (Test)`).
+
+5. **Compact Top Section & Disappear-on-Scroll Feature**:
+   - Updated `frontend/src/sections/navigation/Navbar.jsx`.
+   - Reduced padding and typography into a sleek single row (`flexWrap: 'nowrap'`).
+   - Implemented smooth auto-hide on scroll down: the navbar translates `-100%` and fades when scrolling down, reappearing when scrolling up or at the top.
+
+## Completed Files
+- `frontend/src/sections/navigation/Navbar.jsx`
+- `frontend/src/sections/landing/LandingFeatures.jsx`
+- `frontend/src/sections/landing/AgriShowcaseDashboard.jsx`
+- `frontend/src/sections/voice/VoiceAssistant.jsx`
+- `frontend/src/sections/dashboard/FarmerConsoleShowcase.jsx`
+- `frontend/src/sections/dashboard/FarmerOverviewTab.jsx`
+- `frontend/src/sections/dashboard/FarmerFieldsTab.jsx`
+- `frontend/src/sections/dashboard/FarmerWeatherTab.jsx`
+- `frontend/src/sections/dashboard/FarmerPumpsTab.jsx`
+- `frontend/src/sections/dashboard/FarmerReportsTab.jsx`
+- `frontend/src/sections/dashboard/FarmerProfileTab.jsx`
+- `docs/PROGRESS_REPORT.md`
 
 ## Verification & Status
-- `npm run build`: PASS (Vite production bundle compiled cleanly in 1.04s).
-- Live Vercel Aliases: PASS (`https://kisanurja.vercel.app` and `https://kisan-urja.vercel.app` active).
-- Git Working Tree: Clean and verified.
-
+- Production Build: PASS (`npm run build` compiled client bundle with 0 errors).
+- Live Vercel Aliases: PASS (`https://kisanurja.vercel.app` and `https://kisan-urja.vercel.app` updated).
+- Local Server: PASS (`http://localhost:5173/` running on HMR).
+- ZIP Backup: `../backups/yuva-energy-backup-2026-09-30-v8-dashboard-showcase.zip` created and verified.
