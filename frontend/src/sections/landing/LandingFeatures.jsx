@@ -9,10 +9,18 @@ import {
   TrendingUp, 
   Cpu, 
   Layers, 
-  ArrowRight
+  ArrowRight,
+  Compass,
+  Sparkles
 } from 'lucide-react';
 import satelliteImg from '../../assets/satellite_farm_multispectral.jpg';
 import farmerVoiceImg from '../../assets/farmer_smart_advisory.jpg';
+
+import LiveTelemetryTicker from './LiveTelemetryTicker';
+import SolarAgroCalculator from './SolarAgroCalculator';
+import SatelliteCanopyScanner from './SatelliteCanopyScanner';
+import AgronomyProcessFlow from './AgronomyProcessFlow';
+import FaqSection from './FaqSection';
 
 export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
   const t = {
@@ -37,16 +45,9 @@ export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
       feat4Desc: "Engineered specifically for older farmers and those with visual impairments. Just tap the microphone and speak in Hindi or English—the assistant answers instantly in natural spoken audio.",
       feat4Metric: "Hands-Free Voice Interaction",
 
-      stepHeading: "How Farmers Use Yuva Energy in 3 Simple Steps",
-      step1Title: "1. Select or Map Your Plot",
-      step1Desc: "Draw or select your plot boundary. SoilGrids 250m soil hydraulic properties are automatically extracted.",
-      step2Title: "2. Automatic Atmospheric Modeling",
-      step2Desc: "Open-Meteo microclimate and Sentinel-2 satellite canopy indices synchronize every hour in the background.",
-      step3Title: "3. Clear Spoken Recommendations",
-      step3Desc: "Receive exact irrigation runtimes and solar schedules with 1-click audio playback in your language.",
-
-      ctaTitle: "Experience the Future of Indian Agriculture",
-      ctaButton: "Open Interactive Farm Console"
+      bottomCtaTitle: "Experience the Future of Indian Agriculture",
+      bottomCtaSubtitle: "Launch our live Karnal Basmati Estate simulator or configure your own farmland boundary in seconds.",
+      bottomCtaButton: "Launch Interactive Farm Console"
     },
     hi: {
       sectionPill: "भारतीय खेतों के लिए विशेष निर्मित",
@@ -69,325 +70,313 @@ export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
       feat4Desc: "बुजुर्ग किसानों और कमजोर नजर वाले साथियों के लिए सहज सुविधा। बस माइक दबाकर हिन्दी या अंग्रेजी में पूछें, युवा एनर्जी बोलकर जवाब देगी।",
       feat4Metric: "हाथ मुक्त आवाज सुविधा",
 
-      stepHeading: "3 आसान चरणों में काम करता है युवा एनर्जी",
-      step1Title: "1. अपना खेत चुनें",
-      step1Desc: "नक्शे पर खेत का चयन करें। मिट्टी की किस्म और जल धारण क्षमता स्वतः लोड हो जाती है।",
-      step2Title: "2. स्वचालित मौसम व उपग्रह गणना",
-      step2Desc: "मौसम और उपग्रह डेटा हर घंटे अपने आप जांचे जाते हैं।",
-      step3Title: "3. सीधा और सरल सुझाव",
-      step3Desc: "सिंचाई का सटीक समय और सौर पंप चलाने का निर्देश अपनी भाषा में सुनें और देखें।",
-
-      ctaTitle: "स्मार्ट सौर कृषि का अनुभव आज ही करें",
-      ctaButton: "खेत डैशबोर्ड तुरंत खोलें"
+      bottomCtaTitle: "स्मार्ट सौर कृषि का अनुभव आज ही करें",
+      bottomCtaSubtitle: "करनाल बासमती मॉडल फार्म का लाइव डेटा देखें या अपने खेत की सीमा जोड़ें।",
+      bottomCtaButton: "खेत डैशबोर्ड तुरंत खोलें"
     }
   }[lang] || {};
 
   return (
-    <section style={{
-      maxWidth: '1440px',
-      margin: '0 auto',
-      padding: '72px 24px 96px 24px'
-    }}>
-      {/* Section Header with Generous Negative Space */}
-      <div style={{ textAlign: 'center', maxWidth: '840px', margin: '0 auto 64px auto' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'rgba(245, 158, 11, 0.12)',
-          border: '1px solid rgba(245, 158, 11, 0.35)',
-          borderRadius: 'var(--radius-full)',
-          padding: '6px 16px',
-          marginBottom: '16px'
-        }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--solar-amber)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {t.sectionPill}
-          </span>
-        </div>
+    <div>
+      {/* 1. Live Rolling Telemetry Marquee Banner */}
+      <LiveTelemetryTicker lang={lang} />
 
-        <h2 style={{
-          fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-          fontWeight: 800,
-          letterSpacing: '-0.03em',
-          marginBottom: '20px'
-        }}>
-          {t.sectionTitle}
-        </h2>
+      {/* 2. Interactive Solar Irrigation & Yield Value Calculator */}
+      <SolarAgroCalculator onEnterConsole={onEnterConsole} lang={lang} />
 
-        <p style={{
-          fontSize: '1.2rem',
-          lineHeight: 1.8,
-          color: 'var(--text-secondary)'
-        }}>
-          {t.sectionSubtitle}
-        </p>
-      </div>
+      {/* 3. Interactive Sentinel-2 Satellite Canopy Scanner */}
+      <SatelliteCanopyScanner onEnterConsole={onEnterConsole} lang={lang} />
 
-      {/* Grid of 4 Major Pillars */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-        gap: '36px',
-        marginBottom: '80px'
+      {/* 4. Core Four Pillars Deep Dive */}
+      <section style={{
+        maxWidth: '1440px',
+        margin: '0 auto',
+        padding: '64px 24px 80px 24px'
       }}>
-        {/* Pillar 1: Water Balance */}
-        <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
+        {/* Section Header */}
+        <div style={{ textAlign: 'center', maxWidth: '840px', margin: '0 auto 64px auto' }}>
           <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'rgba(14, 165, 233, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px'
-          }}>
-            <Droplets size={30} color="var(--sky-blue)" />
-          </div>
-
-          <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-            {t.feat1Title}
-          </h3>
-
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
-            {t.feat1Desc}
-          </p>
-
-          <div style={{
-            background: 'rgba(14, 165, 233, 0.08)',
-            border: '1px solid rgba(14, 165, 233, 0.25)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
-            fontFamily: 'monospace',
-            fontSize: '0.85rem',
-            color: '#7dd3fc'
-          }}>
-            {t.feat1Formula}
-          </div>
-        </div>
-
-        {/* Pillar 2: Solar Energy Dispatch */}
-        <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'rgba(245, 158, 11, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px'
-          }}>
-            <Sun size={30} color="var(--solar-amber)" />
-          </div>
-
-          <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-            {t.feat2Title}
-          </h3>
-
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
-            {t.feat2Desc}
-          </p>
-
-          <div style={{
-            background: 'rgba(245, 158, 11, 0.08)',
-            border: '1px solid var(--border-solar)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            color: 'var(--solar-amber)'
+            background: 'rgba(245, 158, 11, 0.12)',
+            border: '1px solid rgba(245, 158, 11, 0.35)',
+            borderRadius: 'var(--radius-full)',
+            padding: '6px 18px',
+            marginBottom: '16px'
           }}>
-            <CheckCircle2 size={16} />
-            <span>{t.feat2Metric}</span>
-          </div>
-        </div>
-
-        {/* Pillar 3: Satellite Multispectral (With Real Aerial Image) */}
-        <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'rgba(16, 185, 129, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px'
-          }}>
-            <Satellite size={30} color="var(--primary-emerald)" />
+            <Sparkles size={16} color="var(--solar-amber)" />
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--solar-amber)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {t.sectionPill}
+            </span>
           </div>
 
-          <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-            {t.feat3Title}
-          </h3>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+            marginBottom: '20px'
+          }}>
+            {t.sectionTitle}
+          </h2>
 
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            {t.feat3Desc}
+          <p style={{
+            fontSize: '1.2rem',
+            lineHeight: 1.8,
+            color: 'var(--text-secondary)'
+          }}>
+            {t.sectionSubtitle}
           </p>
-
-          <div style={{
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            border: '1px solid var(--border-subtle)',
-            marginBottom: '20px',
-            maxHeight: '160px'
-          }}>
-            <img 
-              src={satelliteImg} 
-              alt="High-resolution multispectral farmland plots"
-              style={{ width: '100%', height: '160px', objectFit: 'cover' }}
-            />
-          </div>
-
-          <div style={{
-            background: 'rgba(16, 185, 129, 0.08)',
-            border: '1px solid rgba(16, 185, 129, 0.3)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            color: 'var(--primary-emerald-light)'
-          }}>
-            <TrendingUp size={16} />
-            <span>{t.feat3Metric}</span>
-          </div>
         </div>
 
-        {/* Pillar 4: Vernacular Voice Assistant (With Real Farmer Image) */}
-        <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'rgba(245, 158, 11, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px'
-          }}>
-            <Mic size={30} color="var(--solar-amber)" />
-          </div>
-
-          <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-            {t.feat4Title}
-          </h3>
-
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            {t.feat4Desc}
-          </p>
-
-          <div style={{
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            border: '1px solid var(--border-subtle)',
-            marginBottom: '20px',
-            maxHeight: '160px'
-          }}>
-            <img 
-              src={farmerVoiceImg} 
-              alt="Farmer using smart voice assistant in sunlit field"
-              style={{ width: '100%', height: '160px', objectFit: 'cover' }}
-            />
-          </div>
-
-          <div style={{
-            background: 'rgba(245, 158, 11, 0.08)',
-            border: '1px solid var(--border-solar)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            color: 'var(--solar-amber)'
-          }}>
-            <Mic size={16} />
-            <span>{t.feat4Metric}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 3-Step Journey Walkthrough */}
-      <div style={{
-        background: 'rgba(11, 31, 22, 0.65)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-xl)',
-        padding: '56px 40px',
-        marginBottom: '80px'
-      }}>
-        <h3 style={{
-          textAlign: 'center',
-          fontSize: '1.85rem',
-          fontWeight: 800,
-          marginBottom: '48px',
-          color: '#ffffff'
-        }}>
-          {t.stepHeading}
-        </h3>
-
+        {/* Grid of 4 Major Pillars */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '36px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '36px',
+          marginBottom: '40px'
         }}>
-          <div>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--primary-emerald)', marginBottom: '12px' }}>01</div>
-            <h4 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px' }}>{t.step1Title}</h4>
-            <p style={{ fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>{t.step1Desc}</p>
+          {/* Pillar 1: Water Balance */}
+          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: 'rgba(14, 165, 233, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '24px'
+            }}>
+              <Droplets size={30} color="var(--sky-blue)" />
+            </div>
+
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
+              {t.feat1Title}
+            </h3>
+
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
+              {t.feat1Desc}
+            </p>
+
+            <div style={{
+              background: 'rgba(14, 165, 233, 0.08)',
+              border: '1px solid rgba(14, 165, 233, 0.25)',
+              borderRadius: 'var(--radius-md)',
+              padding: '12px 16px',
+              fontFamily: 'monospace',
+              fontSize: '0.85rem',
+              color: '#7dd3fc'
+            }}>
+              {t.feat1Formula}
+            </div>
           </div>
 
-          <div>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--solar-amber)', marginBottom: '12px' }}>02</div>
-            <h4 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px' }}>{t.step2Title}</h4>
-            <p style={{ fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>{t.step2Desc}</p>
+          {/* Pillar 2: Solar Energy Dispatch */}
+          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: 'rgba(245, 158, 11, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '24px'
+            }}>
+              <Sun size={30} color="var(--solar-amber)" />
+            </div>
+
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
+              {t.feat2Title}
+            </h3>
+
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
+              {t.feat2Desc}
+            </p>
+
+            <div style={{
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid var(--border-solar)',
+              borderRadius: 'var(--radius-md)',
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              color: 'var(--solar-amber)'
+            }}>
+              <CheckCircle2 size={16} />
+              <span>{t.feat2Metric}</span>
+            </div>
           </div>
 
-          <div>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--sky-blue)', marginBottom: '12px' }}>03</div>
-            <h4 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px' }}>{t.step3Title}</h4>
-            <p style={{ fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>{t.step3Desc}</p>
+          {/* Pillar 3: Satellite Multispectral */}
+          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: 'rgba(16, 185, 129, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '24px'
+            }}>
+              <Satellite size={30} color="var(--primary-emerald)" />
+            </div>
+
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
+              {t.feat3Title}
+            </h3>
+
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
+              {t.feat3Desc}
+            </p>
+
+            <div style={{
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              border: '1px solid var(--border-subtle)',
+              marginBottom: '20px',
+              maxHeight: '160px'
+            }}>
+              <img 
+                src={satelliteImg} 
+                alt="High-resolution multispectral farmland plots"
+                style={{ width: '100%', height: '160px', objectFit: 'cover' }}
+              />
+            </div>
+
+            <div style={{
+              background: 'rgba(16, 185, 129, 0.08)',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: 'var(--radius-md)',
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              color: 'var(--primary-emerald-light)'
+            }}>
+              <TrendingUp size={16} />
+              <span>{t.feat3Metric}</span>
+            </div>
+          </div>
+
+          {/* Pillar 4: Vernacular Voice Assistant */}
+          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: 'rgba(245, 158, 11, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '24px'
+            }}>
+              <Mic size={30} color="var(--solar-amber)" />
+            </div>
+
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
+              {t.feat4Title}
+            </h3>
+
+            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
+              {t.feat4Desc}
+            </p>
+
+            <div style={{
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              border: '1px solid var(--border-subtle)',
+              marginBottom: '20px',
+              maxHeight: '160px'
+            }}>
+              <img 
+                src={farmerVoiceImg} 
+                alt="Farmer using smart voice assistant in sunlit field"
+                style={{ width: '100%', height: '160px', objectFit: 'cover' }}
+              />
+            </div>
+
+            <div style={{
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid var(--border-solar)',
+              borderRadius: 'var(--radius-md)',
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              color: 'var(--solar-amber)'
+            }}>
+              <Mic size={16} />
+              <span>{t.feat4Metric}</span>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Bottom Conversion Banner */}
+      {/* 5. End-to-End Stakeholder Lifecycle & 4-Step Pipeline Flow */}
+      <AgronomyProcessFlow lang={lang} />
+
+      {/* 6. Comprehensive FAQ Accordion */}
+      <FaqSection onEnterConsole={onEnterConsole} lang={lang} />
+
+      {/* 7. Bottom Conversion Banner */}
       <div style={{
-        textAlign: 'center',
-        padding: '64px 32px',
-        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(245, 158, 11, 0.1) 100%)',
-        border: '1.5px solid var(--border-active)',
-        borderRadius: 'var(--radius-xl)'
+        maxWidth: '1440px',
+        margin: '0 auto 64px auto',
+        padding: '0 24px'
       }}>
-        <h3 style={{
-          fontSize: '2.2rem',
-          fontWeight: 800,
-          marginBottom: '20px',
-          color: '#ffffff'
+        <div style={{
+          textAlign: 'center',
+          padding: '64px 32px',
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(245, 158, 11, 0.14) 100%)',
+          border: '1.5px solid var(--border-active)',
+          borderRadius: 'var(--radius-xl)',
+          boxShadow: '0 24px 60px rgba(0, 0, 0, 0.6)'
         }}>
-          {t.ctaTitle}
-        </h3>
+          <h3 style={{
+            fontSize: 'clamp(2.2rem, 3.8vw, 3rem)',
+            fontWeight: 800,
+            marginBottom: '16px',
+            color: '#ffffff'
+          }}>
+            {t.bottomCtaTitle}
+          </h3>
 
-        <button
-          onClick={onEnterConsole}
-          className="btn-primary"
-          style={{
-            padding: '18px 40px',
-            fontSize: '1.15rem',
-            borderRadius: 'var(--radius-md)'
-          }}
-        >
-          <span>{t.ctaButton}</span>
-          <ArrowRight size={20} />
-        </button>
+          <p style={{
+            fontSize: '1.2rem',
+            color: 'var(--text-secondary)',
+            maxWidth: '640px',
+            margin: '0 auto 36px auto',
+            lineHeight: 1.7
+          }}>
+            {t.bottomCtaSubtitle}
+          </p>
+
+          <button
+            onClick={onEnterConsole}
+            className="btn-primary"
+            style={{
+              padding: '18px 44px',
+              fontSize: '1.15rem',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: '0 12px 36px rgba(16, 185, 129, 0.45)'
+            }}
+          >
+            <Compass size={22} />
+            <span>{t.bottomCtaButton}</span>
+            <ArrowRight size={20} />
+          </button>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
