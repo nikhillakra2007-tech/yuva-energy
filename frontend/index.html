@@ -13,8 +13,22 @@
     
     <!-- Leaflet Map Styles -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Instant Dark Mode Initialization (Dark Mode is Default) -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('yuva_theme');
+          if (saved === 'light') {
+            document.documentElement.classList.remove('theme-dark');
+          } else {
+            document.documentElement.classList.add('theme-dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body>
+  <body class="theme-dark">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -63,6 +63,7 @@
 }
 
 /* Dark Theme Support (Clean Obsidian Slate - Gentle on Eyes) */
+html.theme-dark,
 body.theme-dark {
   --bg-base: #0f172a;
   --bg-surface: #1e293b;
@@ -124,6 +125,7 @@ body.high-contrast {
 
 html {
   font-size: calc(var(--font-base-size) * var(--font-scale));
+  scroll-behavior: smooth;
 }
 
 body {
@@ -135,23 +137,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-}
-
-/* Lenis Smooth Scroll Integration (zero-lag 60fps) */
-html.lenis, html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
 }
 
 /* Custom Scrollbar */

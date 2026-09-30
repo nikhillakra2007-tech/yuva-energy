@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Lenis from 'lenis';
 import Navbar from './sections/navigation/Navbar';
 import LandingHero from './sections/landing/LandingHero';
 import LandingFeatures from './sections/landing/LandingFeatures';
@@ -22,7 +21,7 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const [fontScale, setFontScale] = useState(1);
   const [isHighContrast, setIsHighContrast] = useState(false);
-  const [theme, setTheme] = useState(() => localStorage.getItem('yuva_theme') || 'light');
+  const [theme, setTheme] = useState(() => localStorage.getItem('yuva_theme') || 'dark');
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [showScientificModal, setShowScientificModal] = useState(false);
 
@@ -39,29 +38,6 @@ export default function App() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [showFieldModal, setShowFieldModal] = useState(false);
-
-  // Initialize Lenis Smooth Scrolling (responsive, zero-lag 60fps)
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 0.85,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.2
-    });
-
-    let rafId;
-    function raf(time) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, []);
 
   // Sync fontScale CSS variable
   useEffect(() => {

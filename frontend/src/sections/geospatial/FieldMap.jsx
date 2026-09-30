@@ -47,9 +47,9 @@ export default function FieldMap({
   // Default to rock-solid satellite view
   const [mapMode, setMapMode] = useState('satellite'); // 'satellite' | 'street'
 
-  // Extract coordinates from field or default to Karnal, Haryana
-  let lat = 29.6857;
-  let lon = 76.9905;
+  // Extract coordinates from field or default to Karnal rural agricultural basin
+  let lat = 29.7425;
+  let lon = 76.8850;
 
   if (field?.latitude != null && field?.longitude != null) {
     lat = parseFloat(field.latitude);
@@ -192,12 +192,12 @@ export default function FieldMap({
         >
           <ChangeView center={[lat, lon]} zoom={16} />
 
-          {/* Dynamic Map Tile Layer - 100% Guaranteed Working Satellite & Street */}
+          {/* Dynamic Map Tile Layer - Pure High-Resolution Farmland Satellite & Street */}
           {mapMode === 'satellite' ? (
             <TileLayer
-              key="google-satellite-hybrid"
+              key="google-satellite-pure"
               attribution='&copy; Google Satellite & Sentinel-2 Copernicus'
-              url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+              url="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
               maxZoom={20}
             />
           ) : (

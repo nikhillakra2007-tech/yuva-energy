@@ -18,8 +18,8 @@ export const DEMO_PROFILES = [
       name: 'Karnal Model Agro-Solar Estate (करनाल एग्रो-सोलर)',
       state: 'Haryana',
       district: 'Karnal',
-      latitude: 29.6857,
-      longitude: 76.9905,
+      latitude: 29.7425,
+      longitude: 76.8850,
       total_area_hectares: 5.0,
       pump_type: '5.0 HP Submersible Solar Pump',
       irrigation_source: 'Solar Microgrid (PM-KUSUM Component B)',
@@ -34,7 +34,7 @@ export const DEMO_PROFILES = [
       area_hectares: 3.2,
       boundary: {
         type: "Polygon",
-        coordinates: [[[76.9887, 29.6841], [76.9923, 29.6841], [76.9923, 29.6873], [76.9887, 29.6873], [76.9887, 29.6841]]]
+        coordinates: [[[76.8810, 29.7400], [76.8890, 29.7400], [76.8890, 29.7450], [76.8810, 29.7450], [76.8810, 29.7400]]]
       }
     },
     telemetry: {
@@ -77,7 +77,7 @@ export const DEMO_PROFILES = [
     full_name: 'Sardar Gurpreet Singh (गुरप्रीत सिंह)',
     role: 'FARMER',
     state: 'Punjab',
-    stateHi: 'पंजाब (लुधियाना)',
+    stateHi: 'पंजाब (लुधियाना ग्रामीण)',
     district: 'Ludhiana',
     phone: '+91 98722 88410',
     avatar: '👳‍♂️',
@@ -86,8 +86,8 @@ export const DEMO_PROFILES = [
       name: 'Ludhiana Green Belt Wheat Farm (लुधियाना मॉडल फार्म)',
       state: 'Punjab',
       district: 'Ludhiana',
-      latitude: 30.9010,
-      longitude: 75.8573,
+      latitude: 30.7850,
+      longitude: 75.6200,
       total_area_hectares: 8.5,
       pump_type: '7.5 HP High-Discharge Solar Pump',
       irrigation_source: 'Solar Feeder (PM-KUSUM Component C)',
@@ -102,7 +102,7 @@ export const DEMO_PROFILES = [
       area_hectares: 5.4,
       boundary: {
         type: "Polygon",
-        coordinates: [[[75.8550, 30.8990], [75.8600, 30.8990], [75.8600, 30.9030], [75.8550, 30.9030], [75.8550, 30.8990]]]
+        coordinates: [[[75.6150, 30.7820], [75.6250, 30.7820], [75.6250, 30.7880], [75.6150, 30.7880], [75.6150, 30.7820]]]
       }
     },
     telemetry: {
@@ -145,7 +145,7 @@ export const DEMO_PROFILES = [
     full_name: 'Devendra Yadav (देवेन्द्र यादव)',
     role: 'FARMER',
     state: 'Uttar Pradesh',
-    stateHi: 'उत्तर प्रदेश (मेरठ / गंगा दोआब)',
+    stateHi: 'उत्तर प्रदेश (मेरठ / गंगा दोआब ग्रामीण)',
     district: 'Meerut',
     phone: '+91 94120 73918',
     avatar: '👨‍🌾',
@@ -154,8 +154,8 @@ export const DEMO_PROFILES = [
       name: 'Meerut Agro-Solar Cane Estate (मेरठ गन्ना एस्टेट)',
       state: 'Uttar Pradesh',
       district: 'Meerut',
-      latitude: 28.9845,
-      longitude: 77.7064,
+      latitude: 29.0850,
+      longitude: 77.8250,
       total_area_hectares: 12.0,
       pump_type: '10.0 HP Dual Agro-Solar Grid',
       irrigation_source: 'Solar Microgrid & Tube-well Hybrid',
@@ -170,7 +170,7 @@ export const DEMO_PROFILES = [
       area_hectares: 7.2,
       boundary: {
         type: "Polygon",
-        coordinates: [[[77.7020, 28.9820], [77.7080, 28.9820], [77.7080, 28.9870], [77.7020, 28.9870], [77.7020, 28.9820]]]
+        coordinates: [[[77.8200, 29.0820], [77.8300, 29.0820], [77.8300, 29.0880], [77.8200, 29.0880], [77.8200, 29.0820]]]
       }
     },
     telemetry: {
@@ -213,7 +213,7 @@ export const DEMO_PROFILES = [
     full_name: 'Ramcharan Meena (रामचरण मीणा)',
     role: 'FARMER',
     state: 'Rajasthan',
-    stateHi: 'राजस्थान (कोटा / चम्बल बेसिन)',
+    stateHi: 'राजस्थान (कोटा / चम्बल कमान्ड ग्रामीण)',
     district: 'Kota',
     phone: '+91 97840 55192',
     avatar: '👳‍♂️',
@@ -222,8 +222,8 @@ export const DEMO_PROFILES = [
       name: 'Hadoti Solar Mustard & Drip Farm (हाड़ौती सौर ड्रिप फार्म)',
       state: 'Rajasthan',
       district: 'Kota',
-      latitude: 25.2138,
-      longitude: 75.8648,
+      latitude: 25.2850,
+      longitude: 76.1250,
       total_area_hectares: 6.2,
       pump_type: '5.0 HP Solar DC Drip Pump',
       irrigation_source: 'Solar Microgrid & Micro-Drip',
@@ -238,7 +238,7 @@ export const DEMO_PROFILES = [
       area_hectares: 4.0,
       boundary: {
         type: "Polygon",
-        coordinates: [[[75.8610, 25.2110], [75.8670, 25.2110], [75.8670, 25.2160], [75.8610, 25.2160], [75.8610, 25.2110]]]
+        coordinates: [[[76.1200, 25.2810], [76.1300, 25.2810], [76.1300, 25.2880], [76.1200, 25.2880], [76.1200, 25.2810]]]
       }
     },
     telemetry: {
@@ -290,6 +290,8 @@ export const DEMO_PROFILES = [
       name: 'All-India Multi-State Solar Agriculture Network',
       state: 'Multi-State (HR, PB, UP, RJ)',
       district: 'Central Grid',
+      latitude: 29.7080,
+      longitude: 76.9550,
       total_area_hectares: 31.7,
       pump_type: 'Fleet of 27.5 HP Distributed Solar Units',
       irrigation_source: 'National Clean Energy & PM-KUSUM Grid',
@@ -304,7 +306,7 @@ export const DEMO_PROFILES = [
       area_hectares: 31.7,
       boundary: {
         type: "Polygon",
-        coordinates: [[[76.0, 28.0], [77.5, 28.0], [77.5, 30.5], [76.0, 30.5], [76.0, 28.0]]]
+        coordinates: [[[76.9500, 29.7040], [76.9600, 29.7040], [76.9600, 29.7120], [76.9500, 29.7120], [76.9500, 29.7040]]]
       }
     },
     telemetry: {
