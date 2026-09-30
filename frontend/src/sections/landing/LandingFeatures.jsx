@@ -1,84 +1,32 @@
 import React from 'react';
 import { 
-  Droplets, 
-  Sun, 
-  Satellite, 
-  Mic, 
-  ShieldCheck, 
-  CheckCircle2, 
-  TrendingUp, 
-  Cpu, 
-  Layers, 
+  Compass, 
   ArrowRight,
-  Compass,
   Sparkles
 } from 'lucide-react';
-import satelliteImg from '../../assets/satellite_farm_multispectral.jpg';
-import farmerVoiceImg from '../../assets/farmer_smart_advisory.jpg';
 
 import LiveTelemetryTicker from './LiveTelemetryTicker';
 import SolarAgroCalculator from './SolarAgroCalculator';
 import SatelliteCanopyScanner from './SatelliteCanopyScanner';
-import AgronomyProcessFlow from './AgronomyProcessFlow';
 import FaqSection from './FaqSection';
 
 export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
   const t = {
     en: {
-      sectionPill: "Architected for Real Farmlands",
-      sectionTitle: "What is Yuva Energy?",
-      sectionSubtitle: "Yuva Energy bridges the divide between cutting-edge computational agronomy and rural farmers. Our closed-loop architecture turns complex satellite telemetry and solar physics into effortless daily actions.",
-      
-      feat1Title: "Deterministic FAO-56 Water Balance",
-      feat1Desc: "Root zone soil moisture is tracked dynamically using FAO-56 Penman-Monteith physics. We calculate Readily Available Water (RAW) and Total Available Water (TAW) so you never waste a drop or stress your crops.",
-      feat1Formula: "Dr(t) = Dr(t-1) - Peff - Irr + ETc,adj + DP",
-
-      feat2Title: "Daylight Solar Pumping Synchronization",
-      feat2Desc: "Smart microgrid scheduling coordinates irrigation exclusively during peak solar irradiance (10:30 AM - 3:45 PM), entirely eliminating expensive peak-grid power bills and diesel emissions.",
-      feat2Metric: "100% Zero-Diesel Operation",
-
-      feat3Title: "Sentinel-2 Multispectral Satellite Canopy",
-      feat3Desc: "High-resolution 10-meter multispectral satellite observations calculate NDVI, EVI, and NDRE indices every 5 days, spotting crop canopy stress days before it becomes visible to the naked eye.",
-      feat3Metric: "10m Pixel Resolution",
-
-      feat4Title: "AI Vernacular Voice Assistant",
-      feat4Desc: "Engineered specifically for older farmers and those with visual impairments. Just tap the microphone and speak in Hindi or English—the assistant answers instantly in natural spoken audio.",
-      feat4Metric: "Hands-Free Voice Interaction",
-
       bottomCtaTitle: "Experience the Future of Indian Agriculture",
-      bottomCtaSubtitle: "Launch our live Karnal Basmati Estate simulator or configure your own farmland boundary in seconds.",
+      bottomCtaSubtitle: "Launch the live Multi-State Agro-Solar Console or test your farmland boundary across Haryana, Punjab, UP, and Rajasthan.",
       bottomCtaButton: "Launch Interactive Farm Console"
     },
     hi: {
-      sectionPill: "भारतीय खेतों के लिए विशेष निर्मित",
-      sectionTitle: "युवा एनर्जी क्या है?",
-      sectionSubtitle: "युवा एनर्जी जटिल उपग्रह डेटा और सौर ऊर्जा विज्ञान को सीधे किसान की सरल भाषा में बदलती है। सही समय पर सही सिंचाई, शून्य बिजली बिल और भरपूर पैदावार।",
-      
-      feat1Title: "वैज्ञानिक FAO-56 जल संतुलन",
-      feat1Desc: "मिट्टी की नमी का वैज्ञानिक आंकलन। यह प्रणाली बताती है कि फसल की जड़ों में कितना पानी बचा है और सिंचाई कब जरूरी है ताकि एक बूंद भी बर्बाद न हो।",
-      feat1Formula: "जल संतुलन: Dr = Dr(पूर्व) - वर्षा - सिंचाई + वाष्पोत्सर्जन",
-
-      feat2Title: "सौर ऊर्जा पम्पिंग का सही समय",
-      feat2Desc: "पंप को केवल तेज धूप के समय (सुबह 10:30 से दोपहर 3:45) चलाने का स्वचालित सुझाव, जिससे महंगे ग्रिड बिजली बिल और डीजल का खर्च पूरी तरह खत्म हो जाता है।",
-      feat2Metric: "100% मुफ्त सौर ऊर्जा संचालन",
-
-      feat3Title: "सेंटीनेल-2 उपग्रह से फसल निगरानी",
-      feat3Desc: "अंतरिक्ष से 10-मीटर उपग्रह द्वारा हर 5 दिन में फसल के स्वास्थ्य (NDVI) की जांच। किसी भी बीमारी या पानी की कमी का संकेत तुरंत पहचानें।",
-      feat3Metric: "10 मीटर सटीक उपग्रह पैमाना",
-
-      feat4Title: "अपनी भाषा में बोलकर पूछें (वॉयस मॉडल)",
-      feat4Desc: "बुजुर्ग किसानों और कमजोर नजर वाले साथियों के लिए सहज सुविधा। बस माइक दबाकर हिन्दी या अंग्रेजी में पूछें, युवा एनर्जी बोलकर जवाब देगी।",
-      feat4Metric: "हाथ मुक्त आवाज सुविधा",
-
       bottomCtaTitle: "स्मार्ट सौर कृषि का अनुभव आज ही करें",
-      bottomCtaSubtitle: "करनाल बासमती मॉडल फार्म का लाइव डेटा देखें या अपने खेत की सीमा जोड़ें।",
+      bottomCtaSubtitle: "हरियाणा, पंजाब, उत्तर प्रदेश और राजस्थान के खेतों का लाइव डेटा देखें व अपना खेत जोड़ें।",
       bottomCtaButton: "खेत डैशबोर्ड तुरंत खोलें"
     }
   }[lang] || {};
 
   return (
     <div>
-      {/* 1. Live Rolling Telemetry Marquee Banner */}
+      {/* 1. Live Regional Telemetry Marquee Banner */}
       <LiveTelemetryTicker lang={lang} />
 
       {/* 2. Interactive Solar Irrigation & Yield Value Calculator */}
@@ -87,275 +35,37 @@ export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
       {/* 3. Interactive Sentinel-2 Satellite Canopy Scanner */}
       <SatelliteCanopyScanner onEnterConsole={onEnterConsole} lang={lang} />
 
-      {/* 4. Core Four Pillars Deep Dive */}
-      <section style={{
-        maxWidth: '1440px',
-        margin: '0 auto',
-        padding: '64px 24px 80px 24px'
-      }}>
-        {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '840px', margin: '0 auto 64px auto' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'rgba(245, 158, 11, 0.12)',
-            border: '1px solid rgba(245, 158, 11, 0.35)',
-            borderRadius: 'var(--radius-full)',
-            padding: '6px 18px',
-            marginBottom: '16px'
-          }}>
-            <Sparkles size={16} color="var(--solar-amber)" />
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--solar-amber)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {t.sectionPill}
-            </span>
-          </div>
-
-          <h2 style={{
-            fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            marginBottom: '20px'
-          }}>
-            {t.sectionTitle}
-          </h2>
-
-          <p style={{
-            fontSize: '1.2rem',
-            lineHeight: 1.8,
-            color: 'var(--text-secondary)'
-          }}>
-            {t.sectionSubtitle}
-          </p>
-        </div>
-
-        {/* Grid of 4 Major Pillars */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '36px',
-          marginBottom: '40px'
-        }}>
-          {/* Pillar 1: Water Balance */}
-          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'rgba(14, 165, 233, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '24px'
-            }}>
-              <Droplets size={30} color="var(--sky-blue)" />
-            </div>
-
-            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-              {t.feat1Title}
-            </h3>
-
-            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
-              {t.feat1Desc}
-            </p>
-
-            <div style={{
-              background: 'rgba(14, 165, 233, 0.08)',
-              border: '1px solid rgba(14, 165, 233, 0.25)',
-              borderRadius: 'var(--radius-md)',
-              padding: '12px 16px',
-              fontFamily: 'monospace',
-              fontSize: '0.85rem',
-              color: '#7dd3fc'
-            }}>
-              {t.feat1Formula}
-            </div>
-          </div>
-
-          {/* Pillar 2: Solar Energy Dispatch */}
-          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'rgba(245, 158, 11, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '24px'
-            }}>
-              <Sun size={30} color="var(--solar-amber)" />
-            </div>
-
-            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-              {t.feat2Title}
-            </h3>
-
-            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '24px', flex: 1 }}>
-              {t.feat2Desc}
-            </p>
-
-            <div style={{
-              background: 'rgba(245, 158, 11, 0.08)',
-              border: '1px solid var(--border-solar)',
-              borderRadius: 'var(--radius-md)',
-              padding: '12px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              color: 'var(--solar-amber)'
-            }}>
-              <CheckCircle2 size={16} />
-              <span>{t.feat2Metric}</span>
-            </div>
-          </div>
-
-          {/* Pillar 3: Satellite Multispectral */}
-          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'rgba(16, 185, 129, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '24px'
-            }}>
-              <Satellite size={30} color="var(--primary-emerald)" />
-            </div>
-
-            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-              {t.feat3Title}
-            </h3>
-
-            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
-              {t.feat3Desc}
-            </p>
-
-            <div style={{
-              borderRadius: 'var(--radius-md)',
-              overflow: 'hidden',
-              border: '1px solid var(--border-subtle)',
-              marginBottom: '20px',
-              maxHeight: '160px'
-            }}>
-              <img 
-                src={satelliteImg} 
-                alt="High-resolution multispectral farmland plots"
-                style={{ width: '100%', height: '160px', objectFit: 'cover' }}
-              />
-            </div>
-
-            <div style={{
-              background: 'rgba(16, 185, 129, 0.08)',
-              border: '1px solid rgba(16, 185, 129, 0.3)',
-              borderRadius: 'var(--radius-md)',
-              padding: '12px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              color: 'var(--primary-emerald-light)'
-            }}>
-              <TrendingUp size={16} />
-              <span>{t.feat3Metric}</span>
-            </div>
-          </div>
-
-          {/* Pillar 4: Vernacular Voice Assistant */}
-          <div className="glass-panel" style={{ padding: '36px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'rgba(245, 158, 11, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '24px'
-            }}>
-              <Mic size={30} color="var(--solar-amber)" />
-            </div>
-
-            <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '14px' }}>
-              {t.feat4Title}
-            </h3>
-
-            <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '20px' }}>
-              {t.feat4Desc}
-            </p>
-
-            <div style={{
-              borderRadius: 'var(--radius-md)',
-              overflow: 'hidden',
-              border: '1px solid var(--border-subtle)',
-              marginBottom: '20px',
-              maxHeight: '160px'
-            }}>
-              <img 
-                src={farmerVoiceImg} 
-                alt="Farmer using smart voice assistant in sunlit field"
-                style={{ width: '100%', height: '160px', objectFit: 'cover' }}
-              />
-            </div>
-
-            <div style={{
-              background: 'rgba(245, 158, 11, 0.08)',
-              border: '1px solid var(--border-solar)',
-              borderRadius: 'var(--radius-md)',
-              padding: '12px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              color: 'var(--solar-amber)'
-            }}>
-              <Mic size={16} />
-              <span>{t.feat4Metric}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. End-to-End Stakeholder Lifecycle & 4-Step Pipeline Flow */}
-      <AgronomyProcessFlow lang={lang} />
-
-      {/* 6. Comprehensive FAQ Accordion */}
+      {/* 4. Streamlined FAQ Accordion */}
       <FaqSection onEnterConsole={onEnterConsole} lang={lang} />
 
-      {/* 7. Bottom Conversion Banner */}
+      {/* 5. Clean Bottom Conversion Banner */}
       <div style={{
-        maxWidth: '1440px',
+        maxWidth: '1240px',
         margin: '0 auto 64px auto',
         padding: '0 24px'
       }}>
         <div style={{
           textAlign: 'center',
-          padding: '64px 32px',
-          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(245, 158, 11, 0.14) 100%)',
+          padding: '52px 32px',
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(245, 158, 11, 0.10) 100%)',
           border: '1.5px solid var(--border-active)',
           borderRadius: 'var(--radius-xl)',
-          boxShadow: '0 24px 60px rgba(0, 0, 0, 0.6)'
+          boxShadow: '0 20px 48px rgba(0, 0, 0, 0.65)'
         }}>
           <h3 style={{
-            fontSize: 'clamp(2.2rem, 3.8vw, 3rem)',
+            fontSize: 'clamp(2rem, 3.4vw, 2.6rem)',
             fontWeight: 800,
-            marginBottom: '16px',
+            marginBottom: '14px',
             color: '#ffffff'
           }}>
             {t.bottomCtaTitle}
           </h3>
 
           <p style={{
-            fontSize: '1.2rem',
+            fontSize: '1.15rem',
             color: 'var(--text-secondary)',
-            maxWidth: '640px',
-            margin: '0 auto 36px auto',
+            maxWidth: '620px',
+            margin: '0 auto 32px auto',
             lineHeight: 1.7
           }}>
             {t.bottomCtaSubtitle}
@@ -365,15 +75,15 @@ export default function LandingFeatures({ onEnterConsole, lang = 'en' }) {
             onClick={onEnterConsole}
             className="btn-primary"
             style={{
-              padding: '18px 44px',
-              fontSize: '1.15rem',
+              padding: '16px 40px',
+              fontSize: '1.1rem',
               borderRadius: 'var(--radius-md)',
-              boxShadow: '0 12px 36px rgba(16, 185, 129, 0.45)'
+              boxShadow: '0 12px 32px rgba(16, 185, 129, 0.4)'
             }}
           >
-            <Compass size={22} />
+            <Compass size={20} />
             <span>{t.bottomCtaButton}</span>
-            <ArrowRight size={20} />
+            <ArrowRight size={18} />
           </button>
         </div>
       </div>

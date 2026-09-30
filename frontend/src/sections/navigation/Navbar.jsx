@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { 
   Sprout, 
-  RefreshCw, 
-  MapPin, 
   Languages, 
   User, 
   LogOut, 
-  Plus, 
   Mic, 
   Compass, 
   LayoutDashboard, 
   SunMedium, 
-  Type,
   ChevronDown,
   Calculator,
   Satellite,
   Menu,
-  X
+  X,
+  Sliders,
+  ArrowRightLeft
 } from 'lucide-react';
+import HindiConverterModal from '../modals/HindiConverterModal';
 
 export default function Navbar({
   currentView = 'landing',
@@ -40,12 +39,14 @@ export default function Navbar({
   onToggleHighContrast
 }) {
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showDisplaySettings, setShowDisplaySettings] = useState(false);
+  const [showHindiConverter, setShowHindiConverter] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const indicLanguages = [
-    { code: 'hi', label: 'हिन्दी', region: 'North India / All India' },
-    { code: 'en', label: 'English', region: 'Pan-India' },
-    { code: 'pa', label: 'ਪੰਜਾਬੀ (Punjabi)', region: 'Punjab / Haryana' },
+    { code: 'hi', label: 'हिन्दी', region: 'North India / Haryana / UP / Rajasthan' },
+    { code: 'en', label: 'English', region: 'Pan-India Technical' },
+    { code: 'pa', label: 'ਪੰਜਾਬੀ (Punjabi)', region: 'Punjab / Malwa' },
     { code: 'gu', label: 'ગુજરાતી (Gujarati)', region: 'Gujarat' },
     { code: 'mr', label: 'मराठी (Marathi)', region: 'Maharashtra' },
     { code: 'te', label: 'తెలుగు (Telugu)', region: 'Andhra Pradesh / Telangana' }
@@ -59,11 +60,13 @@ export default function Navbar({
       consoleTab: "Farm Console",
       authTab: "Farmer Login",
       voiceBtn: "Voice AI",
+      hindiConverterBtn: "Hindi Converter",
+      displaySettingsBtn: "Display Settings",
       syncBtn: "Sync Data",
       syncing: "Syncing...",
       newField: "Add Field",
-      contrast: "High Contrast",
-      fontSize: "Text Size"
+      contrastLabel: "Sunlight High Contrast Mode",
+      fontLabel: "Reading Font Size"
     },
     hi: {
       landingTab: "परिचय",
@@ -72,11 +75,13 @@ export default function Navbar({
       consoleTab: "खेत डैशबोर्ड",
       authTab: "किसान लॉगिन",
       voiceBtn: "आवाज सहायक",
+      hindiConverterBtn: "हिंदी रूपांतरण",
+      displaySettingsBtn: "स्क्रीन सेटिंग्स",
       syncBtn: "डेटा सिंक",
       syncing: "सिंक हो रहा...",
       newField: "नया खेत",
-      contrast: "तेज चमक",
-      fontSize: "अक्षर आकार"
+      contrastLabel: "तेज धूप हाई-कंट्रास्ट मोड",
+      fontLabel: "अक्षर आकार (फॉन्ट)"
     }
   }[lang] || {};
 
@@ -86,7 +91,7 @@ export default function Navbar({
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 120);
     } else {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -95,479 +100,504 @@ export default function Navbar({
   };
 
   return (
-    <header style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      backgroundColor: 'rgba(6, 18, 13, 0.95)',
-      backdropFilter: 'blur(24px)',
-      WebkitBackdropFilter: 'blur(24px)',
-      borderBottom: '1.5px solid var(--border-subtle)',
-      padding: '12px 24px'
-    }}>
-      <div style={{
-        maxWidth: '1440px',
-        margin: '0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '16px'
+    <>
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        backgroundColor: 'rgba(9, 13, 16, 0.95)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderBottom: '1px solid var(--border-subtle)',
+        padding: '12px 24px'
       }}>
-        {/* Left: Brand & Live Indicator */}
-        <div 
-          onClick={() => onChangeView('landing')}
-          style={{ display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer' }}
-          title="Return to Yuva Energy Overview"
-        >
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #10b981 0%, #f59e0b 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 18px rgba(16, 185, 129, 0.45)'
-          }}>
-            <Sprout size={24} color="#06120d" strokeWidth={2.5} />
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '1.3rem',
-                fontWeight: '800',
-                letterSpacing: '-0.025em',
-                color: '#ffffff'
-              }}>
-                YUVA <span style={{ color: 'var(--solar-amber)' }}>ENERGY</span>
-              </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span className="pulse-dot" />
-                <span style={{ fontSize: '0.72rem', color: 'var(--primary-emerald-light)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
-              </div>
-            </div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-              Autonomous Solar-Agro Precision Setu
-            </p>
-          </div>
-        </div>
-
-        {/* Center: Navigation Links */}
-        <nav style={{
+        <div style={{
+          maxWidth: '1440px',
+          margin: '0 auto',
           display: 'flex',
           alignItems: 'center',
-          gap: '6px',
-          background: 'var(--bg-surface)',
-          padding: '4px 6px',
-          borderRadius: 'var(--radius-full)',
-          border: '1px solid var(--border-subtle)'
-        }} className="desktop-nav">
-          <button
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}>
+          {/* Left: Brand Identity */}
+          <div 
             onClick={() => {
               onChangeView('landing');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            style={{
+            style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+            title="Return to Yuva Energy Overview"
+          >
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #10b981 0%, #f59e0b 100%)',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-full)',
-              background: currentView === 'landing' ? 'var(--primary-emerald)' : 'transparent',
-              color: currentView === 'landing' ? '#ffffff' : 'var(--text-secondary)',
-              border: 'none',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-          >
-            <Compass size={15} />
-            <span>{t.landingTab}</span>
-          </button>
+              justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)'
+            }}>
+              <Sprout size={22} color="#090d10" strokeWidth={2.5} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '1.25rem',
+                  fontWeight: '800',
+                  letterSpacing: '-0.025em',
+                  color: '#ffffff'
+                }}>
+                  YUVA <span style={{ color: 'var(--solar-amber)' }}>ENERGY</span>
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span className="pulse-dot" style={{ width: '7px', height: '7px' }} />
+                  <span style={{ fontSize: '0.7rem', color: 'var(--primary-emerald-light)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
+                Multi-State Solar Precision Agronomy
+              </p>
+            </div>
+          </div>
 
-          <button
-            onClick={() => scrollTo('calculator-section')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              borderRadius: 'var(--radius-full)',
-              background: 'transparent',
-              color: 'var(--text-secondary)',
-              border: 'none',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              transition: 'color 0.2s'
-            }}
-          >
-            <Calculator size={15} />
-            <span>{t.calcTab}</span>
-          </button>
-
-          <button
-            onClick={() => scrollTo('satellite-scanner-section')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              borderRadius: 'var(--radius-full)',
-              background: 'transparent',
-              color: 'var(--text-secondary)',
-              border: 'none',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              transition: 'color 0.2s'
-            }}
-          >
-            <Satellite size={15} />
-            <span>{t.scannerTab}</span>
-          </button>
-
-          <button
-            id="nav-console-tab"
-            onClick={() => onChangeView('dashboard')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-full)',
-              background: currentView === 'dashboard' ? 'var(--primary-emerald)' : 'transparent',
-              color: currentView === 'dashboard' ? '#ffffff' : 'var(--text-secondary)',
-              border: 'none',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-          >
-            <LayoutDashboard size={15} />
-            <span>{t.consoleTab}</span>
-          </button>
-
-          {!user && (
+          {/* Center: Main Navigation Tabs */}
+          <nav style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            background: 'var(--bg-surface)',
+            padding: '4px 6px',
+            borderRadius: 'var(--radius-full)',
+            border: '1px solid var(--border-subtle)'
+          }} className="desktop-nav">
             <button
-              onClick={() => onChangeView('auth')}
+              onClick={() => {
+                onChangeView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
                 padding: '8px 14px',
                 borderRadius: 'var(--radius-full)',
-                background: currentView === 'auth' ? 'var(--primary-emerald)' : 'transparent',
-                color: currentView === 'auth' ? '#ffffff' : 'var(--text-secondary)',
+                background: currentView === 'landing' ? 'var(--primary-emerald)' : 'transparent',
+                color: currentView === 'landing' ? '#ffffff' : 'var(--text-secondary)',
                 border: 'none',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 700,
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
             >
-              <User size={15} />
-              <span>{t.authTab}</span>
+              <Compass size={14} />
+              <span>{t.landingTab}</span>
             </button>
-          )}
-        </nav>
 
-        {/* Center-Right: Field Selector (Only in Console Mode) */}
-        {currentView === 'dashboard' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'var(--bg-surface-elevated)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px'
-            }}>
-              <MapPin size={16} color="var(--primary-emerald)" />
-              <select
-                id="field-selector"
-                value={selectedField?.id || ''}
-                onChange={(e) => {
-                  const found = fields.find(f => f.id === e.target.value);
-                  if (found) onSelectField(found);
-                }}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-primary)',
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: 700,
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                {fields.length === 0 ? (
-                  <option value="">No Active Fields</option>
-                ) : (
-                  fields.map((f) => (
-                    <option key={f.id} value={f.id} style={{ background: '#0b1f16' }}>
-                      {f.name} ({f.crop_name || 'Active Crop'})
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-
-            {onNewField && (
-              <button
-                onClick={onNewField}
-                className="btn-secondary"
-                style={{ padding: '8px 12px', fontSize: '0.82rem' }}
-                title="Register New Field Plot"
-              >
-                <Plus size={14} />
-                <span>{t.newField}</span>
-              </button>
-            )}
-
-            {selectedField && (
-              <button
-                id="sync-telemetry-btn"
-                onClick={onSync}
-                disabled={isSyncing}
-                className="btn-secondary"
-                style={{ padding: '8px 14px', fontSize: '0.82rem' }}
-                title="Synchronize weather, soil, and satellite data"
-              >
-                <RefreshCw 
-                  size={14} 
-                  style={{ animation: isSyncing ? 'spin 1s linear infinite' : 'none' }} 
-                />
-                <span>{isSyncing ? t.syncing : t.syncBtn}</span>
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Right: Accessibility Controls & User Session */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Quick Voice Launch Button */}
-          <button
-            id="nav-voice-assistant-btn"
-            onClick={onOpenVoice}
-            className="btn-solar"
-            style={{ padding: '8px 16px', fontSize: '0.88rem', borderRadius: 'var(--radius-full)' }}
-            title="Open Vernacular Voice Assistant"
-          >
-            <Mic size={15} />
-            <span>{t.voiceBtn}</span>
-          </button>
-
-          {/* Font Size Accessibility Scaler */}
-          <button
-            onClick={() => {
-              const nextScale = fontScale === 1 ? 1.2 : fontScale === 1.2 ? 1.4 : 1;
-              onChangeFontScale(nextScale);
-            }}
-            className="btn-secondary"
-            style={{ padding: '8px 12px', fontSize: '0.82rem' }}
-            title="Adjust Font Size for Easier Reading (Older Farmers / Poor Eyesight)"
-          >
-            <Type size={14} />
-            <span>{fontScale === 1 ? 'A' : fontScale === 1.2 ? 'A+' : 'A++'}</span>
-          </button>
-
-          {/* High Contrast Mode Toggle */}
-          <button
-            onClick={onToggleHighContrast}
-            className="btn-secondary"
-            style={{
-              padding: '8px 12px',
-              fontSize: '0.82rem',
-              borderColor: isHighContrast ? 'var(--primary-emerald)' : 'var(--border-subtle)'
-            }}
-            title="High Contrast Mode for Sunlight Readability"
-          >
-            <SunMedium size={14} color={isHighContrast ? 'var(--solar-amber)' : 'var(--text-secondary)'} />
-          </button>
-
-          {/* Language Selector Dropdown */}
-          <div style={{ position: 'relative' }}>
             <button
-              id="lang-toggle-btn"
-              onClick={() => setShowLangMenu(!showLangMenu)}
-              className="btn-secondary"
-              style={{ padding: '8px 14px', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-              title="Select Language / भाषा चुनें"
+              onClick={() => scrollTo('calculator-section')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 14px',
+                borderRadius: 'var(--radius-full)',
+                background: 'transparent',
+                color: 'var(--text-secondary)',
+                border: 'none',
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                transition: 'color 0.2s'
+              }}
             >
-              <Languages size={15} />
-              <span>{lang === 'hi' ? 'हिन्दी' : 'English'}</span>
-              <ChevronDown size={13} />
+              <Calculator size={14} />
+              <span>{t.calcTab}</span>
             </button>
 
-            {showLangMenu && (
-              <div style={{
-                position: 'absolute',
-                top: 'calc(100% + 8px)',
-                right: 0,
-                background: 'rgba(8, 22, 16, 0.98)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid var(--border-active)',
-                borderRadius: 'var(--radius-md)',
-                padding: '8px',
-                minWidth: '220px',
-                boxShadow: '0 16px 36px rgba(0, 0, 0, 0.75)',
-                zIndex: 120
-              }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)', padding: '6px 10px', textTransform: 'uppercase' }}>
-                  Regional Farming Languages
-                </div>
-                {indicLanguages.map((item) => (
+            <button
+              onClick={() => scrollTo('satellite-scanner-section')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 14px',
+                borderRadius: 'var(--radius-full)',
+                background: 'transparent',
+                color: 'var(--text-secondary)',
+                border: 'none',
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                transition: 'color 0.2s'
+              }}
+            >
+              <Satellite size={14} />
+              <span>{t.scannerTab}</span>
+            </button>
+
+            <button
+              id="nav-console-tab"
+              onClick={() => {
+                onChangeView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 16px',
+                borderRadius: 'var(--radius-full)',
+                background: currentView === 'dashboard' ? 'var(--primary-emerald)' : 'transparent',
+                color: currentView === 'dashboard' ? '#ffffff' : 'var(--text-secondary)',
+                border: 'none',
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+            >
+              <LayoutDashboard size={14} />
+              <span>{t.consoleTab}</span>
+            </button>
+          </nav>
+
+          {/* Right Toolbar: Streamlined & Unclustered */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* 1. Voice AI Assistant Button */}
+            <button
+              id="nav-voice-assistant-btn"
+              onClick={onOpenVoice}
+              className="btn-solar"
+              style={{
+                padding: '8px 14px',
+                fontSize: '0.82rem',
+                borderRadius: 'var(--radius-full)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+              title="Open Vernacular Voice Assistant"
+            >
+              <Mic size={15} />
+              <span>{t.voiceBtn}</span>
+            </button>
+
+            {/* 2. Language & Hindi Converter Dropdown */}
+            <div style={{ position: 'relative' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLangMenu(!showLangMenu);
+                  setShowDisplaySettings(false);
+                }}
+                className="btn-secondary"
+                style={{
+                  padding: '8px 12px',
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                title="Language & Hindi Transliterator"
+              >
+                <Languages size={15} color="var(--primary-emerald-light)" />
+                <span>{lang === 'hi' ? 'हिन्दी' : 'English'}</span>
+                <ChevronDown size={13} />
+              </button>
+
+              {showLangMenu && (
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  background: 'rgba(16, 22, 29, 0.98)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1.5px solid var(--border-active)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '10px',
+                  minWidth: '240px',
+                  boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8)',
+                  zIndex: 150
+                }}>
+                  {/* Dedicated Hindi Converter Button */}
                   <button
-                    key={item.code}
                     type="button"
                     onClick={() => {
-                      if (item.code === 'hi' || item.code === 'en') {
-                        if (lang !== item.code) onToggleLang();
-                      } else {
-                        // Regional dialect notice
-                        alert(`${item.label} voice advisory model activated for ${item.region}. English/Hindi fallback active.`);
-                      }
+                      setShowHindiConverter(true);
                       setShowLangMenu(false);
                     }}
                     style={{
                       width: '100%',
                       display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      padding: '8px 10px',
-                      background: (lang === item.code) ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-                      border: 'none',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '10px 12px',
+                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(245, 158, 11, 0.2) 100%)',
+                      border: '1px solid var(--primary-emerald)',
                       borderRadius: 'var(--radius-sm)',
-                      color: (lang === item.code) ? 'var(--primary-emerald-light)' : '#ffffff',
+                      color: '#ffffff',
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
                       cursor: 'pointer',
-                      textAlign: 'left'
+                      marginBottom: '10px'
                     }}
                   >
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>{item.label}</span>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{item.region}</span>
+                    <ArrowRightLeft size={16} color="var(--solar-amber)" />
+                    <span>{t.hindiConverterBtn} (अनुवादक)</span>
                   </button>
-                ))}
-              </div>
-            )}
-          </div>
 
-          {/* User Session Profile */}
-          {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(16, 185, 129, 0.12)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                padding: '6px 12px'
-              }}>
-                <User size={14} color="var(--primary-emerald)" />
-                <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>{user.full_name || user.email}</span>
-              </div>
-              <button
-                id="logout-btn"
-                onClick={onLogout}
-                className="btn-secondary"
-                style={{ padding: '8px' }}
-                title="Log Out"
-              >
-                <LogOut size={15} />
-              </button>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-tertiary)', padding: '4px 8px', textTransform: 'uppercase' }}>
+                    Select Platform Language:
+                  </div>
+
+                  {indicLanguages.map((item) => (
+                    <button
+                      key={item.code}
+                      type="button"
+                      onClick={() => {
+                        if (item.code === 'hi' || item.code === 'en') {
+                          if (lang !== item.code) onToggleLang();
+                        } else {
+                          alert(`${item.label} dialect model active for ${item.region}.`);
+                        }
+                        setShowLangMenu(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        padding: '8px 10px',
+                        background: (lang === item.code) ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                        border: 'none',
+                        borderRadius: 'var(--radius-sm)',
+                        color: (lang === item.code) ? 'var(--primary-emerald-light)' : '#ffffff',
+                        cursor: 'pointer',
+                        textAlign: 'left'
+                      }}
+                    >
+                      <span style={{ fontSize: '0.88rem', fontWeight: 700 }}>{item.label}</span>
+                      <span style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)' }}>{item.region}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          ) : (
+
+            {/* 3. Display & Accessibility Settings Popover */}
+            <div style={{ position: 'relative' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDisplaySettings(!showDisplaySettings);
+                  setShowLangMenu(false);
+                }}
+                className="btn-secondary"
+                style={{ padding: '8px 10px', fontSize: '0.82rem' }}
+                title="Display & Font Accessibility Settings"
+              >
+                <Sliders size={15} />
+              </button>
+
+              {showDisplaySettings && (
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  background: 'rgba(16, 22, 29, 0.98)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1.5px solid var(--border-active)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '16px',
+                  minWidth: '220px',
+                  boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8)',
+                  zIndex: 150
+                }}>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase', marginBottom: '10px' }}>
+                    {t.fontLabel}
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginBottom: '16px' }}>
+                    {[1, 1.2, 1.4].map((scale) => (
+                      <button
+                        key={scale}
+                        type="button"
+                        onClick={() => onChangeFontScale(scale)}
+                        style={{
+                          background: fontScale === scale ? 'var(--primary-emerald)' : 'rgba(255, 255, 255, 0.08)',
+                          color: fontScale === scale ? '#090d10' : '#ffffff',
+                          border: 'none',
+                          borderRadius: 'var(--radius-sm)',
+                          padding: '6px',
+                          fontWeight: 700,
+                          fontSize: '0.82rem',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {scale === 1 ? '100%' : scale === 1.2 ? '120%' : '140%'}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                    {t.contrastLabel}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onToggleHighContrast();
+                      setShowDisplaySettings(false);
+                    }}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '8px 12px',
+                      background: isHighContrast ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                      border: `1px solid ${isHighContrast ? 'var(--solar-amber)' : 'transparent'}`,
+                      borderRadius: 'var(--radius-sm)',
+                      color: isHighContrast ? 'var(--solar-amber)' : '#ffffff',
+                      fontWeight: 700,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span>{isHighContrast ? 'High Contrast ON' : 'Standard Contrast'}</span>
+                    <SunMedium size={16} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* 4. Farmer User Chip & State Badge / Login Button */}
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(16, 185, 129, 0.12)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: 'var(--radius-full)',
+                  padding: '6px 14px'
+                }}>
+                  <User size={14} color="var(--primary-emerald-light)" />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>
+                      {user.full_name?.split('(')[0].trim() || 'Farmer'}
+                    </span>
+                    <span style={{ fontSize: '0.68rem', color: 'var(--solar-amber)', fontWeight: 600 }}>
+                      {user.state || 'Haryana'}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  id="logout-btn"
+                  onClick={onLogout}
+                  className="btn-secondary"
+                  style={{ padding: '8px', borderRadius: '50%' }}
+                  title="Sign Out"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  if (onOpenAuth) onOpenAuth();
+                  else onChangeView('auth');
+                }}
+                className="btn-primary"
+                style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+              >
+                {lang === 'hi' ? 'लॉग इन' : 'Sign In'}
+              </button>
+            )}
+
+            {/* Mobile Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="btn-secondary mobile-menu-btn"
+              style={{ padding: '8px', display: 'none' }}
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div style={{
+            padding: '16px',
+            background: 'rgba(9, 13, 16, 0.98)',
+            borderTop: '1px solid var(--border-subtle)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            marginTop: '12px'
+          }}>
             <button
               onClick={() => {
-                if (onOpenAuth) onOpenAuth();
-                else onChangeView('auth');
+                onChangeView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setMobileMenuOpen(false);
+              }}
+              className="btn-secondary"
+              style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+            >
+              <Compass size={16} />
+              <span>{t.landingTab}</span>
+            </button>
+
+            <button
+              onClick={() => scrollTo('calculator-section')}
+              className="btn-secondary"
+              style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+            >
+              <Calculator size={16} />
+              <span>{t.calcTab}</span>
+            </button>
+
+            <button
+              onClick={() => scrollTo('satellite-scanner-section')}
+              className="btn-secondary"
+              style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+            >
+              <Satellite size={16} />
+              <span>{t.scannerTab}</span>
+            </button>
+
+            <button
+              onClick={() => {
+                onChangeView('dashboard');
+                setMobileMenuOpen(false);
               }}
               className="btn-primary"
-              style={{ padding: '8px 18px', fontSize: '0.88rem' }}
+              style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
             >
-              {lang === 'hi' ? 'लॉग इन' : 'Sign In'}
+              <LayoutDashboard size={16} />
+              <span>{t.consoleTab}</span>
             </button>
-          )}
+          </div>
+        )}
+      </header>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="btn-secondary mobile-menu-btn"
-            style={{ padding: '8px', display: 'none' }}
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div style={{
-          padding: '16px',
-          background: 'rgba(6, 18, 13, 0.98)',
-          borderTop: '1px solid var(--border-subtle)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          marginTop: '12px'
-        }}>
-          <button
-            onClick={() => {
-              onChangeView('landing');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              setMobileMenuOpen(false);
-            }}
-            className="btn-secondary"
-            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
-          >
-            <Compass size={16} />
-            <span>{t.landingTab}</span>
-          </button>
-
-          <button
-            onClick={() => scrollTo('calculator-section')}
-            className="btn-secondary"
-            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
-          >
-            <Calculator size={16} />
-            <span>{t.calcTab}</span>
-          </button>
-
-          <button
-            onClick={() => scrollTo('satellite-scanner-section')}
-            className="btn-secondary"
-            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
-          >
-            <Satellite size={16} />
-            <span>{t.scannerTab}</span>
-          </button>
-
-          <button
-            onClick={() => {
-              onChangeView('dashboard');
-              setMobileMenuOpen(false);
-            }}
-            className="btn-primary"
-            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
-          >
-            <LayoutDashboard size={16} />
-            <span>{t.consoleTab}</span>
-          </button>
-        </div>
-      )}
-    </header>
+      {/* Hindi Converter Transliterator Modal */}
+      <HindiConverterModal 
+        isOpen={showHindiConverter} 
+        onClose={() => setShowHindiConverter(false)} 
+        lang={lang} 
+      />
+    </>
   );
 }

@@ -5,6 +5,7 @@ import LandingHero from './sections/landing/LandingHero';
 import LandingFeatures from './sections/landing/LandingFeatures';
 import AuthSection from './sections/auth/AuthSection';
 import VoiceAssistant from './sections/voice/VoiceAssistant';
+import FarmerIdentityCard from './sections/hero/FarmerIdentityCard';
 import HeroRibbon from './sections/hero/HeroRibbon';
 import FieldMap from './sections/geospatial/FieldMap';
 import WaterBalanceCard from './sections/water-balance/WaterBalanceCard';
@@ -12,8 +13,8 @@ import SolarEnergyCard from './sections/solar-energy/SolarEnergyCard';
 import RecommendationsFeed from './sections/recommendations/RecommendationsFeed';
 import FieldModal from './sections/modals/FieldModal';
 import Footer from './sections/footer/Footer';
-import { api, getAuthToken, getCurrentUser, removeAuthToken } from './services/api';
-import { ArrowLeft, Compass, LayoutDashboard, Mic, ShieldCheck } from 'lucide-react';
+import { api, getCurrentUser, removeAuthToken, DEMO_PROFILES } from './services/api';
+import { ArrowLeft, Mic } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'auth' | 'dashboard'
@@ -22,7 +23,7 @@ export default function App() {
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [showVoiceModal, setShowVoiceModal] = useState(false);
 
-  const [user, setUser] = useState(getCurrentUser());
+  const [user, setUser] = useState(() => getCurrentUser() || DEMO_PROFILES[0]);
   const [farms, setFarms] = useState([]);
   const [fields, setFields] = useState([]);
   const [selectedField, setSelectedField] = useState(null);
@@ -126,33 +127,137 @@ export default function App() {
     }
   }, []);
 
-  // Initialize demo credentials in background so console is instantly available
-  useEffect(() => {
-    const token = getAuthToken();
-    if (token) {
-      loadFarmsAndFields();
-    } else {
-      api.login({ email: 'farmer@example.com', password: 'Password123!' })
-        .then((res) => {
-          localStorage.setItem('yuva_token', res.access_token);
-          localStorage.setItem('yuva_user', JSON.stringify(res.user));
-          setUser(res.user);
-          loadFarmsAndFields();
-        })
-        .catch(() => {
-          api.register({
-            email: 'farmer@example.com',
-            password: 'Password123!',
-            full_name: 'Rajesh Kumar (Karnal Basmati)'
-          }).then((res) => {
-            localStorage.setItem('yuva_token', res.access_token);
-            localStorage.setItem('yuva_user', JSON.stringify(res.user));
-            setUser(res.user);
-            loadFarmsAndFields();
-          }).catch((e) => console.log('Demo registration note:', e.message));
-        });
+  // Apply a benchmark state profile or logged-in farmer
+  const handleApplyProfileData = useCallback((profile) => {
+    if (!profile) return;
+    setUser(profile);
+    if (profile.field) {
+      setSelectedField(profile.field);
+      setFields((prev) => {
+        const exists = prev.some(f => f.id === profile.field.id);
+        return exists ? prev : [profile.field, ...prev];
+      });
     }
-  }, [loadFarmsAndFields]);
+    if (profile.telemetry) {
+      setWaterBalance(profile.telemetry);
+    }
+    if (profile.weather) {
+      setWeather(profile.weather);
+    }
+    if (profile.recommendation) {
+      setRecommendations([profile.recommendation]);
+    }
+  }, []);
+
+  const handleSwitchProfile = useCallback((profile) => {
+    handleApplyProfileData(profile);
+  }, [handleApplyProfileData]);
+
+  // Live telemetry simulation handler ("Demo Thing to show changes in data")
+  const handleSimulateWeather = useCallback((mode) => {
+    const activeProfile = DEMO_PROFILES.find(p => p.id === user?.id) || DEMO_PROFILES[0];
+
+    if (mode === 'SUNNY_PEAK') {
+      setWeather(prev => ({
+        ...(prev || activeProfile.weather),
+        temperature_celsius: 35.5,
+        solar_radiation_w_m2: 820,
+        condition: lang === 'hi' ? 'प्रखर दोपहर धूप (820 W/m²)' : 'Peak Solar Noon (820 W/m²)',
+        precipitation_last_24h_mm: 0
+      }));
+      setWaterBalance(prev => ({
+        ...(prev || activeProfile.telemetry),
+        cwsi: 0.16,
+        depletion_dr_mm: Math.min((prev?.raw_mm || 38) * 0.75, (prev?.depletion_dr_mm || 22) + 3.8),
+        etc_adj_mm_day: 5.4,
+        solar_irradiance_w_m2: 820,
+        pump_status: 'ACTIVE_SOLAR'
+      }));
+      setRecommendations([{
+        id: 'sim_sun_' + Date.now(),
+        action_type: 'SCHEDULE_IRRIGATION',
+        urgency_level: 'MEDIUM',
+        title: lang === 'hi' ? 'उच्च सौर विकिरण (820 W/m²) — पूर्ण क्षमता सौर पम्पिंग सक्रिय' : 'Peak Solar Irradiance (820 W/m²) — Max Daylight Pumping Active',
+        title_hi: 'उच्च सौर विकिरण (820 W/m²) — पूर्ण क्षमता सौर पम्पिंग सक्रिय',
+        message: lang === 'hi' ? 'सौर पैनल 820 W/m² ऊर्जा प्राप्त कर रहे हैं। बिना ग्रिड बिजली खर्च के 50 मिनट पम्प चालू रखा गया है।' : 'Solar PV generating peak power at 820 W/m². Solar pump running at optimal discharge with ₹0 grid electricity cost.',
+        message_hi: 'सौर पैनल 820 W/m² ऊर्जा प्राप्त कर रहे हैं। बिना ग्रिड बिजली खर्च के 50 मिनट पम्प चालू रखा गया है।',
+        confidence_score: 0.98,
+        generated_at: new Date().toISOString()
+      }]);
+    } else if (mode === 'RAIN_FALL') {
+      setWeather(prev => ({
+        ...(prev || activeProfile.weather),
+        temperature_celsius: 23.5,
+        relative_humidity_percentage: 86,
+        solar_radiation_w_m2: 240,
+        condition: lang === 'hi' ? 'अच्छी मानसूनी वर्षा (18mm)' : 'Active Monsoon Rainfall (18mm)',
+        precipitation_last_24h_mm: 18.0
+      }));
+      setWaterBalance(prev => ({
+        ...(prev || activeProfile.telemetry),
+        cwsi: 0.02,
+        depletion_dr_mm: Math.max(0, (prev?.depletion_dr_mm || 22) - 18),
+        etc_adj_mm_day: 2.1,
+        solar_irradiance_w_m2: 240,
+        pump_status: 'STANDBY_RAIN'
+      }));
+      setRecommendations([{
+        id: 'sim_rain_' + Date.now(),
+        action_type: 'HOLD_FOR_RAIN',
+        urgency_level: 'LOW',
+        title: lang === 'hi' ? 'वर्षा संचयन अलर्ट — पम्प पूरी तरह बंद रखें' : 'Rainfall Infiltration Event — Keep All Pumps in Standby',
+        title_hi: 'वर्षा संचयन अलर्ट — पम्प पूरी तरह बंद रखें',
+        message: lang === 'hi' ? '18mm बारिश दर्ज की गई है। जड़ों में पर्याप्त नमी है, भूजल और बिजली दोनों की 100% बचत करें।' : '18mm precipitation has replenished the crop root zone. Solar pumps switched to standby to conserve aquifer water.',
+        message_hi: '18mm बारिश दर्ज की गई है। जड़ों में पर्याप्त नमी है, भूजल और बिजली दोनों की 100% बचत करें।',
+        confidence_score: 0.99,
+        generated_at: new Date().toISOString()
+      }]);
+    } else if (mode === 'HEAT_STRESS') {
+      setWeather(prev => ({
+        ...(prev || activeProfile.weather),
+        temperature_celsius: 41.8,
+        relative_humidity_percentage: 24,
+        solar_radiation_w_m2: 895,
+        condition: lang === 'hi' ? 'भीषण शुष्क लू व ताप तनाव' : 'Severe Arid Heatwave (CWSI Stress)',
+        precipitation_last_24h_mm: 0
+      }));
+      setWaterBalance(prev => ({
+        ...(prev || activeProfile.telemetry),
+        cwsi: 0.54,
+        depletion_dr_mm: (prev?.raw_mm || 38) + 6.5,
+        etc_adj_mm_day: 7.2,
+        solar_irradiance_w_m2: 895,
+        pump_status: 'EMERGENCY_DISPATCH'
+      }));
+      setRecommendations([{
+        id: 'sim_heat_' + Date.now(),
+        action_type: 'IRRIGATE_IMMEDIATELY',
+        urgency_level: 'HIGH',
+        title: lang === 'hi' ? 'गंभीर जल तनाव (CWSI 0.54) — तुरंत आपातकालीन सौर सिंचाई करें' : 'Severe Crop Water Stress (CWSI 0.54) — Immediate Solar Irrigation',
+        title_hi: 'गंभीर जल तनाव (CWSI 0.54) — तुरंत आपातकालीन सौर सिंचाई करें',
+        message: lang === 'hi' ? 'तापमान 41.8°C पहुंच गया है और जल तनाव सीमा पार कर गया है। फसल मुरझाने से बचाने के लिए तुरंत सौर पम्प शुरू करें।' : 'Extreme heat of 41.8°C has breached allowable depletion limits. Dispatch solar pump immediately to prevent permanent crop wilting.',
+        message_hi: 'तापमान 41.8°C पहुंच गया है और जल तनाव सीमा पार कर गया है। फसल मुरझाने से बचाने के लिए तुरंत सौर पम्प शुरू करें।',
+        confidence_score: 0.96,
+        generated_at: new Date().toISOString()
+      }]);
+    } else {
+      // RESET
+      setWeather(activeProfile.weather);
+      setWaterBalance(activeProfile.telemetry);
+      setRecommendations([activeProfile.recommendation]);
+    }
+  }, [user, lang]);
+
+  // Initialize demo credentials and baseline profile
+  useEffect(() => {
+    const existing = getCurrentUser();
+    if (existing) {
+      handleApplyProfileData(existing);
+    } else {
+      handleApplyProfileData(DEMO_PROFILES[0]);
+    }
+    loadFarmsAndFields();
+  }, [loadFarmsAndFields, handleApplyProfileData]);
 
   // Load field telemetry & hydrologic balance
   const loadFieldData = useCallback(async (fieldId) => {
@@ -294,8 +399,7 @@ export default function App() {
           <div className="view-transition">
             <AuthSection
               onSuccess={(u) => {
-                setUser(u);
-                loadFarmsAndFields();
+                handleApplyProfileData(u);
                 setCurrentView('dashboard');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -343,6 +447,17 @@ export default function App() {
                 </button>
               </div>
             </div>
+
+            {/* Benchmark State Profile & Logged-in Farmer Identity Card */}
+            <FarmerIdentityCard
+              user={user}
+              field={selectedField}
+              weather={weather}
+              waterBalance={waterBalance}
+              lang={lang}
+              onSwitchProfile={handleSwitchProfile}
+              onSimulateWeather={handleSimulateWeather}
+            />
 
             {/* Farm Banner & Weather Telemetry Ribbon */}
             <HeroRibbon
