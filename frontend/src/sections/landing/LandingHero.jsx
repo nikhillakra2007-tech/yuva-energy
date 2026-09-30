@@ -47,7 +47,7 @@ export default function LandingHero({
       stat3Label: "Satellite Resolution",
       stat4Val: "₹0",
       stat4Label: "Peak Grid Cost",
-      audioScript: "Welcome to Yuva Energy. We combine solar energy and satellite intelligence to help you irrigate your fields at the exact right moment, saving water, cutting electricity bills to zero, and protecting crop health."
+      audioScript: "Welcome to KisanUrja. We combine solar energy and satellite intelligence to help you irrigate your fields at the exact right moment, saving water, cutting electricity bills to zero, and protecting crop health."
     },
     hi: {
       tag: "भारत का प्रथम सजीव कृषि-सौर बुद्धिमत्ता सेतु",
@@ -69,7 +69,7 @@ export default function LandingHero({
       stat3Label: "उपग्रह निगरानी स्तर",
       stat4Val: "₹0",
       stat4Label: "ग्रिड बिजली का खर्च",
-      audioScript: "युवा एनर्जी में आपका स्वागत है। हम सौर ऊर्जा और सैटेलाइट तकनीक की मदद से आपको बताते हैं कि खेत में कब और कितना पानी देना है, जिससे पानी और बिजली की पूरी बचत हो।"
+      audioScript: "किसान ऊर्जा में आपका स्वागत है। हम सौर ऊर्जा और सैटेलाइट तकनीक की मदद से आपको बताते हैं कि खेत में कब और कितना पानी देना है, जिससे पानी और बिजली की पूरी बचत हो।"
     }
   }[lang] || {};
 

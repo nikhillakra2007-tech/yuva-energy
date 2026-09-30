@@ -107,7 +107,7 @@ export default function AuthSection({
 
       const userObj = res.user || {
         id: 'user_' + Date.now(),
-        email: email || 'farmer@yuvaenergy.in',
+        email: email || 'farmer@kisanurja.in',
         full_name: fullName || email.split('@')[0] || 'Shri Ram Kisan',
         role: 'FARMER',
         state: 'Haryana',
@@ -122,7 +122,7 @@ export default function AuthSection({
       // In case of any network error, fallback gracefully
       const fallbackUser = {
         id: 'user_' + Date.now(),
-        email: email || 'farmer@yuvaenergy.in',
+        email: email || 'farmer@kisanurja.in',
         full_name: fullName || 'Kisan Mitra (किसान मित्र)',
         role: 'FARMER',
         state: 'Haryana',
@@ -345,7 +345,7 @@ export default function AuthSection({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="farmer@yuvaenergy.in or +91 98765 43210"
+                placeholder="farmer@kisanurja.in or +91 98765 43210"
                 className="input-field"
                 style={{ paddingLeft: '48px' }}
               />

@@ -1,11 +1,11 @@
-// Resilient API client & Multi-State Agronomy Store for Yuva Energy
+// Resilient API client & Multi-State Agronomy Store for KisanUrja (किसान ऊर्जा)
 const API_BASE = '/api/v1';
 
 // 4 Benchmark State Farmer Profiles + Regional Admin
 export const DEMO_PROFILES = [
   {
     id: 'user_haryana_01',
-    email: 'rajesh.karnal@yuvaenergy.in',
+    email: 'rajesh.karnal@kisanurja.in',
     full_name: 'Rajesh Kumar (राजेश कुमार)',
     role: 'FARMER',
     state: 'Haryana',
@@ -73,7 +73,7 @@ export const DEMO_PROFILES = [
   },
   {
     id: 'user_punjab_02',
-    email: 'gurpreet.ludhiana@yuvaenergy.in',
+    email: 'gurpreet.ludhiana@kisanurja.in',
     full_name: 'Sardar Gurpreet Singh (गुरप्रीत सिंह)',
     role: 'FARMER',
     state: 'Punjab',
@@ -141,7 +141,7 @@ export const DEMO_PROFILES = [
   },
   {
     id: 'user_up_03',
-    email: 'devendra.meerut@yuvaenergy.in',
+    email: 'devendra.meerut@kisanurja.in',
     full_name: 'Devendra Yadav (देवेन्द्र यादव)',
     role: 'FARMER',
     state: 'Uttar Pradesh',
@@ -209,7 +209,7 @@ export const DEMO_PROFILES = [
   },
   {
     id: 'user_rajasthan_04',
-    email: 'ramcharan.kota@yuvaenergy.in',
+    email: 'ramcharan.kota@kisanurja.in',
     full_name: 'Ramcharan Meena (रामचरण मीणा)',
     role: 'FARMER',
     state: 'Rajasthan',
@@ -277,7 +277,7 @@ export const DEMO_PROFILES = [
   },
   {
     id: 'user_admin_05',
-    email: 'admin.agronomy@yuvaenergy.in',
+    email: 'admin.agronomy@kisanurja.in',
     full_name: 'Dr. Vandana Sharma (डॉ. वंदना शर्मा)',
     role: 'ADMIN',
     state: 'National Agronomy Council',
@@ -346,17 +346,25 @@ export const DEMO_PROFILES = [
 ];
 
 export const getAuthToken = () => {
-  const token = localStorage.getItem('yuva_token');
+  const token = localStorage.getItem('kisanurja_token') || localStorage.getItem('yuva_token');
   if (!token || token === 'undefined' || token === 'null') return null;
   return token;
 };
 
 export const setAuthToken = (token) => {
-  if (token) localStorage.setItem('yuva_token', token);
-  else localStorage.removeItem('yuva_token');
+  if (token) {
+    localStorage.setItem('kisanurja_token', token);
+    localStorage.setItem('yuva_token', token);
+  } else {
+    localStorage.removeItem('kisanurja_token');
+    localStorage.removeItem('yuva_token');
+  }
 };
 
 export const removeAuthToken = () => {
+  localStorage.removeItem('kisanurja_token');
+  localStorage.removeItem('kisanurja_user');
+  localStorage.removeItem('kisanurja_profile_id');
   localStorage.removeItem('yuva_token');
   localStorage.removeItem('yuva_user');
   localStorage.removeItem('yuva_profile_id');
@@ -364,7 +372,7 @@ export const removeAuthToken = () => {
 
 export const getCurrentUser = () => {
   try {
-    const user = localStorage.getItem('yuva_user');
+    const user = localStorage.getItem('kisanurja_user') || localStorage.getItem('yuva_user');
     if (!user || user === 'undefined' || user === 'null') {
       return DEMO_PROFILES[0]; // Default to Rajesh Kumar (Haryana)
     }
@@ -376,8 +384,12 @@ export const getCurrentUser = () => {
 
 export const setCurrentUser = (user) => {
   if (user) {
+    localStorage.setItem('kisanurja_user', JSON.stringify(user));
     localStorage.setItem('yuva_user', JSON.stringify(user));
-    if (user.id) localStorage.setItem('yuva_profile_id', user.id);
+    if (user.id) {
+      localStorage.setItem('kisanurja_profile_id', user.id);
+      localStorage.setItem('yuva_profile_id', user.id);
+    }
   } else {
     removeAuthToken();
   }
@@ -385,7 +397,7 @@ export const setCurrentUser = (user) => {
 
 export const getActiveProfile = () => {
   const user = getCurrentUser();
-  const profileId = user?.id || localStorage.getItem('yuva_profile_id');
+  const profileId = user?.id || localStorage.getItem('kisanurja_profile_id') || localStorage.getItem('yuva_profile_id');
   const matched = DEMO_PROFILES.find(p => p.id === profileId);
   return matched || DEMO_PROFILES[0];
 };
@@ -422,7 +434,7 @@ async function request(endpoint, options = {}) {
     const existing = DEMO_PROFILES.find(p => p.email.toLowerCase() === (payload.email || '').toLowerCase());
     const userObj = existing || {
       id: 'custom_user_' + Date.now(),
-      email: payload.email || 'farmer@yuvaenergy.in',
+      email: payload.email || 'farmer@kisanurja.in',
       full_name: payload.full_name || 'Shri Ram Kisan (किसान)',
       role: 'FARMER',
       state: 'Haryana',

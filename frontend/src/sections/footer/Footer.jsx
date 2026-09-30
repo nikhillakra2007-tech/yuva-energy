@@ -23,7 +23,7 @@ export default function Footer() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-emerald)' }}>
             <Leaf size={16} />
-            <strong style={{ color: 'var(--text-primary)' }}>Yuva Energy Platform</strong>
+            <strong style={{ color: 'var(--text-primary)' }}>KisanUrja (किसान ऊर्जा) Platform</strong>
           </div>
           <span>•</span>
           <span>FAO-56 Irrigation Engineering & Photovoltaic Optimization</span>

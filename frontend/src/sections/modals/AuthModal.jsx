@@ -14,7 +14,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, lang = 'en' 
 
   const t = {
     en: {
-      loginTitle: "Sign In to Yuva Energy",
+      loginTitle: "Sign In to KisanUrja",
       registerTitle: "Create Farmer Account",
       subtitle: "Secure agronomic tenant access with PostgreSQL Row-Level Security.",
       nameLabel: "Full Name",
@@ -28,7 +28,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, lang = 'en' 
       processing: "Authenticating..."
     },
     hi: {
-      loginTitle: "युवा एनर्जी में लॉग इन करें",
+      loginTitle: "किसान ऊर्जा में लॉग इन करें",
       registerTitle: "नया किसान खाता बनाएं",
       subtitle: "मृदा एवं सौर डेटा के लिए सुरक्षित बहु-किरायेदार पहुंच।",
       nameLabel: "पूरा नाम",

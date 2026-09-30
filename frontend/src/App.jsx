@@ -21,7 +21,7 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const [fontScale, setFontScale] = useState(1);
   const [isHighContrast, setIsHighContrast] = useState(false);
-  const [theme, setTheme] = useState(() => localStorage.getItem('yuva_theme') || 'dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('kisanurja_theme') || localStorage.getItem('yuva_theme') || 'dark');
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [showScientificModal, setShowScientificModal] = useState(false);
 
@@ -51,6 +51,7 @@ export default function App() {
     } else {
       document.body.classList.remove('theme-dark');
     }
+    localStorage.setItem('kisanurja_theme', theme);
     localStorage.setItem('yuva_theme', theme);
   }, [theme]);
 

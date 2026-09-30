@@ -153,8 +153,8 @@ export default function SolarAgroCalculator({ onEnterConsole, lang = 'en' }) {
 
     const cropName = lang === 'hi' ? selectedCrop.nameHi : selectedCrop.nameEn;
     const narrationText = lang === 'hi'
-      ? `${acres} एकड़ ${cropName} के लिए, युवा एनर्जी सौर पम्पिंग से आपकी सालाना बिजली व डीजल का खर्च लगभग ₹${annualSavingsRupees.toLocaleString('en-IN')} बचेगा। साथ ही ${waterSavedLiters.toLocaleString('en-IN')} लीटर भूजल की बचत होगी और पैदावार में ${yieldGainPercent} प्रतिशत की वृद्धि का अनुमान है।`
-      : `For ${acres} acres of ${cropName}, switching to Yuva Energy solar pumping will save approximately ₹${annualSavingsRupees.toLocaleString('en-IN')} each year in power and fuel. You will also conserve ${waterSavedLiters.toLocaleString('en-IN')} liters of groundwater while increasing harvest productivity by ${yieldGainPercent} percent.`;
+      ? `${acres} एकड़ ${cropName} के लिए, किसान ऊर्जा सौर पम्पिंग से आपकी सालाना बिजली व डीजल का खर्च लगभग ₹${annualSavingsRupees.toLocaleString('en-IN')} बचेगा। साथ ही ${waterSavedLiters.toLocaleString('en-IN')} लीटर भूजल की बचत होगी और पैदावार में ${yieldGainPercent} प्रतिशत की वृद्धि का अनुमान है।`
+      : `For ${acres} acres of ${cropName}, switching to KisanUrja solar pumping will save approximately ₹${annualSavingsRupees.toLocaleString('en-IN')} each year in power and fuel. You will also conserve ${waterSavedLiters.toLocaleString('en-IN')} liters of groundwater while increasing harvest productivity by ${yieldGainPercent} percent.`;
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(narrationText);

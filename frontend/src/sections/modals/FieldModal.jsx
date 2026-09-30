@@ -57,7 +57,7 @@ export default function FieldModal({ farms = [], isOpen, onClose, onCreated, lan
       // If no farms exist, create a default farm first
       if (!selectedFarm) {
         const newFarm = await api.createFarm({
-          name: "Yuva Model Agro-Solar Estate",
+          name: "KisanUrja Model Agro-Solar Estate",
           latitude: parseFloat(lat),
           longitude: parseFloat(lon),
           total_area_hectares: parseFloat(areaHa) * 2

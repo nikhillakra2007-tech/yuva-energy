@@ -29,8 +29,8 @@ export default function VoiceAssistant({
     {
       sender: 'ai',
       text: lang === 'hi' 
-        ? "नमस्ते! मैं आपका युवा कृषि-सौर सहायक हूँ। आप बोलकर या लिखकर पूछ सकते हैं—जैसे 'क्या आज सिंचाई करनी चाहिए?' या 'सोलर पंप की स्थिति क्या है?'"
-        : "Namaste! I am your Yuva Agro-Solar Assistant. You can speak or type—ask things like 'Should I irrigate today?' or 'What is my solar pump status?'"
+        ? "नमस्ते! मैं आपका किसान ऊर्जा कृषि-सौर सहायक हूँ। आप बोलकर या लिखकर पूछ सकते हैं—जैसे 'क्या आज सिंचाई करनी चाहिए?' या 'सोलर पंप की स्थिति क्या है?'"
+        : "Namaste! I am your KisanUrja Agro-Solar Assistant. You can speak or type—ask things like 'Should I irrigate today?' or 'What is my solar pump status?'"
     }
   ]);
   const [inputText, setInputText] = useState('');
@@ -39,7 +39,7 @@ export default function VoiceAssistant({
 
   const t = {
     en: {
-      title: "Yuva Agronomic Voice AI Assistant",
+      title: "KisanUrja Agronomic Voice AI Assistant",
       subtitle: "Speak directly in Hindi or English to consult your field's live hydrologic and solar status.",
       micStart: "Tap & Speak Query",
       micListening: "Listening... (Speak Now)",
@@ -53,7 +53,7 @@ export default function VoiceAssistant({
       close: "Close Voice Assistant"
     },
     hi: {
-      title: "युवा कृषि-सौर वॉयस सहायक",
+      title: "किसान ऊर्जा कृषि-सौर वॉयस सहायक",
       subtitle: "माइक दबाकर बोलें—सिंचाई, सौर ऊर्जा और फसल स्वास्थ्य की सजीव जानकारी प्राप्त करें।",
       micStart: "माइक दबाएं और बोलें",
       micListening: "सुन रहा हूँ... (कृपया बोलें)",

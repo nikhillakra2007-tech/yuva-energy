@@ -38,7 +38,7 @@ export default function AgronomyProcessFlow({ lang = 'en' }) {
       labelHi: "राज्य जल प्राधिकरण",
       titleEn: "Preventing Critical Aquifer Overdraft",
       titleHi: "भूजल स्तर के अनियंत्रित दोहन की रोकथाम",
-      descEn: "Standard flood irrigation wastes up to 45% of groundwater through deep percolation. Yuva Energy's deterministic FAO-56 balance protects underground aquifers across Haryana, Punjab, Rajasthan, and Maharashtra.",
+      descEn: "Standard flood irrigation wastes up to 45% of groundwater through deep percolation. KisanUrja's deterministic FAO-56 balance protects underground aquifers across Haryana, Punjab, Rajasthan, and Maharashtra.",
       descHi: "पारंपरिक बाढ़ सिंचाई से 45% भूजल व्यर्थ बह जाता है। वैज्ञानिक जल संतुलन से भूजल स्तर सुरक्षित रहता है और जल संकट रुकता है।",
       kpis: [
         { label: lang === 'hi' ? "भूजल बचत" : "Aquifer Saved", val: "35%+" },
@@ -113,13 +113,13 @@ export default function AgronomyProcessFlow({ lang = 'en' }) {
     en: {
       pill: "Closed-Loop Agronomy Architecture",
       title: "End-to-End Operational Lifecycle",
-      subtitle: "How Yuva Energy transforms planetary earth observation and microgrid physics into a simple, high-yield daily routine.",
+      subtitle: "How KisanUrja transforms planetary earth observation and microgrid physics into a simple, high-yield daily routine.",
       pipelineTitle: "The 4-Step Solar-Agronomy Pipeline"
     },
     hi: {
       pill: "संपूर्ण सौर-कृषि कार्यप्रणाली",
       title: "खेत से उपग्रह तक: संपूर्ण चक्र",
-      subtitle: "जानिए कैसे युवा एनर्जी जटिल उपग्रह तकनीक और सौर भौतिकी को किसान के लिए सरल और लाभदायक बनाती है।",
+      subtitle: "जानिए कैसे किसान ऊर्जा जटिल उपग्रह तकनीक और सौर भौतिकी को किसान के लिए सरल और लाभदायक बनाती है।",
       pipelineTitle: "4 चरणों में सौर-कृषि संचालन चक्र"
     }
   }[lang] || {};

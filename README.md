@@ -1,7 +1,8 @@
-# 🌱 YUVA ENERGY — Autonomous Agricultural Intelligence & Solar Irrigation Platform
+# ☀️ KISAN URJA (किसान ऊर्जा) — Autonomous Agricultural Intelligence & Solar Irrigation Platform
 
-[![Live Vercel Site](https://img.shields.io/badge/Live_Site-frontend--six--woad--12.vercel.app-059669?logo=vercel&logoColor=white)](https://frontend-six-woad-12.vercel.app)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-yuva--energy-10B981?logo=github&logoColor=white)](https://github.com/nikhillakra2007-tech/yuva-energy)
+[![Live Vercel Site](https://img.shields.io/badge/Live_Site-kisanurja.vercel.app-059669?logo=vercel&logoColor=white)](https://kisanurja.vercel.app)
+[![Vercel Mirror](https://img.shields.io/badge/Vercel_Mirror-kisan--urja.vercel.app-0284c7?logo=vercel&logoColor=white)](https://kisan-urja.vercel.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-kisan--urja-10B981?logo=github&logoColor=white)](https://github.com/nikhillakra2007-tech/yuva-energy)
 [![Local Site](https://img.shields.io/badge/Live_Local_Site-localhost:5173-F59E0B?logo=vite&logoColor=white)](http://localhost:5173/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React_19_+_Vite_8-61DAFB?logo=react&logoColor=black)](https://react.dev)
@@ -9,7 +10,7 @@
 [![FAO-56](https://img.shields.io/badge/Agronomy-FAO--56_Penman--Monteith-10B981)](https://www.fao.org/3/x0490e/x0490e00.htm)
 [![Docker](https://img.shields.io/badge/Deployment-Docker_+_Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
 
-> **Yuva Energy** is India's 1st autonomous precision agriculture and renewable irrigation intelligence setu. It fuses real-time microclimate observations, pedotransfer soil hydraulics, and 10-meter Copernicus Sentinel-2 satellite canopy monitoring with deterministic **FAO-56 Penman-Monteith** evapotranspiration physics to synchronize solar-powered irrigation pumps—decoupling agricultural water pumping from costly grid electricity and diesel gensets while preserving groundwater aquifers.
+> **KisanUrja (किसान ऊर्जा)** is India's 1st autonomous precision agriculture and renewable irrigation intelligence setu. It fuses real-time microclimate observations, pedotransfer soil hydraulics, and 10-meter Copernicus Sentinel-2 satellite canopy monitoring with deterministic **FAO-56 Penman-Monteith** evapotranspiration physics to synchronize solar-powered irrigation pumps—decoupling agricultural water pumping from costly grid electricity and diesel gensets while preserving groundwater aquifers.
 
 ---
 
@@ -17,7 +18,8 @@
 
 | Asset / Endpoint | Live URL | Description |
 |:---|:---|:---|
-| **🚀 Production Deployed Site** | **[https://frontend-six-woad-12.vercel.app](https://frontend-six-woad-12.vercel.app)** | Live Vercel web application (ScrapSetu clean light theme) |
+| **🚀 Production Deployed Site** | **[https://kisanurja.vercel.app](https://kisanurja.vercel.app)** | Live primary Vercel production deployment |
+| **🌐 Alternative Live Mirror** | **[https://kisan-urja.vercel.app](https://kisan-urja.vercel.app)** | Hyphenated secondary Vercel alias |
 | **🌾 Local Web Application** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform & farm console |
 | **📦 GitHub Repository** | **[https://github.com/nikhillakra2007-tech/yuva-energy](https://github.com/nikhillakra2007-tech/yuva-energy)** | Official GitHub source repository & releases |
 | **📑 API Swagger Docs** | **[http://localhost:8000/api/v1/docs](http://localhost:8000/api/v1/docs)** | Interactive Swagger / OpenAPI 3.1 documentation |

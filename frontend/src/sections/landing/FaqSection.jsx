@@ -6,10 +6,10 @@ export default function FaqSection({ onEnterConsole, lang = 'en' }) {
 
   const faqs = [
     {
-      qEn: "How does Yuva Energy measure field moisture without expensive in-ground physical sensors?",
-      qHi: "बिना किसी महंगे सेंसर के युवा एनर्जी खेत की नमी कैसे जान लेती है?",
-      aEn: "Physical soil probes cost thousands of rupees, suffer corrosion, and only measure a few centimeters. Instead, Yuva Energy uses the FAO-56 Penman-Monteith physical mass balance model, coupling ISRIC SoilGrids 250m soil hydraulic properties with real-time Open-Meteo atmospheric vapor pressure and 10-meter Sentinel-2 satellite canopy transpiration. It is calibration-free, sensor-free, and spans the entire field.",
-      aHi: "पारंपरिक सेंसर महंगे होते हैं और कुछ ही समय में खराब हो जाते हैं। युवा एनर्जी विश्व खाद्य संगठन (FAO-56) के वैज्ञानिक जल संतुलन का उपयोग करती है, जिसमें उपग्रह और मौसम डेटा से सीधे खेत की जड़ों में मौजूद नमी की सटीक गणना होती है। किसान को कोई उपकरण खरीदने की जरूरत नहीं।"
+      qEn: "How does KisanUrja measure field moisture without expensive in-ground physical sensors?",
+      qHi: "बिना किसी महंगे सेंसर के किसान ऊर्जा खेत की नमी कैसे जान लेती है?",
+      aEn: "Physical soil probes cost thousands of rupees, suffer corrosion, and only measure a few centimeters. Instead, KisanUrja uses the FAO-56 Penman-Monteith physical mass balance model, coupling ISRIC SoilGrids 250m soil hydraulic properties with real-time Open-Meteo atmospheric vapor pressure and 10-meter Sentinel-2 satellite canopy transpiration. It is calibration-free, sensor-free, and spans the entire field.",
+      aHi: "पारंपरिक सेंसर महंगे होते हैं और कुछ ही समय में खराब हो जाते हैं। किसान ऊर्जा विश्व खाद्य संगठन (FAO-56) के वैज्ञानिक जल संतुलन का उपयोग करती है, जिसमें उपग्रह और मौसम डेटा से सीधे खेत की जड़ों में मौजूद नमी की सटीक गणना होती है। किसान को कोई उपकरण खरीदने की जरूरत नहीं।"
     },
     {
       qEn: "What happens during cloudy monsoon days when solar radiation drops?",
@@ -18,16 +18,16 @@ export default function FaqSection({ onEnterConsole, lang = 'en' }) {
       aHi: "बादल होने पर वाष्पीकरण घट जाता है और बारिश से मिट्टी में नमी बढ़ जाती है। प्रणाली स्वतः समझ जाती है कि पानी की जरूरत कम है और पम्प चलाने का निर्देश रोक देती है, जिससे फसल खराब होने से बचती है।"
     },
     {
-      qEn: "Is Yuva Energy compatible with PM-KUSUM solar pumps and existing electric tube-wells?",
+      qEn: "Is KisanUrja compatible with PM-KUSUM solar pumps and existing electric tube-wells?",
       qHi: "क्या यह पीएम-कुसुम सोलर पम्प और सामान्य बिजली वाले ट्यूबवेल के साथ काम करती है?",
-      aEn: "Yes. Yuva Energy works seamlessly with any pump setup. For PM-KUSUM Standalone (Component B) or Feeder Solarized (Component C) installations, our algorithm syncs pumping to peak inverter efficiency curves. For grid and diesel setups, it provides the optimal run window to slash operating tariffs.",
+      aEn: "Yes. KisanUrja works seamlessly with any pump setup. For PM-KUSUM Standalone (Component B) or Feeder Solarized (Component C) installations, our algorithm syncs pumping to peak inverter efficiency curves. For grid and diesel setups, it provides the optimal run window to slash operating tariffs.",
       aHi: "हाँ, यह पीएम-कुसुम योजना के तहत लगे सोलर पम्पों और आम ट्यूबवेल दोनों के साथ पूरी तरह काम करती है। यह बताती है कि सौर पम्प को किस समय चलाने पर सबसे तेज पानी मिलेगा।"
     },
     {
       qEn: "Can older farmers or those who cannot read English use this platform?",
       qHi: "क्या बुजुर्ग किसान या कम पढ़े-लिखे किसान इसे आसानी से चला सकते हैं?",
-      aEn: "Absolutely. We designed Yuva Energy for accessibility from day one: 1-click Vernacular Voice AI Assistant (just tap the mic and speak in Hindi or English), instant text-to-speech narration of every diagnosis, dynamic font scaling (up to 140%), and an outdoor High-Contrast Sunlight Mode.",
-      aHi: "बिल्कुल! इसमें 'बोलकर पूछें' (वॉयस मॉडल) की सुविधा है। किसान बस माइक दबाकर बोलें और युवा एनर्जी बोलकर जवाब देती है। साथ ही बड़े अक्षरों और तेज धूप मोड की सुविधा भी दी गई है।"
+      aEn: "Absolutely. We designed KisanUrja for accessibility from day one: 1-click Vernacular Voice AI Assistant (just tap the mic and speak in Hindi or English), instant text-to-speech narration of every diagnosis, dynamic font scaling (up to 140%), and an outdoor High-Contrast Sunlight Mode.",
+      aHi: "बिल्कुल! इसमें 'बोलकर पूछें' (वॉयस मॉडल) की सुविधा है। किसान बस माइक दबाकर बोलें और किसान ऊर्जा बोलकर जवाब देती है। साथ ही बड़े अक्षरों और तेज धूप मोड की सुविधा भी दी गई है।"
     },
     {
       qEn: "How are groundwater conservation and diesel replacement verified for carbon credits?",

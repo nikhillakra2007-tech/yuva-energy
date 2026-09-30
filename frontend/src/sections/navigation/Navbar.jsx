@@ -130,7 +130,7 @@ export default function Navbar({
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
-            title="Return to Yuva Energy Overview"
+            title="Return to KisanUrja Overview"
           >
             <div style={{
               width: '40px',
@@ -153,7 +153,7 @@ export default function Navbar({
                   letterSpacing: '-0.025em',
                   color: 'var(--text-primary)'
                 }}>
-                  YUVA <span style={{ color: 'var(--solar-amber)' }}>ENERGY</span>
+                  KISAN <span style={{ color: 'var(--solar-amber)' }}>URJA</span>
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <span className="pulse-dot" style={{ width: '7px', height: '7px' }} />
@@ -161,7 +161,7 @@ export default function Navbar({
                 </div>
               </div>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
-                Multi-State Solar Precision Agronomy
+                {lang === 'hi' ? 'किसान ऊर्जा — सौर कृषि स्वावलंबन' : 'Multi-State Solar Precision Agronomy'}
               </p>
             </div>
           </div>
