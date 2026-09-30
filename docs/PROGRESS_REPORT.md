@@ -1,61 +1,67 @@
 # Current Session
 
 ## Date/Time
-2026-09-30T20:35:00.0000000+05:30
+2026-09-30T20:55:00.0000000+05:30
 
 ## Current Phase
-Visual Contrast Redesign, Information Hierarchy Deconstruction, Legibility Enhancement, and README Showcase Assets — FULLY COMPLETE.
+ScrapSetu Clean Light Theme Redesign, Locked Farmer Profile Console, Safety Precautions Action Card, Fixed Satellite Map Grain, and Dedicated Scientific Telemetry Modal — FULLY COMPLETE.
 
 ## Current Slice
 Completed all user-requested visual, structural, and UX enhancements:
-1. **Calm Eye-Friendly Palette & Eye-Strain Elimination (`index.css`)**:
-   - Replaced pitch black and muddy green spotlights with modern, eye-friendly Slate Charcoal (`#0c1219`, `#141c26`, `#1c2736`).
-   - Disabled harsh radial green glow floods (`.ambient-glow`) to remove distracting green glare.
-   - Refined text contrast: crisp white `#ffffff` headings and bright high-contrast slate `#cbd5e1` body text.
+1. **Locked Farmer Profile & Removed Inside-Console Switcher (`FarmerIdentityCard.jsx` & `App.jsx`)**:
+   - In demo mode, selecting Rajesh Kumar (or Vandana Patel, etc.) on the login screen locks the dashboard strictly to that farmer's estate.
+   - Removed the benchmark multi-state switcher from inside the console so farmers cannot inadvertently switch between accounts while monitoring their fields.
+   - Profile switching is handled cleanly through the explicit "Switch Profile / Sign Out" flow.
 
-2. **Font Size Scaling & Prominent Navbar (`Navbar.jsx` & `index.css`)**:
-   - Raised base typography scale to 17px for instant readability without squinting.
-   - Navbar tabs and action buttons enlarged to `1.02rem` with spacious touch targets.
-   - Prominent, high-contrast **"Farmer Sign In / किसान लॉगिन"** CTA button with emerald glow.
+2. **Actionable Farm Safety Guide: "What To Do" vs "What NOT To Do" (`FarmerIdentityCard.jsx`)**:
+   - Added a clear, prominent 2-column operational directives card:
+     - **✅ What To Do Today (अनुशंसित कार्य)**:
+       - Run 5.0 HP Solar Pump between 11:30 AM – 1:30 PM (Peak Solar Generation, ₹0 Grid Cost).
+       - Maintain root zone moisture above RAW threshold (38.4 mm) for optimal stomatal transpiration.
+       - Inspect drip lateral filters before commencing pumping.
+     - **⛔ What NOT To Do (सावधानियां एवं सुरक्षा कटऑफ)**:
+       - Do NOT pump after 3:45 PM: Avoid DISCOM evening peak grid surcharge hours (₹8.20/kWh).
+       - Do NOT bypass dry-run protection sensor: Impeller damage risk if borehole drops below suction level.
+       - Do NOT exceed daily extraction quota (45,000 L/day) to preserve the local aquifer table.
+   - Prominently displays operational safety status: Ground Fault Interrupter (GFCI) and Thermal Dry-Run Cutoff active.
 
-3. **Session Cleanliness & Explicit Sign-In (`App.jsx` & `Navbar.jsx`)**:
-   - New visitors now start unauthenticated (`user = null`) with a clean "Sign In" option.
-   - No pre-opened account is forced on the visitor.
-   - Once signed in, the navbar displays the farmer's state badge and an explicit, accessible **"Sign Out / लॉगआउट"** button.
+3. **ScrapSetu Clean Light Theme & Minimized Clashing Colors (`index.css`, `Navbar.jsx`, All Cards)**:
+   - Eliminated the eye-straining mashup of harsh dark green, neon yellow, and orange.
+   - Adopted ScrapSetu-grade clean aesthetic:
+     - Crisp, airy backgrounds (`#ffffff`, `#f8fafc`).
+     - Deep slate typography (`#0f172a`, `#475569`) with AAA contrast.
+     - Refined botanical emerald (`#059669`) as the single primary accent.
+     - Gentle amber accents (`#d97706`) reserved strictly for solar generation.
+   - Added a quick **Light / Dark Mode Toggle** in the navbar with persistence in `localStorage`.
 
-4. **Deconstruction of Farmer Section with Generous Negative Spacing (`FarmerIdentityCard.jsx`)**:
-   - Broken down the previously cramped card into 3 distinct, well-spaced modular cards:
-     - **Card 1: Active Farmer Profile Card**: Large 68px avatar, 2.0rem bold name, verified badge, state & district pill, pump specifications, and annual grid tariff savings.
-     - **Card 2: Benchmark State Farm Network**: Grid of 5 spacious cards (Haryana, Punjab, UP, Rajasthan, and National Admin) with clear active selection rings.
-     - **Card 3: Interactive Telemetry & Environmental Simulator**: Dedicated studio panel with 4 large tactile buttons (`☀️ Peak Sun`, `🌧️ Rainfall`, `🏜️ Heatwave`, `🔄 Reset`) and live condition badges.
+4. **Leaflet Satellite Map Tile Grain Bug Resolution (`FieldMap.jsx`)**:
+   - Fixed the issue where satellite imagery caused an infinite grain/loading loop until the map was minimized or resized.
+   - Added `map.invalidateSize()` lifecycle triggers on mount and on window resize.
+   - Set `maxNativeZoom={18}` and `maxZoom={18}` on Esri World Imagery to prevent invalid level 19 requests on rural coordinates.
+   - Defaulted to ultra-crisp Carto Voyager tiles with one-click toggling to Satellite and OpenStreetMap.
 
-5. **Landing Page De-Duplication (`LandingFeatures.jsx`)**:
-   - Eliminated the redundant second CTA box so the landing page concludes smoothly after the FAQ accordion.
-
-6. **Showcase Visual Assets & Comprehensive README Update (`README.md` & `docs/assets/`)**:
-   - Created two high-fidelity SaaS interface showcase screenshots:
-     - `docs/assets/farm_console_showcase.jpg`: Precision farm console with farmer identity card, solar pump telemetry, water balance gauges, CWSI index, and FAO-56 depletion.
-     - `docs/assets/solar_scanner_showcase.jpg`: Interactive solar ROI calculator with acreage slider & 10m Sentinel-2 satellite canopy scanner with radar sweep and vigor diagnostics.
-   - Embedded screenshots directly into [README.md](file:///c:/Users/nikhi/OneDrive/Desktop/coding/ENERGY/README.md).
+5. **Dedicated Scientific Calculations & Telemetry Modal (`ScientificDetailModal.jsx`)**:
+   - Uncluttered the main console by moving deep FAO-56 dual crop math ($ET_0$, $ET_{c,adj}$, $D_r$, $RAW$, $TAW$, $CWSI$) and the live weather stress simulator (`☀️ Peak Sun`, `🌧️ Rainfall`, `🏜️ Heatwave`, `🔄 Reset`) into a dedicated modal.
+   - Accessible from the main console via a prominent **[ 🔬 View Full Scientific Calculations & Telemetry Simulator ]** button.
 
 ## Completed Deliverables
-- `docs/assets/farm_console_showcase.jpg` (new)
-- `docs/assets/solar_scanner_showcase.jpg` (new)
-- `README.md` (updated with live links and embedded feature showcase images)
-- `frontend/src/sections/hero/FarmerIdentityCard.jsx` (deconstructed into 3 spacious cards)
-- `frontend/src/sections/hero/HeroRibbon.jsx` (refined slate styling & typography)
-- `frontend/src/sections/navigation/Navbar.jsx` (enlarged text, explicit Sign In / Logout)
-- `frontend/src/sections/landing/LandingFeatures.jsx` (removed duplicate CTA)
-- `frontend/src/App.jsx` (clean unauthenticated default state)
-- `frontend/src/index.css` (calm slate palette, 17px base font, removed green glare)
+- `frontend/src/sections/modals/ScientificDetailModal.jsx` (new deep calculations and interactive simulator modal)
+- `frontend/src/sections/hero/FarmerIdentityCard.jsx` (locked profile, What To Do vs What NOT To Do, safety precautions)
+- `frontend/src/sections/geospatial/FieldMap.jsx` (fixed satellite tile grain and canvas sizing bug)
+- `frontend/src/sections/navigation/Navbar.jsx` (added Light/Dark theme toggle, ScrapSetu header styling)
+- `frontend/src/sections/hero/HeroRibbon.jsx` (ScrapSetu theme variables, high contrast typography)
+- `frontend/src/sections/water-balance/WaterBalanceCard.jsx` (ScrapSetu theme tokens, removed dark green backgrounds)
+- `frontend/src/sections/solar-energy/SolarEnergyCard.jsx` (clean slate tokens, removed loud clashing colors)
+- `frontend/src/sections/auth/AuthSection.jsx` (ScrapSetu cards and high contrast text)
+- `frontend/src/App.jsx` (theme state, locked profile flow, scientific modal wiring)
+- `frontend/src/index.css` (ScrapSetu light design system, accessible badges, clean input fields)
 
 ## Verification & Status
-- `npm run build`: PASS (Vite production bundle compiled cleanly in 1.03s).
-- `npx oxlint`: PASS (0 errors).
-- Local dev server: Running and responding with HTTP 200 OK on `http://localhost:5173/`.
-- GitHub Remote: Up to date on `main`.
+- `npm run build`: PASS (Vite production bundle compiled cleanly in 3.33s).
+- HTTP Local Request: PASS (`http://localhost:5173/` returned HTTP 200 OK).
+- Git Working Tree: Cleanly staged for commit.
 
 ## Next Exact Action
-1. Refresh and verify ZIP backup in `../backups/yuva-energy-backup-2026-09-30-v3-final.zip`.
-2. Stage all changes, commit, and push to GitHub remote `origin/main`.
+1. Create and verify ZIP backup in `../backups/yuva-energy-backup-2026-09-30-v4-final.zip`.
+2. Commit and push all changes to GitHub remote `origin/main`.
 3. Verify remote checkpoint.

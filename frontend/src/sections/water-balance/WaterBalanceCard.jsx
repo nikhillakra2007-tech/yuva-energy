@@ -25,7 +25,7 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
       title: "जड़ क्षेत्र जल संतुलन (FAO-56)",
       depletionTitle: "जड़ क्षेत्र जल कमी (Dr)",
       withinRaw: "सुरक्षित क्षेत्र (RAW के भीतर)",
-      exceededRaw: "तनाव क्षेत्र (RAW से अधिक कमी)",
+      exceededRaw: "तनाव क्षेत्र (सिंचाई आवश्यक)",
       rawLabel: "आसानी से उपलब्ध जल (RAW)",
       tawLabel: "कुल उपलब्ध जल (TAW)",
       soilHydraulics: "मृदा जल धारण क्षमता",
@@ -35,7 +35,7 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
       rootDepth: "प्रभावी जड़ गहराई (Zr)",
       stressIndex: "फसल जल तनाव सूचकांक (CWSI)",
       stressLow: "कम वाष्पोत्सर्जन तनाव",
-      stressHigh: "रंध्र बंद / मुरझाने का जोखिम",
+      stressHigh: "मुरझाने का जोखिम",
       transpirationRate: "समायोजित फसल वाष्पोत्सर्जन (ETc,adj)",
       reductionFactor: "तनाव गुणांक (Ks)"
     }
@@ -56,12 +56,33 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
   const isStressed = dr >= raw;
 
   return (
-    <div className="glass-panel" style={{ padding: '24px', height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div style={{
+      background: 'var(--bg-surface)',
+      border: '1.5px solid var(--border-card)',
+      borderRadius: 'var(--radius-xl)',
+      padding: '24px',
+      boxShadow: 'var(--shadow-card)',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Droplets size={20} color="var(--primary-emerald)" />
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>{t.title}</h3>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '10px',
+            background: 'rgba(5, 150, 105, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Droplets size={20} color="var(--primary-emerald)" />
+          </div>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+            {t.title}
+          </h3>
         </div>
         <span className={`badge ${isStressed ? 'badge-critical' : 'badge-optimal'}`}>
           {isStressed ? t.exceededRaw : t.withinRaw}
@@ -69,10 +90,10 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
       </div>
 
       {/* Depletion Progress Gauge */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '22px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t.depletionTitle}</span>
-          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: isStressed ? '#ef4444' : 'var(--primary-emerald)' }}>
+          <span style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t.depletionTitle}</span>
+          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: isStressed ? '#dc2626' : 'var(--primary-emerald)' }}>
             {dr.toFixed(1)} <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-secondary)' }}>/ {taw.toFixed(1)} mm</span>
           </span>
         </div>
@@ -81,8 +102,8 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
         <div style={{ 
           position: 'relative', 
           width: '100%', 
-          height: '18px', 
-          backgroundColor: 'rgba(14, 36, 27, 0.9)', 
+          height: '16px', 
+          backgroundColor: 'var(--bg-surface-elevated)', 
           borderRadius: 'var(--radius-full)', 
           overflow: 'hidden',
           border: '1px solid var(--border-subtle)'
@@ -92,8 +113,8 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
             height: '100%',
             width: `${drPct}%`,
             background: isStressed 
-              ? 'linear-gradient(90deg, #10b981 0%, #f59e0b 60%, #ef4444 100%)' 
-              : 'linear-gradient(90deg, #059669 0%, #10b981 100%)',
+              ? 'linear-gradient(90deg, #059669 0%, #d97706 60%, #dc2626 100%)' 
+              : 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
             borderRadius: 'var(--radius-full)',
             transition: 'width 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }} />
@@ -105,17 +126,16 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
             bottom: 0,
             left: `${rawPct}%`,
             width: '2px',
-            backgroundColor: '#fbbf24',
-            zIndex: 2,
-            boxShadow: '0 0 6px rgba(251, 191, 36, 0.8)'
+            backgroundColor: '#d97706',
+            zIndex: 2
           }} />
         </div>
 
         {/* Legend for Depletion Bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px', fontSize: '0.76rem', color: 'var(--text-tertiary)' }}>
           <span>0 mm (Field Capacity)</span>
-          <span style={{ color: '#fbbf24', fontWeight: 600 }}>RAW: {raw.toFixed(1)} mm</span>
-          <span>TAW: {taw.toFixed(1)} mm (Wilting Point)</span>
+          <span style={{ color: '#d97706', fontWeight: 700 }}>RAW: {raw.toFixed(1)} mm</span>
+          <span>TAW: {taw.toFixed(1)} mm</span>
         </div>
       </div>
 
@@ -123,17 +143,17 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(2, 1fr)', 
-        gap: '14px', 
-        marginBottom: '20px',
+        gap: '12px', 
+        marginBottom: '18px',
         padding: '14px',
-        backgroundColor: 'rgba(8, 20, 15, 0.5)',
+        backgroundColor: 'var(--bg-surface-elevated)',
         borderRadius: 'var(--radius-md)',
         border: '1px solid var(--border-subtle)'
       }}>
         {/* CWSI */}
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{t.stressIndex}</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: cwsi > 0.5 ? '#ef4444' : '#10b981', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t.stressIndex}</div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 800, color: cwsi > 0.4 ? '#dc2626' : 'var(--primary-emerald)', marginTop: '2px' }}>
             {cwsi.toFixed(2)}
           </div>
           <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
@@ -143,39 +163,39 @@ export default function WaterBalanceCard({ waterBalance, soil, lang = 'en' }) {
 
         {/* Ks Stress Coefficient */}
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{t.reductionFactor}</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t.reductionFactor}</div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
             {ks.toFixed(2)}
           </div>
           <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
-            {ks === 1.0 ? 'Transpiration 100% unrestricted' : `${Math.round((1 - ks) * 100)}% transpiration reduction`}
+            {ks === 1.0 ? 'Transpiration 100% full' : `${Math.round((1 - ks) * 100)}% stress reduction`}
           </div>
         </div>
 
         {/* Adjusted ETc */}
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{t.transpirationRate}</div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--sky-blue)', marginTop: '2px' }}>
-            {etcAdj.toFixed(2)} <span style={{ fontSize: '0.75rem', fontWeight: 400 }}>mm/day</span>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t.transpirationRate}</div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--sky-blue)', marginTop: '2px' }}>
+            {etcAdj.toFixed(2)} <span style={{ fontSize: '0.75rem', fontWeight: 400 }}>mm/d</span>
           </div>
           <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>Daily crop water demand</div>
         </div>
 
         {/* Root Depth */}
         <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{t.rootDepth}</div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+          <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t.rootDepth}</div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
             {(rootDepthM * 100).toFixed(0)} <span style={{ fontSize: '0.75rem', fontWeight: 400 }}>cm</span>
           </div>
-          <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>Active extraction layer</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>Active root zone</div>
         </div>
       </div>
 
       {/* Hydraulic Details Footer */}
-      <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+      <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
           <Layers size={14} color="var(--primary-emerald)" />
-          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{t.soilHydraulics}</span>
+          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)' }}>{t.soilHydraulics}</span>
         </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>

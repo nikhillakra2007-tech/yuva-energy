@@ -12,6 +12,7 @@ import WaterBalanceCard from './sections/water-balance/WaterBalanceCard';
 import SolarEnergyCard from './sections/solar-energy/SolarEnergyCard';
 import RecommendationsFeed from './sections/recommendations/RecommendationsFeed';
 import FieldModal from './sections/modals/FieldModal';
+import ScientificDetailModal from './sections/modals/ScientificDetailModal';
 import Footer from './sections/footer/Footer';
 import { api, getCurrentUser, removeAuthToken, DEMO_PROFILES } from './services/api';
 import { ArrowLeft, Mic } from 'lucide-react';
@@ -21,7 +22,9 @@ export default function App() {
   const [lang, setLang] = useState('en');
   const [fontScale, setFontScale] = useState(1);
   const [isHighContrast, setIsHighContrast] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem('yuva_theme') || 'light');
   const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [showScientificModal, setShowScientificModal] = useState(false);
 
   const [user, setUser] = useState(() => getCurrentUser() || null);
   const [farms, setFarms] = useState([]);
@@ -61,6 +64,20 @@ export default function App() {
   useEffect(() => {
     document.documentElement.style.setProperty('--font-scale', fontScale.toString());
   }, [fontScale]);
+
+  // Sync Theme Mode (ScrapSetu Clean Light vs Dark Slate)
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('theme-dark');
+    } else {
+      document.body.classList.remove('theme-dark');
+    }
+    localStorage.setItem('yuva_theme', theme);
+  }, [theme]);
+
+  const handleToggleTheme = useCallback(() => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  }, []);
 
   // Toggle High Contrast Mode on body
   useEffect(() => {
@@ -330,7 +347,8 @@ export default function App() {
   const handleLogout = () => {
     removeAuthToken();
     setUser(null);
-    setCurrentView('landing');
+    setCurrentView('auth');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -362,6 +380,8 @@ export default function App() {
         onChangeFontScale={setFontScale}
         isHighContrast={isHighContrast}
         onToggleHighContrast={() => setIsHighContrast(!isHighContrast)}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Viewport Container */}
@@ -453,8 +473,8 @@ export default function App() {
               weather={weather}
               waterBalance={waterBalance}
               lang={lang}
-              onSwitchProfile={handleSwitchProfile}
-              onSimulateWeather={handleSimulateWeather}
+              onOpenScientificModal={() => setShowScientificModal(true)}
+              onLogout={handleLogout}
             />
 
             {/* Farm Banner & Weather Telemetry Ribbon */}
@@ -546,6 +566,18 @@ export default function App() {
           <span>{lang === 'hi' ? 'बोलकर पूछें' : 'Voice Assistant'}</span>
         </button>
       </div>
+
+      {/* Scientific Calculations & Telemetry Simulator Modal */}
+      <ScientificDetailModal
+        isOpen={showScientificModal}
+        onClose={() => setShowScientificModal(false)}
+        field={selectedField}
+        weather={weather}
+        waterBalance={waterBalance}
+        soil={soil}
+        lang={lang}
+        onSimulateWeather={handleSimulateWeather}
+      />
 
       {/* Voice Assistant Modal */}
       <VoiceAssistant

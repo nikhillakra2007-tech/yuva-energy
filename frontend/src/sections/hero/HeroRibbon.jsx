@@ -18,13 +18,13 @@ export default function HeroRibbon({
       solar: "Solar Irradiance",
       et0: "Reference ET₀",
       solarWindow: "Solar Pumping Window",
-      activeWindow: "10:30 AM - 03:45 PM (Peak Solar)",
+      activeWindow: "11:00 AM - 03:30 PM (Peak Solar)",
       gridAvoided: "Zero Grid Tariff Zone",
       statusOptimal: "Water Status: Adequate",
       statusWarning: "Water Status: Moderate Stress",
       statusCritical: "Water Status: Depletion Exceeded RAW",
       evalEngine: "Re-evaluate Agronomic Engine",
-      evaluating: "Computing Hydrologic Balances...",
+      evaluating: "Computing Balances...",
       cropStage: "Crop Stage",
       rootDepth: "Root Depth",
       awc: "Available Water Capacity"
@@ -37,13 +37,13 @@ export default function HeroRibbon({
       solar: "सौर विकिरण",
       et0: "संदर्भ वाष्पोत्सर्जन (ET₀)",
       solarWindow: "सौर पम्पिंग समय",
-      activeWindow: "सुबह 10:30 - दोपहर 03:45 (सर्वश्रेष्ठ सौर ऊर्जा)",
+      activeWindow: "सुबह 11:00 - दोपहर 03:30 (सर्वश्रेष्ठ धूप)",
       gridAvoided: "ग्रिड बिजली की पूरी बचत (₹0 दर)",
       statusOptimal: "जल स्थिति: पर्याप्त",
       statusWarning: "जल स्थिति: मध्यम तनाव",
       statusCritical: "जल स्थिति: सिंचाई आवश्यक (RAW समाप्त)",
-      evalEngine: "कृषि विज्ञान गणना पुनः चलाएं",
-      evaluating: "गणना की जा रही है...",
+      evalEngine: "गणना पुनः चलाएं",
+      evaluating: "गणना जारी...",
       cropStage: "फसल चरण",
       rootDepth: "जड़ गहराई",
       awc: "उपलब्ध जल क्षमता"
@@ -62,11 +62,11 @@ export default function HeroRibbon({
   const isWarning = cwsi > 0.40 && cwsi <= 0.65;
 
   return (
-    <div style={{ marginBottom: '32px' }}>
+    <div style={{ marginBottom: '28px' }}>
       {/* Top Banner Ribbon */}
       <div 
         style={{ 
-          padding: '28px 34px',
+          padding: '26px 32px',
           background: 'var(--bg-surface)',
           border: '1.5px solid var(--border-card)',
           borderRadius: 'var(--radius-xl)',
@@ -75,32 +75,32 @@ export default function HeroRibbon({
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <div className="pulse-dot"></div>
-              <span style={{ fontSize: '0.92rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary-emerald-light)', fontWeight: 800 }}>
+              <span style={{ fontSize: '0.88rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--primary-emerald)', fontWeight: 800 }}>
                 {t.fieldOverview}
               </span>
-              <span style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>•</span>
-              <span style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+              <span style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem' }}>•</span>
+              <span style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
                 {field ? `${field.name} (${field.area_hectares} ha)` : 'Main Plot (2.4 ha)'}
               </span>
             </div>
             
-            <h1 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '8px', color: '#ffffff' }}>
+            <h2 style={{ fontSize: '1.9rem', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '6px', color: 'var(--text-primary)' }}>
               {field?.crop_name ? field.crop_name : 'Basmati Rice (Pusa 1121)'} 
-              <span style={{ fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '14px' }}>
+              <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '12px' }}>
                 Stage: {field?.crop_growth_stage || 'Mid-Season Vegetative'} (Kc: {waterBalance?.kc_actual || 1.15})
               </span>
-            </h1>
+            </h2>
             
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', maxWidth: '820px', lineHeight: 1.65 }}>
-              Dual crop-coefficient FAO-56 mass balance continuously synchronized with Open-Meteo microclimate, ISRIC SoilGrids hydraulics, and solar generation modeling.
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', maxWidth: '780px', lineHeight: 1.6 }}>
+              Dual crop-coefficient FAO-56 mass balance synchronized with Open-Meteo microclimate, SoilGrids hydraulics, and solar generation.
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div className={`badge ${isCritical ? 'badge-critical' : isWarning ? 'badge-warning' : 'badge-optimal'}`} style={{ padding: '8px 16px', fontSize: '0.92rem' }}>
-              {isCritical ? <AlertCircle size={16} /> : <ShieldCheck size={16} />}
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className={`badge ${isCritical ? 'badge-critical' : isWarning ? 'badge-warning' : 'badge-optimal'}`} style={{ padding: '8px 16px', fontSize: '0.88rem' }}>
+              {isCritical ? <AlertCircle size={15} /> : <ShieldCheck size={15} />}
               {isCritical ? t.statusCritical : isWarning ? t.statusWarning : t.statusOptimal}
             </div>
 
@@ -108,9 +108,9 @@ export default function HeroRibbon({
               className="btn-primary" 
               onClick={onEvaluate} 
               disabled={isEvaluating}
-              style={{ padding: '12px 22px', fontSize: '0.98rem' }}
+              style={{ padding: '10px 20px', fontSize: '0.92rem' }}
             >
-              <Zap size={17} />
+              <Zap size={16} />
               {isEvaluating ? t.evaluating : t.evalEngine}
             </button>
           </div>
@@ -119,94 +119,94 @@ export default function HeroRibbon({
         {/* Telemetry Grid */}
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', 
-          gap: '18px', 
-          marginTop: '28px',
-          paddingTop: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', 
+          gap: '16px', 
+          marginTop: '22px',
+          paddingTop: '20px',
           borderTop: '1px solid var(--border-subtle)'
         }}>
           {/* Temperature */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
-              width: '40px', height: '40px', borderRadius: '10px', 
+              width: '38px', height: '38px', borderRadius: '10px', 
               background: 'rgba(239, 68, 68, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#f87171' 
+              color: '#dc2626' 
             }}>
-              <Thermometer size={20} />
+              <Thermometer size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.temp}</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>{tempVal}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{t.temp}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{tempVal}</div>
             </div>
           </div>
 
           {/* Humidity */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
-              width: '40px', height: '40px', borderRadius: '10px', 
-              background: 'rgba(14, 165, 233, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#38bdf8' 
+              width: '38px', height: '38px', borderRadius: '10px', 
+              background: 'rgba(2, 132, 199, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'var(--sky-blue)' 
             }}>
-              <Droplets size={20} />
+              <Droplets size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.humidity}</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>{humidityVal}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{t.humidity}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{humidityVal}</div>
             </div>
           </div>
 
           {/* Wind Speed */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
-              width: '40px', height: '40px', borderRadius: '10px', 
-              background: 'rgba(148, 163, 184, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#94a3b8' 
+              width: '38px', height: '38px', borderRadius: '10px', 
+              background: 'rgba(100, 116, 139, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'var(--text-tertiary)' 
             }}>
-              <Wind size={20} />
+              <Wind size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.wind}</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>{windVal}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{t.wind}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{windVal}</div>
             </div>
           </div>
 
           {/* Solar Radiation */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
-              width: '40px', height: '40px', borderRadius: '10px', 
-              background: 'rgba(245, 158, 11, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '38px', height: '38px', borderRadius: '10px', 
+              background: 'rgba(217, 119, 6, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--solar-amber)' 
             }}>
-              <Sun size={20} />
+              <Sun size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.solar}</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--solar-amber)' }}>{solarVal}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{t.solar}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--solar-amber)' }}>{solarVal}</div>
             </div>
           </div>
 
           {/* ET0 */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
-              width: '40px', height: '40px', borderRadius: '10px', 
-              background: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '38px', height: '38px', borderRadius: '10px', 
+              background: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--primary-emerald)' 
             }}>
-              <CloudRain size={20} />
+              <CloudRain size={18} />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{t.et0}</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary-emerald)' }}>{et0Val}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>{t.et0}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary-emerald)' }}>{et0Val}</div>
             </div>
           </div>
         </div>
 
         {/* Solar Synchronization Bar */}
         <div style={{ 
-          marginTop: '20px', 
-          padding: '12px 16px', 
-          background: 'rgba(245, 158, 11, 0.08)', 
-          border: '1px solid var(--border-solar)', 
+          marginTop: '18px', 
+          padding: '12px 18px', 
+          background: 'var(--bg-surface-elevated)', 
+          border: '1px solid var(--border-subtle)', 
           borderRadius: 'var(--radius-md)',
           display: 'flex',
           alignItems: 'center',
@@ -216,17 +216,17 @@ export default function HeroRibbon({
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Clock size={16} color="var(--solar-amber)" />
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--solar-amber)' }}>
+            <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--solar-amber)' }}>
               {t.solarWindow}:
             </span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 500 }}>
+            <span style={{ fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: 600 }}>
               {t.activeWindow}
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Zap size={14} color="#34d399" />
-            <span style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600 }}>
+            <Zap size={15} color="var(--primary-emerald)" />
+            <span style={{ fontSize: '0.85rem', color: 'var(--primary-emerald)', fontWeight: 700 }}>
               {t.gridAvoided}
             </span>
           </div>

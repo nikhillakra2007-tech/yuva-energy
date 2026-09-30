@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   User, 
   MapPin, 
   Phone, 
   ShieldCheck, 
   Zap, 
-  Sun, 
-  Sparkles,
-  CloudRain,
-  Flame,
-  RotateCcw,
   CheckCircle2,
-  Building2,
-  Layers
+  XCircle,
+  AlertTriangle,
+  HelpCircle,
+  LogOut,
+  Calculator,
+  Droplets,
+  Sun
 } from 'lucide-react';
-import { DEMO_PROFILES, setCurrentUser } from '../../services/api';
+import { DEMO_PROFILES } from '../../services/api';
 
 export default function FarmerIdentityCard({
   user,
@@ -22,31 +22,37 @@ export default function FarmerIdentityCard({
   weather,
   waterBalance,
   lang = 'en',
-  onSwitchProfile,
-  onSimulateWeather
+  onOpenScientificModal,
+  onLogout
 }) {
+  // Lock strictly to the selected user profile - no state switching inside the dashboard!
   const currentProfile = DEMO_PROFILES.find(p => p.id === user?.id) || user || DEMO_PROFILES[0];
   const isAdmin = currentProfile?.role === 'ADMIN' || user?.role === 'ADMIN';
-  const [activeSim, setActiveSim] = useState('RESET');
 
   const t = {
     en: {
       accountBadge: isAdmin ? "Central Agronomy Admin Console" : "Verified Farmer Account",
-      stateLabel: "State / District",
+      stateLabel: "State & District",
       phoneLabel: "Registered Mobile",
       farmLabel: "Estate / Farm Name",
       pumpLabel: "Solar Irrigation System",
       tariffLabel: "Annual Tariff Offset",
-      switchStateHeading: "Benchmark State Farm Network",
-      switchStateSub: "Switch between 4 benchmark agricultural states or Central Admin to inspect real regional field parameters:",
-      simulateHeading: "Live Environmental & Telemetry Simulator",
-      simNotice: "Trigger live weather and water stress shifts to observe instant adjustments in solar pump operation and soil moisture advisories:",
-      simSun: "☀️ Peak Sun (820 W/m²)",
-      simRain: "🌧️ Active Rainfall (18mm)",
-      simHeat: "🏜️ Dry Heatwave (CWSI Stress)",
-      simReset: "🔄 Reset Baseline",
-      activeStateTag: "Active Field",
-      currentSimLabel: "Simulated Condition"
+      switchNotice: "Logged in as this verified farm. To inspect a different state or farmer, sign out to access the profile selector.",
+      switchBtn: "Switch Profile / Sign Out",
+      safetyTitle: "Farm Operation & Safety Precautions Guide",
+      safetySub: "Daily operational instructions to protect crop health, preserve groundwater, and eliminate grid electricity costs:",
+      doTitle: "✅ What To Do Today (Recommended)",
+      do1: "Run 5.0 HP Solar Pump between 11:30 AM – 1:30 PM (Peak Solar Generation, ₹0 Grid Cost).",
+      do2: "Maintain root zone moisture above RAW threshold (38.4 mm) for optimal stomatal transpiration.",
+      do3: "Inspect drip line lateral filters before commencing the solar pumping cycle.",
+      dontTitle: "⛔ What NOT To Do (Prohibited & Cutoffs)",
+      dont1: "Do NOT pump after 3:45 PM: Avoid Discom peak grid surcharge hours (₹8.20/kWh).",
+      dont2: "Do NOT bypass dry-run protection sensor: Impeller damage risk if borehole drops below suction level.",
+      dont3: "Do NOT exceed daily extraction quota (45,000 L/day) to prevent local water table drawdown.",
+      safetyStatusLabel: "Operational Safety Systems Active:",
+      gfciActive: "Ground Fault Interrupter: ARMED",
+      dryRunActive: "Thermal Dry-Run Cutoff: ACTIVE",
+      openScientificBtn: "🔬 View Full Scientific Calculations & Telemetry Simulator"
     },
     hi: {
       accountBadge: isAdmin ? "केंद्रीय कृषि व ग्रिड प्रशासक कंसोल" : "सत्यापित किसान खाता",
@@ -55,84 +61,84 @@ export default function FarmerIdentityCard({
       farmLabel: "खेत व फार्म का नाम",
       pumpLabel: "सौर पम्प प्रणाली",
       tariffLabel: "सालाना बिजली बचत",
-      switchStateHeading: "चार राज्य मॉडल फार्म नेटवर्क",
-      switchStateSub: "हरियाणा, पंजाब, उत्तर प्रदेश, राजस्थान या एडमिन कंसोल चुनकर क्षेत्रीय आंकड़े देखें:",
-      simulateHeading: "सजीव मौसम व जल तनाव सिम्युलेटर",
-      simNotice: "बटन दबाकर मौसम बदलें और देखें कि सौर पम्प, मिट्टी में नमी और सलाह कैसे तुरंत अपने आप बदलती है:",
-      simSun: "☀️ प्रखर धूप (820 W/m²)",
-      simRain: "🌧️ भारी बारिश (18mm)",
-      simHeat: "🏜️ तेज गर्मी व जल तनाव",
-      simReset: "🔄 सामान्य स्थिति",
-      activeStateTag: "सक्रिय खेत",
-      currentSimLabel: "वर्तमान स्थिति"
+      switchNotice: "आप इस सत्यापित खेत में लॉग इन हैं। किसी अन्य राज्य या किसान को देखने के लिए प्रोफाइल बदलें / लॉगआउट करें।",
+      switchBtn: "प्रोफाइल बदलें / लॉगआउट",
+      safetyTitle: "खेत संचालन व सुरक्षा सावधानियां गाइड",
+      safetySub: "फसल स्वास्थ्य सुरक्षा, भूजल संरक्षण और शून्य बिजली बिल के लिए दैनिक निर्देश:",
+      doTitle: "✅ आज क्या करें (अनुशंसित कार्य)",
+      do1: "सुबह 11:30 से दोपहर 1:30 के बीच 5.0 HP सौर पम्प चलाएं (सर्वश्रेष्ठ धूप, ₹0 बिजली खर्च)।",
+      do2: "जड़ों में नमी की मात्रा हमेशा 38.4 mm (RAW सीमा) से ऊपर बनाए रखें।",
+      do3: "पम्प चलाने से पहले ड्रिप लाइन व फिल्टर की जांच अवश्य करें।",
+      dontTitle: "⛔ क्या बिल्कुल न करें (वर्जित व सुरक्षा प्रतिबंध)",
+      dont1: "दोपहर 3:45 के बाद पम्प न चलाएं: शाम के महंगे ग्रिड बिजली शुल्क (₹8.20/यूनिट) से बचें।",
+      dont2: "ड्राई-रन सेंसर को कभी बायपास न करें: पानी कम होने पर पम्प जलने का खतरा रहता है।",
+      dont3: "दैनिक जल निकासी सीमा (45,000 लीटर/दिन) से अधिक पानी न निकालें ताकि भूजल सुरक्षित रहे।",
+      safetyStatusLabel: "सक्रिय सुरक्षा प्रणालियां:",
+      gfciActive: "अर्थ फॉल्ट प्रोटेक्शन: सक्रिय",
+      dryRunActive: "ड्राई-रन कटऑफ सेंसर: चालू",
+      openScientificBtn: "🔬 विस्तृत वैज्ञानिक गणना व मौसम सिमुलेटर देखें"
     }
   }[lang] || {};
 
-  const handleSimClick = (mode) => {
-    setActiveSim(mode);
-    if (onSimulateWeather) onSimulateWeather(mode);
-  };
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', marginBottom: '36px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '32px' }}>
       {/* =========================================================================
-          SECTION 1: ACTIVE FARMER PROFILE CARD (Clean, High Readability, Spacious)
+          SECTION 1: VERIFIED FARMER PROFILE (Spacious, Crisp ScrapSetu Light Aesthetic)
           ========================================================================= */}
       <div style={{
         background: 'var(--bg-surface)',
         border: '1.5px solid var(--border-card)',
         borderRadius: 'var(--radius-xl)',
-        padding: '32px 36px',
-        boxShadow: 'var(--shadow-card)',
-        position: 'relative'
+        padding: '30px 34px',
+        boxShadow: 'var(--shadow-card)'
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '24px',
-          paddingBottom: '24px',
+          gap: '20px',
+          paddingBottom: '22px',
           borderBottom: '1px solid var(--border-subtle)'
         }}>
-          {/* Farmer Avatar & Full Identity */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Avatar & Farmer Details */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
             <div style={{
-              width: '68px',
-              height: '68px',
-              borderRadius: '20px',
+              width: '64px',
+              height: '64px',
+              borderRadius: '18px',
               background: isAdmin 
                 ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
                 : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '2.2rem',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+              fontSize: '2rem',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
               flexShrink: 0
             }}>
               {currentProfile.avatar || '👨‍🌾'}
             </div>
 
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <span className="pulse-dot" style={{ background: isAdmin ? 'var(--solar-amber)' : 'var(--primary-emerald)' }} />
                 <span style={{
-                  fontSize: '0.92rem',
+                  fontSize: '0.88rem',
                   fontWeight: 800,
-                  color: isAdmin ? 'var(--solar-amber)' : 'var(--primary-emerald-light)',
+                  color: isAdmin ? 'var(--solar-amber)' : 'var(--primary-emerald)',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.06em'
+                  letterSpacing: '0.05em'
                 }}>
                   {t.accountBadge}
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '2.0rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+              <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '4px' }}>
                 {currentProfile.full_name}
               </h2>
 
-              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '14px', fontSize: '1.02rem', color: 'var(--text-secondary)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '14px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
                 <span>✉️ {currentProfile.email}</span>
                 <span>•</span>
                 <span>📞 {currentProfile.phone}</span>
@@ -140,23 +146,23 @@ export default function FarmerIdentityCard({
             </div>
           </div>
 
-          {/* Quick Metrics Badges */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+          {/* Quick Metrics Badges & Profile Exit */}
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
             <div style={{
               background: 'var(--bg-surface-elevated)',
-              border: '1px solid var(--border-active)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: 'var(--radius-md)',
-              padding: '12px 18px',
+              padding: '10px 16px',
               display: 'flex',
               alignItems: 'center',
-              gap: '12px'
+              gap: '10px'
             }}>
-              <MapPin size={22} color="var(--primary-emerald)" />
+              <MapPin size={20} color="var(--primary-emerald)" />
               <div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700 }}>
+                <div style={{ fontSize: '0.74rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700 }}>
                   {t.stateLabel}
                 </div>
-                <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                <div style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                   {lang === 'hi' ? (currentProfile.stateHi || currentProfile.state) : currentProfile.state}
                 </div>
               </div>
@@ -164,23 +170,36 @@ export default function FarmerIdentityCard({
 
             <div style={{
               background: 'var(--bg-surface-elevated)',
-              border: '1px solid var(--border-solar)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: 'var(--radius-md)',
-              padding: '12px 18px',
+              padding: '10px 16px',
               display: 'flex',
               alignItems: 'center',
-              gap: '12px'
+              gap: '10px'
             }}>
-              <Zap size={22} color="var(--solar-amber)" />
+              <Zap size={20} color="var(--solar-amber)" />
               <div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700 }}>
+                <div style={{ fontSize: '0.74rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700 }}>
                   {t.tariffLabel}
                 </div>
-                <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--solar-amber)' }}>
+                <div style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--solar-amber)' }}>
                   {currentProfile.farm?.grid_tariff_offset || '₹94,200/yr saved'}
                 </div>
               </div>
             </div>
+
+            {onLogout && (
+              <button
+                type="button"
+                onClick={onLogout}
+                className="btn-secondary"
+                style={{ padding: '10px 16px', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                title={t.switchNotice}
+              >
+                <LogOut size={16} />
+                <span>{t.switchBtn}</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -189,31 +208,31 @@ export default function FarmerIdentityCard({
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           gap: '18px',
-          paddingTop: '20px'
+          paddingTop: '18px'
         }}>
           <div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '2px' }}>
               {t.farmLabel}
             </div>
-            <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff' }}>
+            <div style={{ fontSize: '1.02rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               {currentProfile.farm?.name || 'Karnal Model Agro-Solar Estate'}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '2px' }}>
               {t.pumpLabel}
             </div>
-            <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--primary-emerald-light)' }}>
+            <div style={{ fontSize: '1.02rem', fontWeight: 700, color: 'var(--primary-emerald)' }}>
               {currentProfile.farm?.pump_type || '5.0 HP Submersible Solar Pump'}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '2px' }}>
               Irrigation Grid
             </div>
-            <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
+            <div style={{ fontSize: '1.02rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
               {currentProfile.farm?.irrigation_source || 'Solar Microgrid (PM-KUSUM)'}
             </div>
           </div>
@@ -221,245 +240,152 @@ export default function FarmerIdentityCard({
       </div>
 
       {/* =========================================================================
-          SECTION 2: BENCHMARK STATE FARM NETWORK (Distinct Card, Generous Spacing)
+          SECTION 2: SAFETY PRECAUTIONS & ACTIONABLE GUIDE ("WHAT TO DO / WHAT NOT TO DO")
           ========================================================================= */}
       <div style={{
         background: 'var(--bg-surface)',
         border: '1.5px solid var(--border-card)',
         borderRadius: 'var(--radius-xl)',
-        padding: '28px 32px',
-        boxShadow: 'var(--shadow-card)'
-      }}>
-        <div style={{ marginBottom: '18px' }}>
-          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
-            {t.switchStateHeading}
-          </h3>
-          <p style={{ fontSize: '1.0rem', color: 'var(--text-secondary)' }}>
-            {t.switchStateSub}
-          </p>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '14px'
-        }}>
-          {DEMO_PROFILES.map((p) => {
-            const isSelected = p.id === currentProfile.id;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => {
-                  setCurrentUser(p);
-                  if (onSwitchProfile) onSwitchProfile(p);
-                }}
-                style={{
-                  background: isSelected 
-                    ? 'rgba(16, 185, 129, 0.16)' 
-                    : 'var(--bg-surface-elevated)',
-                  border: isSelected 
-                    ? '2px solid var(--primary-emerald)' 
-                    : '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '16px 20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: isSelected ? '0 4px 20px rgba(16, 185, 129, 0.25)' : 'none'
-                }}
-              >
-                <div style={{
-                  fontSize: '1.8rem',
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '12px',
-                  background: isSelected ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  {p.avatar}
-                </div>
-
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontSize: '1.1rem',
-                    fontWeight: 800,
-                    color: isSelected ? '#ffffff' : 'var(--text-primary)',
-                    marginBottom: '2px'
-                  }}>
-                    {lang === 'hi' ? (p.stateHi || p.state) : p.state}
-                  </div>
-                  <div style={{
-                    fontSize: '0.92rem',
-                    color: isSelected ? 'var(--primary-emerald-light)' : 'var(--text-tertiary)',
-                    fontWeight: 600,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    {p.full_name.split('(')[0].trim()}
-                  </div>
-                </div>
-
-                {isSelected && (
-                  <CheckCircle2 size={20} color="var(--primary-emerald)" style={{ flexShrink: 0 }} />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* =========================================================================
-          SECTION 3: INTERACTIVE TELEMETRY SIMULATOR (Dedicated Studio Panel)
-          ========================================================================= */}
-      <div style={{
-        background: 'var(--bg-surface)',
-        border: '1.5px solid var(--border-card)',
-        borderRadius: 'var(--radius-xl)',
-        padding: '28px 32px',
+        padding: '28px 34px',
         boxShadow: 'var(--shadow-card)'
       }}>
         <div style={{
           display: 'flex',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '16px',
           marginBottom: '20px'
         }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-              <Sparkles size={20} color="var(--solar-amber)" />
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
-                {t.simulateHeading}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+              <ShieldCheck size={22} color="var(--primary-emerald)" />
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+                {t.safetyTitle}
               </h3>
             </div>
-            <p style={{ fontSize: '1.0rem', color: 'var(--text-secondary)', maxWidth: '780px' }}>
-              {t.simNotice}
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', margin: 0 }}>
+              {t.safetySub}
             </p>
           </div>
 
+          {/* Button to open Deep Scientific Details Modal */}
+          {onOpenScientificModal && (
+            <button
+              type="button"
+              onClick={onOpenScientificModal}
+              className="btn-primary"
+              style={{ padding: '10px 20px', fontSize: '0.92rem' }}
+            >
+              <Calculator size={16} />
+              <span>{t.openScientificBtn}</span>
+            </button>
+          )}
+        </div>
+
+        {/* 2-Column: What To Do vs What NOT To Do */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '20px',
+          marginBottom: '20px'
+        }}>
+          {/* Card A: What To Do */}
           <div style={{
             background: 'var(--bg-surface-elevated)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--radius-full)',
-            padding: '6px 16px',
-            fontSize: '0.9rem',
-            color: 'var(--text-secondary)'
+            border: '1.5px solid #a7f3d0',
+            borderRadius: 'var(--radius-lg)',
+            padding: '20px 24px'
           }}>
-            <span>{t.currentSimLabel}: </span>
-            <strong style={{ color: activeSim === 'SUNNY_PEAK' ? 'var(--solar-amber)' : activeSim === 'RAIN_FALL' ? 'var(--sky-blue)' : activeSim === 'HEAT_STRESS' ? '#ef4444' : 'var(--primary-emerald-light)' }}>
-              {activeSim === 'SUNNY_PEAK' ? t.simSun : activeSim === 'RAIN_FALL' ? t.simRain : activeSim === 'HEAT_STRESS' ? t.simHeat : t.simReset}
-            </strong>
+            <h4 style={{
+              fontSize: '1.08rem',
+              fontWeight: 800,
+              color: '#047857',
+              marginBottom: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              {t.doTitle}
+            </h4>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.do1}</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.do2}</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.do3}</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card B: What NOT To Do */}
+          <div style={{
+            background: 'var(--bg-surface-elevated)',
+            border: '1.5px solid #fecaca',
+            borderRadius: 'var(--radius-lg)',
+            padding: '20px 24px'
+          }}>
+            <h4 style={{
+              fontSize: '1.08rem',
+              fontWeight: 800,
+              color: '#b91c1c',
+              marginBottom: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              {t.dontTitle}
+            </h4>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <XCircle size={18} color="#dc2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.dont1}</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: '#dc2626', lineHeight: 1.5, fontWeight: 600 }}>
+                <XCircle size={18} color="#dc2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.dont2}</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <XCircle size={18} color="#dc2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>{t.dont3}</span>
+              </li>
+            </ul>
           </div>
         </div>
 
+        {/* Safety System Badges Strip */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-          gap: '14px'
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px',
+          paddingTop: '14px',
+          borderTop: '1px solid var(--border-subtle)',
+          fontSize: '0.85rem'
         }}>
-          <button
-            type="button"
-            onClick={() => handleSimClick('SUNNY_PEAK')}
-            style={{
-              padding: '16px 20px',
-              fontSize: '1.02rem',
-              fontWeight: 700,
-              background: activeSim === 'SUNNY_PEAK' ? 'rgba(245, 158, 11, 0.22)' : 'var(--bg-surface-elevated)',
-              border: activeSim === 'SUNNY_PEAK' ? '2px solid var(--solar-amber)' : '1px solid var(--border-subtle)',
-              color: '#ffffff',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              boxShadow: activeSim === 'SUNNY_PEAK' ? '0 4px 18px rgba(245, 158, 11, 0.35)' : 'none'
-            }}
-          >
-            <Sun size={20} color="var(--solar-amber)" />
-            <span>{t.simSun}</span>
-          </button>
+          <span style={{ color: 'var(--text-tertiary)', fontWeight: 600 }}>
+            {t.safetyStatusLabel}
+          </span>
 
-          <button
-            type="button"
-            onClick={() => handleSimClick('RAIN_FALL')}
-            style={{
-              padding: '16px 20px',
-              fontSize: '1.02rem',
-              fontWeight: 700,
-              background: activeSim === 'RAIN_FALL' ? 'rgba(56, 189, 248, 0.22)' : 'var(--bg-surface-elevated)',
-              border: activeSim === 'RAIN_FALL' ? '2px solid var(--sky-blue)' : '1px solid var(--border-subtle)',
-              color: '#ffffff',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              boxShadow: activeSim === 'RAIN_FALL' ? '0 4px 18px rgba(56, 189, 248, 0.35)' : 'none'
-            }}
-          >
-            <CloudRain size={20} color="var(--sky-blue)" />
-            <span>{t.simRain}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSimClick('HEAT_STRESS')}
-            style={{
-              padding: '16px 20px',
-              fontSize: '1.02rem',
-              fontWeight: 700,
-              background: activeSim === 'HEAT_STRESS' ? 'rgba(239, 68, 68, 0.22)' : 'var(--bg-surface-elevated)',
-              border: activeSim === 'HEAT_STRESS' ? '2px solid #ef4444' : '1px solid var(--border-subtle)',
-              color: '#ffffff',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              boxShadow: activeSim === 'HEAT_STRESS' ? '0 4px 18px rgba(239, 68, 68, 0.35)' : 'none'
-            }}
-          >
-            <Flame size={20} color="#ef4444" />
-            <span>{t.simHeat}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSimClick('RESET')}
-            style={{
-              padding: '16px 20px',
-              fontSize: '1.02rem',
-              fontWeight: 700,
-              background: activeSim === 'RESET' ? 'rgba(16, 185, 129, 0.22)' : 'var(--bg-surface-elevated)',
-              border: activeSim === 'RESET' ? '2px solid var(--primary-emerald)' : '1px solid var(--border-subtle)',
-              color: '#ffffff',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-          >
-            <RotateCcw size={18} />
-            <span>{t.simReset}</span>
-          </button>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <span className="badge badge-optimal">
+              <ShieldCheck size={14} />
+              {t.gfciActive}
+            </span>
+            <span className="badge badge-optimal">
+              <ShieldCheck size={14} />
+              {t.dryRunActive}
+            </span>
+          </div>
         </div>
       </div>
     </div>

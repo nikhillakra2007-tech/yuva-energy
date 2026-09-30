@@ -8,6 +8,7 @@ import {
   Compass, 
   LayoutDashboard, 
   SunMedium, 
+  Moon,
   ChevronDown,
   Calculator,
   Satellite,
@@ -36,7 +37,9 @@ export default function Navbar({
   fontScale = 1,
   onChangeFontScale,
   isHighContrast = false,
-  onToggleHighContrast
+  onToggleHighContrast,
+  theme = 'light',
+  onToggleTheme
 }) {
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showDisplaySettings, setShowDisplaySettings] = useState(false);
@@ -105,7 +108,7 @@ export default function Navbar({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        backgroundColor: 'rgba(9, 13, 16, 0.95)',
+        backgroundColor: 'var(--bg-glass)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         borderBottom: '1px solid var(--border-subtle)',
@@ -139,7 +142,7 @@ export default function Navbar({
               justifyContent: 'center',
               boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)'
             }}>
-              <Sprout size={22} color="#090d10" strokeWidth={2.5} />
+              <Sprout size={22} color="#ffffff" strokeWidth={2.5} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -148,13 +151,13 @@ export default function Navbar({
                   fontSize: '1.25rem',
                   fontWeight: '800',
                   letterSpacing: '-0.025em',
-                  color: '#ffffff'
+                  color: 'var(--text-primary)'
                 }}>
                   YUVA <span style={{ color: 'var(--solar-amber)' }}>ENERGY</span>
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <span className="pulse-dot" style={{ width: '7px', height: '7px' }} />
-                  <span style={{ fontSize: '0.7rem', color: 'var(--primary-emerald-light)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--primary-emerald)', fontWeight: 800, letterSpacing: '0.05em' }}>LIVE</span>
                 </div>
               </div>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)' }}>
@@ -392,7 +395,38 @@ export default function Navbar({
               )}
             </div>
 
-            {/* 3. Display & Accessibility Settings Popover */}
+            {/* 3. Theme Toggle Button (ScrapSetu Clean Light vs Dark Mode) */}
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              className="btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: 'var(--radius-full)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+              title={theme === 'light' ? "Switch to Dark Slate Theme" : "Switch to ScrapSetu Clean Light Theme"}
+            >
+              {theme === 'light' ? (
+                <>
+                  <Moon size={16} />
+                  <span style={{ fontSize: '0.84rem', fontWeight: 700 }}>
+                    {lang === 'hi' ? 'डार्क मोड' : 'Dark'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <SunMedium size={16} color="var(--solar-amber)" />
+                  <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--solar-amber)' }}>
+                    {lang === 'hi' ? 'लाइट मोड' : 'Light'}
+                  </span>
+                </>
+              )}
+            </button>
+
+            {/* 4. Display & Accessibility Settings Popover */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -412,13 +446,13 @@ export default function Navbar({
                   position: 'absolute',
                   top: 'calc(100% + 8px)',
                   right: 0,
-                  background: 'rgba(16, 22, 29, 0.98)',
+                  background: 'var(--bg-surface)',
                   backdropFilter: 'blur(20px)',
-                  border: '1.5px solid var(--border-active)',
+                  border: '1.5px solid var(--border-card)',
                   borderRadius: 'var(--radius-md)',
                   padding: '16px',
                   minWidth: '220px',
-                  boxShadow: '0 16px 40px rgba(0, 0, 0, 0.8)',
+                  boxShadow: 'var(--shadow-elevated)',
                   zIndex: 150
                 }}>
                   <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase', marginBottom: '10px' }}>
@@ -431,9 +465,9 @@ export default function Navbar({
                         type="button"
                         onClick={() => onChangeFontScale(scale)}
                         style={{
-                          background: fontScale === scale ? 'var(--primary-emerald)' : 'rgba(255, 255, 255, 0.08)',
-                          color: fontScale === scale ? '#090d10' : '#ffffff',
-                          border: 'none',
+                          background: fontScale === scale ? 'var(--primary-emerald)' : 'var(--bg-surface-elevated)',
+                          color: fontScale === scale ? '#ffffff' : 'var(--text-primary)',
+                          border: '1px solid var(--border-subtle)',
                           borderRadius: 'var(--radius-sm)',
                           padding: '6px',
                           fontWeight: 700,
@@ -461,10 +495,10 @@ export default function Navbar({
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '8px 12px',
-                      background: isHighContrast ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255, 255, 255, 0.08)',
-                      border: `1px solid ${isHighContrast ? 'var(--solar-amber)' : 'transparent'}`,
+                      background: isHighContrast ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-surface-elevated)',
+                      border: `1px solid ${isHighContrast ? 'var(--solar-amber)' : 'var(--border-subtle)'}`,
                       borderRadius: 'var(--radius-sm)',
-                      color: isHighContrast ? 'var(--solar-amber)' : '#ffffff',
+                      color: isHighContrast ? 'var(--solar-amber)' : 'var(--text-primary)',
                       fontWeight: 700,
                       fontSize: '0.82rem',
                       cursor: 'pointer'
@@ -477,7 +511,7 @@ export default function Navbar({
               )}
             </div>
 
-            {/* 4. Farmer User Chip & State Badge / Login Button */}
+            {/* 5. Farmer User Chip & State Badge / Login Button */}
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{
@@ -485,13 +519,13 @@ export default function Navbar({
                   alignItems: 'center',
                   gap: '10px',
                   background: 'var(--bg-surface-elevated)',
-                  border: '1px solid var(--border-active)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-full)',
                   padding: '8px 18px'
                 }}>
-                  <User size={18} color="var(--primary-emerald-light)" />
+                  <User size={18} color="var(--primary-emerald)" />
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15 }}>
-                    <span style={{ fontSize: '0.98rem', fontWeight: 800, color: '#ffffff' }}>
+                    <span style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                       {user.full_name?.split('(')[0].trim() || 'Farmer'}
                     </span>
                     <span style={{ fontSize: '0.82rem', color: 'var(--solar-amber)', fontWeight: 700 }}>

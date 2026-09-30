@@ -203,11 +203,11 @@ export default function AuthSection({
 
         {/* State Farmer Benchmarks (Haryana, Punjab, UP, Rajasthan, Admin) */}
         <div style={{ marginBottom: '36px' }}>
-          <div style={{ marginBottom: '14px' }}>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff', marginBottom: '4px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '4px' }}>
               {t.stateProfilesTitle}
             </h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+            <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
               {t.stateProfilesSub}
             </p>
           </div>
@@ -228,26 +228,27 @@ export default function AuthSection({
                   onClick={() => setSelectedProfileId(profile.id)}
                   style={{
                     background: isSelected 
-                      ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(245, 158, 11, 0.14) 100%)' 
-                      : 'rgba(18, 25, 32, 0.65)',
+                      ? 'rgba(5, 150, 105, 0.08)' 
+                      : 'var(--bg-surface-elevated)',
                     border: isSelected 
-                      ? '1.5px solid var(--primary-emerald)' 
+                      ? '2px solid var(--primary-emerald)' 
                       : '1px solid var(--border-subtle)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '16px',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '16px 18px',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    position: 'relative'
+                    position: 'relative',
+                    boxShadow: isSelected ? '0 4px 18px rgba(5, 150, 105, 0.15)' : 'none'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '1.4rem' }}>{profile.avatar}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '1.5rem' }}>{profile.avatar}</span>
                       <div>
-                        <div style={{ fontWeight: 800, fontSize: '0.95rem', color: isSelected ? 'var(--primary-emerald-light)' : '#ffffff' }}>
+                        <div style={{ fontWeight: 800, fontSize: '1rem', color: isSelected ? 'var(--primary-emerald)' : 'var(--text-primary)' }}>
                           {profile.full_name}
                         </div>
-                        <div style={{ fontSize: '0.78rem', color: isAdmin ? 'var(--solar-amber)' : 'var(--text-secondary)' }}>
+                        <div style={{ fontSize: '0.82rem', color: isAdmin ? 'var(--solar-amber)' : 'var(--text-secondary)', fontWeight: 600 }}>
                           {lang === 'hi' ? profile.stateHi : profile.state}
                         </div>
                       </div>
@@ -256,10 +257,10 @@ export default function AuthSection({
                     {isSelected && <CheckCircle2 size={18} color="var(--primary-emerald)" />}
                   </div>
 
-                  <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', lineHeight: 1.4 }}>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', lineHeight: 1.4 }}>
                     📍 {profile.farm.name}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--solar-amber)', fontWeight: 700, marginTop: '4px' }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--solar-amber)', fontWeight: 700, marginTop: '4px' }}>
                     ⚡ {profile.farm.pump_type}
                   </div>
                 </div>
