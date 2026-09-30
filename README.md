@@ -38,10 +38,8 @@
   - **Rajasthan (कोटा)**: Ramcharan Meena — 5.0 HP Solar DC Drip Pump, Mustard/Oilseed, ₹78,400/yr saved.
   - **Central Admin (National Agronomy Council)**: Dr. Vandana Sharma — Managing 31.7 hectare distributed solar fleet across all states with ₹4,85,600/yr collective savings.
 
-![Yuva Energy Farm Console & Verified Farmer Telemetry](docs/assets/farm_console_showcase.jpg)
-
 ### 2. ⚡ Live Telemetry & Weather Simulation Engine
-- Interactive live simulation buttons right inside the console to test dynamic environmental responses:
+- Interactive live simulation modal inside the console to test dynamic environmental responses:
   - **`☀️ Peak Sun (820 W/m²)`**: Simulates peak solar noon, active 5HP daylight solar pumping, and ₹0 grid cost.
   - **`🌧️ Rainfall (18mm)`**: Simulates active monsoon downpour, replenishes the crop root zone, reduces CWSI stress to 0.02, and puts pumps on standby to conserve groundwater.
   - **`🏜️ Dry Heatwave`**: Simulates 41.8°C arid heat, breaches allowable depletion limits (CWSI 0.54), and triggers an immediate high-urgency solar emergency irrigation recommendation.
@@ -59,14 +57,12 @@
   - Display settings popover with **Sunlight High Contrast Mode** toggle and **Font Size Scaling** controls (`+` / `-`).
   - Active farmer user chip with state badge and logout.
 
-### 5. 🛰️ ScrapSetu-Grade Interactive Modules
+### 5. 🛰️ Interactive Agronomy Modules on Landing Page
 - **Live Regional Telemetry Ticker**: Continuous marquee displaying solar radiation, aquifer savings, and pump status across Karnal, Ludhiana, Indore, Solapur, and Kota.
 - **Solar Irrigation & Yield Value Estimator**: Interactive calculator modeling crop coefficients, acreage sliders (1–50 acres), and instant financial ROI vs grid & diesel costs.
-- **10-Meter Sentinel-2 Satellite Canopy Scanner**: 4-Band spectral switcher (NDVI, CWSI, NDRE, True Color) with animated radar sweep and spatial crosshairs.
+- **10-Meter Sentinel-2 Satellite Canopy Scanner**: 4-Band spectral switcher (NDVI, CWSI, NDRE, True Color) with interactive zone telemetry hotspots.
 - **FAQ Accordion**: Bilingual agronomy and solar microgrid explanations.
-- **Lenis Smooth Scrolling**: Hardware-accelerated fluid scroll dynamics.
-
-![Yuva Energy Solar Irrigation ROI Calculator & Sentinel-2 Scanner](docs/assets/solar_scanner_showcase.jpg)
+- **Native Zero-Lag Smooth Scrolling**: 100% fluid, hardware-accelerated 60/120Hz responsive scrolling with zero input delay.
 
 ---
 
