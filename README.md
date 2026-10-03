@@ -51,15 +51,6 @@ Real-time agronomic cockpit displaying verified farmer credentials (PM-KUSUM Com
 
 ---
 
-### 3. 🔬 Solar-Agro ROI Calculator & 10m Sentinel-2 Canopy Scanner
-> ⚡ **Try the Simulator**: **[https://kisanurja.vercel.app#calculator-section](https://kisanurja.vercel.app#calculator-section)**
-
-Interactive dynamic financial model for solar water extraction coupled with high-resolution multispectral canopy diagnostics (NDVI, CWSI, NDRE, True Color) and automated FAO-56 irrigation dispatch triggers.
-
-![Interactive Agronomy Intelligence & Canopy Scanner](docs/assets/interactive_calculator_scanner.png)
-
----
-
 ## 🌟 Key Features & Innovations
 
 ### 1. 👨‍🌾 Working Farmer Login & Identity Card
