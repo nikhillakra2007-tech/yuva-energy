@@ -22,8 +22,6 @@
 | **🌐 Alternative Live Mirror** | **[https://kisan-urja.vercel.app](https://kisan-urja.vercel.app)** | Hyphenated secondary Vercel alias |
 | **🌾 Local Web Application** | **[http://localhost:5173/](http://localhost:5173/)** | Real-time agro-solar intelligence platform & farm console |
 | **📦 GitHub Repository** | **[https://github.com/nikhillakra2007-tech/yuva-energy](https://github.com/nikhillakra2007-tech/yuva-energy)** | Official GitHub source repository & releases |
-| **📑 API Swagger Docs** | **[http://localhost:8000/api/v1/docs](http://localhost:8000/api/v1/docs)** | Interactive Swagger / OpenAPI 3.1 documentation |
-| **🩺 Backend Health** | **[http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health)** | Database, PostGIS, and orchestrator health probe |
 
 ---
 
