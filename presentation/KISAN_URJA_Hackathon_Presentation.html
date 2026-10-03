@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KISAN URJA — Yuva Yodha Energy Tech Hackathon 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-base: #0a0f1a;
+  --bg-slide: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-card-solid: #1e293b;
+  --border-subtle: rgba(148, 163, 184, 0.15);
+  --border-active: rgba(16, 185, 129, 0.5);
+  --emerald: #10b981;
+  --emerald-light: #34d399;
+  --emerald-dim: #059669;
+  --emerald-glow: rgba(16, 185, 129, 0.15);
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
+  --amber-dim: #d97706;
+  --amber-glow: rgba(245, 158, 11, 0.12);
+  --sky: #38bdf8;
+  --red: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --font-heading: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== SLIDE SYSTEM ===== */
+.deck { position: relative; width: 100vw; height: 100vh; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 80px;
+  background: var(--bg-slide);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Subtle background texture */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.slide-number {
+  position: absolute;
+  top: 28px;
+  right: 40px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+.headline {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+}
+
+.headline .em-green { color: var(--emerald-light); }
+.headline .em-amber { color: var(--amber); }
+.headline .em-dim { color: var(--text-secondary); font-weight: 500; }
+
+.subheadline {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.body-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 680px;
+}
+
+.caption {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--emerald);
+  margin-bottom: 12px;
+}
+
+.label-amber {
+  color: var(--amber);
+}
+
+/* ===== LAYOUT HELPERS ===== */
+.row { display: flex; gap: 40px; align-items: flex-start; }
+.row-center { display: flex; gap: 40px; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+.gap-48 { gap: 48px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mb-16 { margin-bottom: 16px; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px;
+  backdrop-filter: blur(12px);
+}
+
+.card-glow {
+  border-color: var(--border-active);
+  box-shadow: 0 0 30px -8px var(--emerald-glow);
+}
+
+.card-amber {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 30px -8px var(--amber-glow);
+}
+
+/* ===== BULLETS ===== */
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.bullets li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  margin-top: 8px;
+}
+
+.bullets.amber li::before { background: var(--amber); }
+.bullets.sky li::before { background: var(--sky); }
+
+.bullets li strong { color: var(--text-primary); font-weight: 600; }
+
+/* ===== PIPELINE ===== */
+.pipeline {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.pipeline-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.pipeline-step:first-child { border-radius: 14px 0 0 14px; }
+.pipeline-step:last-child { border-radius: 0 14px 14px 0; }
+
+.pipeline-step .step-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--emerald);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.pipeline-step .step-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.pipeline-step .step-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.pipeline-step .step-detail {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  line-height: 1.45;
+}
+
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--emerald);
+  font-size: 1.2rem;
+  padding: 0 2px;
+}
+
+/* ===== TAGS / BADGES ===== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.tag-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--emerald-light);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.tag-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--amber-light);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.tag-sky {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--sky);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* ===== EQUATION ===== */
+.equation-box {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 12px;
+  padding: 20px 28px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--emerald-light);
+  line-height: 1.8;
+  overflow-x: auto;
+}
+
+/* ===== MOCKUP IMAGES ===== */
+.mockup-frame {
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.mockup-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mockup-callout {
+  position: absolute;
+  padding: 6px 14px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.mockup-callout.amber-callout {
+  background: rgba(217, 119, 6, 0.9);
+}
+
+/* ===== TWO-COLUMN SPLIT ===== */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ===== THREE-COLUMN IMPACT ===== */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.impact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.impact-card .impact-icon {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+}
+
+.impact-card h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.impact-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ===== ARCHITECTURE STACK ===== */
+.arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.arch-layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.arch-arrow {
+  color: var(--text-tertiary);
+  font-size: 1rem;
+}
+
+/* ===== FOOTER BAR ===== */
+.slide-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+}
+
+.slide-footer a {
+  color: var(--emerald);
+  text-decoration: none;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--emerald), var(--amber));
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+
+/* ===== NAV CONTROLS ===== */
+.nav-hint {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  opacity: 0.5;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* ===== ROADMAP TIMELINE ===== */
+.roadmap {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.roadmap-phase {
+  flex: 1;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+}
+
+.roadmap-phase h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 14px;
+}
+
+.roadmap-phase ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.roadmap-phase ul li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding-left: 16px;
+  position: relative;
+}
+
+.roadmap-phase ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--emerald);
+}
+
+/* ===== STAT HIGHLIGHT ===== */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: var(--emerald-light);
+  line-height: 1;
+}
+
+.stat-value.amber { color: var(--amber); }
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ===== COVER SPECIFIC ===== */
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cover-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+
+.cover-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== QUOTE LINE ===== */
+.quote-line {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-left: 3px solid var(--emerald);
+  padding-left: 20px;
+  margin-top: 20px;
+  max-width: 600px;
+}
+
+/* ===== SMALL INLINE DIVIDER ===== */
+.divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--emerald), var(--amber));
+  border-radius: 2px;
+  margin: 20px 0;
+}
+
+/* ===== RESPONSIVE (minimal — presentation is projected) ===== */
+@media (max-width: 1100px) {
+  .slide { padding: 40px 40px; }
+  .headline { font-size: 2rem; }
+  .split { grid-template-columns: 1fr; gap: 24px; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .pipeline { flex-direction: column; }
+  .pipeline-step:first-child { border-radius: 14px 14px 0 0; }
+  .pipeline-step:last-child { border-radius: 0 0 14px 14px; }
+  .pipeline-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ========== SLIDE 1: COVER ========== -->
+<div class="slide active" data-slide="1">
+  <div class="cover-bg">
+    <img src="../presentation/assets/cover_background.jpg" alt="" onerror="this.style.display='none'">
+  </div>
+  <div class="cover-content">
+    <div class="label" style="font-size: 0.85rem; letter-spacing: 0.18em; margin-bottom: 28px;">YUVA YODHA ENERGY TECH HACKATHON 2026</div>
+
+    <h1 style="font-family: var(--font-heading); font-weight: 900; font-size: 4.5rem; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 8px;">
+      KISAN <span style="color: var(--amber);">URJA</span>
+    </h1>
+    <div style="font-family: 'Noto Sans Devanagari', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 32px;">
+      किसान ऊर्जा
+    </div>
+
+    <div class="divider" style="margin: 0 auto 28px auto;"></div>
+
+    <div style="font-family: var(--font-heading); font-weight: 600; font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 12px;">
+      Autonomous Agricultural Intelligence &amp; Solar Irrigation Platform
+    </div>
+
+    <div style="font-family: var(--font-body); font-size: 1rem; color: var(--text-tertiary); font-style: italic; margin-bottom: 48px;">
+      "Connecting crop water intelligence with solar-powered irrigation."
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <span class="tag tag-green">☀️ Solar-Synchronized</span>
+      <span class="tag tag-amber">🌾 FAO-56 Physics</span>
+      <span class="tag tag-sky">🛰️ Sentinel-2 Canopy</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Challenge: Sustainable Agriculture</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">01 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 2: THE PROBLEM ========== -->
+<div class="slide" data-slide="2">
+  <div class="label">THE PROBLEM</div>
+  <h2 class="headline">
+    Farm irrigation is a <span class="em-green">water</span> problem<br>
+    <span class="em-dim">AND</span> an <span class="em-amber">energy</span> problem.
+  </h2>
+
+  <div class="row gap-48" style="align-items: stretch;">
+    <div class="flex-1">
+      <ul class="bullets">
+        <li><strong>When to irrigate?</strong> Farmers must judge timing from weather, soil moisture, and crop stage—often separately.</li>
+        <li><strong>How much water?</strong> Fixed schedules miss changing field conditions, leading to over- or under-irrigation.</li>
+        <li><strong>Energy cost:</strong> Pumping consumes electricity or diesel. Tariff timing and solar availability are rarely considered alongside water need.</li>
+        <li><strong>Fragmented signals:</strong> Weather, soil, crop demand, water status, and energy cost are treated as disconnected datasets.</li>
+        <li><strong>No unified recommendation:</strong> Farmers need one actionable decision—not five dashboards.</li>
+      </ul>
+    </div>
+
+    <div class="flex-1" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;">
+        <div class="card" style="padding: 16px 20px; text-align: center; opacity: 0.6; border-style: dashed;">
+          <div style="font-size: 1.6rem;">🌦️</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">Weather</div>
+        </div>
+        <div class="card" style="padding: 16px 20px; text-align: center; opacity: 0.6; border-style: dashed;">
+          <div style="font-size: 1.6rem;">🪨</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">Soil</div>
+        </div>
+        <div class="card" style="padding: 16px 20px; text-align: center; opacity: 0.6; border-style: dashed;">
+          <div style="font-size: 1.6rem;">🌾</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">Crop</div>
+        </div>
+        <div class="card" style="padding: 16px 20px; text-align: center; opacity: 0.6; border-style: dashed;">
+          <div style="font-size: 1.6rem;">💧</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">Water</div>
+        </div>
+        <div class="card" style="padding: 16px 20px; text-align: center; opacity: 0.6; border-style: dashed;">
+          <div style="font-size: 1.6rem;">⚡</div>
+          <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 4px;">Energy</div>
+        </div>
+      </div>
+      <div style="font-size: 1.4rem; color: var(--text-tertiary); margin-bottom: 12px;">↓ fragmented decisions ↓</div>
+      <div class="card card-glow" style="padding: 18px 32px; text-align: center;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 1rem; color: var(--emerald-light);">
+          KISAN URJA brings these signals together.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">02 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 3: OUR SOLUTION ========== -->
+<div class="slide" data-slide="3">
+  <div class="label">OUR SOLUTION</div>
+  <h2 class="headline">
+    One intelligence layer for <span class="em-green">water</span>, <span class="em-amber">crops</span> and <span class="em-amber">energy</span>.
+  </h2>
+
+  <div class="row gap-48" style="align-items: stretch;">
+    <!-- Left: Inputs -->
+    <div class="col gap-16 flex-1">
+      <div class="subheadline" style="font-size: 1rem; margin-bottom: 8px;">INPUTS</div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🌤️</span>
+        <span style="font-size: 0.92rem;"><strong>Microclimate</strong> — Open-Meteo weather observations</span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🪨</span>
+        <span style="font-size: 0.92rem;"><strong>Soil properties</strong> — ISRIC SoilGrids 250m</span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🛰️</span>
+        <span style="font-size: 0.92rem;"><strong>Satellite</strong> — Copernicus Sentinel-2 (10m)</span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🌾</span>
+        <span style="font-size: 0.92rem;"><strong>Crop/field info</strong> — Species, stage, rooting depth</span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">☀️</span>
+        <span style="font-size: 0.92rem;"><strong>Solar/pump</strong> — PV capacity, pump HP, tariff</span>
+      </div>
+    </div>
+
+    <!-- Center: Intelligence -->
+    <div class="col flex-1" style="align-items: center; justify-content: center;">
+      <div class="card card-glow" style="padding: 32px; text-align: center; max-width: 280px;">
+        <div style="font-size: 2rem; margin-bottom: 12px;">🧠</div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; color: var(--emerald-light); margin-bottom: 16px;">INTELLIGENCE ENGINE</div>
+        <ul style="list-style: none; text-align: left; display: flex; flex-direction: column; gap: 8px;">
+          <li style="font-size: 0.82rem; color: var(--text-secondary);">→ FAO-56 Penman-Monteith ET₀</li>
+          <li style="font-size: 0.82rem; color: var(--text-secondary);">→ Root-zone water balance</li>
+          <li style="font-size: 0.82rem; color: var(--text-secondary);">→ Crop water stress (Kₛ / CWSI)</li>
+          <li style="font-size: 0.82rem; color: var(--text-secondary);">→ Solar generation modeling</li>
+          <li style="font-size: 0.82rem; color: var(--text-secondary);">→ Tariff-aware scheduling</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right: Outputs -->
+    <div class="col gap-16 flex-1">
+      <div class="subheadline" style="font-size: 1rem; margin-bottom: 8px;">OUTPUTS</div>
+      <div class="card card-amber" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🚿</span>
+        <span style="font-size: 0.92rem;"><strong>Irrigation recommendations</strong></span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">📊</span>
+        <span style="font-size: 0.92rem;"><strong>Water stress insights</strong> (CWSI)</span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">⚡</span>
+        <span style="font-size: 0.92rem;"><strong>Solar pumping windows</strong></span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">💰</span>
+        <span style="font-size: 0.92rem;"><strong>Financial/energy insights</strong></span>
+      </div>
+      <div class="card" style="padding: 14px 20px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.2rem;">🔗</span>
+        <span style="font-size: 0.92rem;"><strong>Traceable reasoning chain</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">03 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 4: HOW IT THINKS ========== -->
+<div class="slide" data-slide="4">
+  <div class="label">THE PIPELINE</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    From raw observations to an <span class="em-green">explainable</span> irrigation decision.
+  </h2>
+
+  <div class="pipeline">
+    <div class="pipeline-step" style="border-color: rgba(56, 189, 248, 0.3);">
+      <div class="step-num">STAGE 01</div>
+      <div class="step-icon">📡</div>
+      <div class="step-title">Data Ingestion</div>
+      <div class="step-detail">
+        Open-Meteo weather<br>
+        ISRIC SoilGrids 250m<br>
+        Copernicus Sentinel-2<br>
+        <span style="color: var(--sky); font-weight: 600;">SHA-256 archived</span>
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" style="border-color: rgba(16, 185, 129, 0.3);">
+      <div class="step-num">STAGE 02</div>
+      <div class="step-icon">🔬</div>
+      <div class="step-title">Agricultural Physics</div>
+      <div class="step-detail">
+        FAO-56 Penman-Monteith ET₀<br>
+        Saxton-Rawls pedotransfer<br>
+        θ<sub>FC</sub>, θ<sub>WP</sub>, AWC
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" style="border-color: rgba(16, 185, 129, 0.4);">
+      <div class="step-num">STAGE 03</div>
+      <div class="step-icon">💧</div>
+      <div class="step-title">Water Stress</div>
+      <div class="step-detail">
+        TAW / RAW thresholds<br>
+        Root-zone depletion D<sub>r</sub><br>
+        Kₛ stress coefficient<br>
+        <span style="color: var(--emerald-light); font-weight: 600;">CWSI index</span>
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" style="border-color: rgba(245, 158, 11, 0.3);">
+      <div class="step-num">STAGE 04</div>
+      <div class="step-icon">☀️</div>
+      <div class="step-title">Energy Intelligence</div>
+      <div class="step-detail">
+        Solar PV generation curve<br>
+        Pump capacity matching<br>
+        <span style="color: var(--amber); font-weight: 600;">Tariff-aware timing</span><br>
+        Peak window: 10:30–3:45
+      </div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step" style="border-color: rgba(245, 158, 11, 0.4);">
+      <div class="step-num">STAGE 05</div>
+      <div class="step-icon">✅</div>
+      <div class="step-title">Recommendation</div>
+      <div class="step-detail">
+        Action + Timing<br>
+        Confidence score<br>
+        Assumptions listed<br>
+        <span style="color: var(--amber-light); font-weight: 600;">Limitations disclosed</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-line mt-24" style="margin: 24px auto 0 auto; text-align: center; border-left: none; padding-left: 0;">
+    Every recommendation is traceable: input → calculation → assumption → output.
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">04 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 5: THE SCIENCE ========== -->
+<div class="slide" data-slide="5">
+  <div class="label">THE SCIENCE</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    Built on <span class="em-green">agricultural physics</span>—not a black box.
+  </h2>
+
+  <div class="row gap-48" style="align-items: flex-start;">
+    <div class="flex-1 col gap-24">
+      <ul class="bullets">
+        <li><strong>FAO-56 Penman-Monteith</strong> — deterministic reference evapotranspiration (ET₀) from net radiation, vapor pressure deficit, wind speed, and psychrometric constants.</li>
+        <li><strong>Saxton-Rawls pedotransfer</strong> — converts SoilGrids texture (sand%, clay%) into field capacity (θ<sub>FC</sub>), wilting point (θ<sub>WP</sub>), and available water capacity.</li>
+        <li><strong>Root-zone water balance</strong> — daily depletion mass model tracking D<sub>r</sub> against USDA-SCS effective rainfall and adjusted ET<sub>c</sub>.</li>
+        <li><strong>Crop water stress</strong> — Kₛ coefficient and CWSI derived from depletion vs. readily-available water thresholds.</li>
+        <li><strong>Effective rainfall</strong> — USDA-SCS methodology separating surface runoff from infiltrating precipitation.</li>
+      </ul>
+    </div>
+
+    <div class="flex-1 col gap-24" style="align-items: center;">
+      <div class="equation-box" style="width: 100%;">
+        <div style="text-align: center; margin-bottom: 12px; color: var(--text-tertiary); font-size: 0.78rem;">FAO-56 Penman-Monteith Reference ET₀</div>
+        <div style="text-align: center; font-size: 0.85rem; line-height: 2.2;">
+          ET₀ = <span style="color: var(--emerald-light);">[0.408·Δ·(Rn − G) + γ·(900/(T+273))·u₂·(eₛ − eₐ)]</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ <span style="color: var(--amber);">[Δ + γ·(1 + 0.34·u₂)]</span>
+        </div>
+      </div>
+
+      <div class="equation-box" style="width: 100%;">
+        <div style="text-align: center; margin-bottom: 12px; color: var(--text-tertiary); font-size: 0.78rem;">Root-Zone Depletion &amp; Stress</div>
+        <div style="text-align: center; font-size: 0.85rem; line-height: 2;">
+          D<sub>r,i</sub> = D<sub>r,i−1</sub> − P<sub>eff</sub> − I + ET<sub>c,adj</sub><br>
+          <span style="color: var(--amber);">CWSI = 1 − Kₛ</span>
+        </div>
+      </div>
+
+      <div class="quote-line" style="font-size: 0.92rem; margin-top: 12px; border-left-color: var(--amber);">
+        Scientific calculations remain traceable from input → calculation → assumption → output.
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">05 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 6: ENERGY INNOVATION ========== -->
+<div class="slide" data-slide="6">
+  <div class="label label-amber">THE ENERGY INNOVATION</div>
+  <h2 class="headline" style="font-size: 2.3rem;">
+    Water intelligence meets <span class="em-amber">solar intelligence</span>.
+  </h2>
+
+  <div class="row gap-48" style="align-items: flex-start;">
+    <div class="flex-1 col gap-24">
+      <div class="body-text mb-16">
+        Instead of treating irrigation demand and energy cost as separate decisions, KISAN URJA connects them. The platform models when solar PV generation is sufficient to power irrigation pumps—synchronizing water delivery with available renewable energy.
+      </div>
+
+      <div class="card card-amber" style="padding: 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--amber); margin-bottom: 14px;">DECISION FUSION</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.88rem;">
+          <span style="color: var(--text-secondary);">💧 Crop Water Need</span>
+          <span style="color: var(--text-tertiary);">+</span>
+          <span style="color: var(--text-secondary);">🪨 Soil Water Status</span>
+          <span style="color: var(--text-tertiary);">+</span>
+          <span style="color: var(--text-secondary);">☀️ Solar Availability</span>
+          <span style="color: var(--text-tertiary);">+</span>
+          <span style="color: var(--text-secondary);">⚙️ Pump Capacity</span>
+          <span style="color: var(--text-tertiary);">+</span>
+          <span style="color: var(--text-secondary);">💰 Energy Cost / Tariff</span>
+          <span style="color: var(--amber); font-weight: 700; font-size: 1rem; margin-top: 8px;">→ OPTIMAL IRRIGATION WINDOW</span>
+        </div>
+      </div>
+
+      <div class="caption mt-8">
+        Demo profiles model savings scenarios (e.g., ₹94,200/yr for a 5HP solar pump in Haryana). These represent modeled scenarios, not independently measured field results.
+      </div>
+    </div>
+
+    <div class="flex-1" style="display: flex; align-items: center; justify-content: center;">
+      <div class="mockup-frame" style="max-width: 540px; width: 100%;">
+        <img src="../presentation/assets/solar_timeline.jpg" alt="Solar pumping window timeline" onerror="this.parentElement.innerHTML='<div style=&quot;padding:80px 40px;text-align:center;background:var(--bg-card);&quot;><div style=&quot;font-size:3rem;margin-bottom:16px;&quot;>☀️</div><div style=&quot;font-family:var(--font-heading);font-weight:700;font-size:1.1rem;color:var(--amber);&quot;>Peak Solar Pumping Window</div><div style=&quot;margin-top:16px;font-size:0.9rem;color:var(--text-secondary);&quot;>Sunrise → 10:30 AM ━━ <span style=color:var(--amber);font-weight:700;>PEAK SOLAR</span> ━━ 3:45 PM → Sunset</div><div style=&quot;margin-top:8px;font-size:0.82rem;color:var(--text-tertiary);&quot;>Solar pump active during peak irradiance · ₹0 grid electricity cost</div></div>'">
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">06 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 7: PRODUCT / LIVE DEMO ========== -->
+<div class="slide" data-slide="7">
+  <div class="label">PRODUCT</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    An intelligence console <span class="em-green">built for the farmer</span>.
+  </h2>
+
+  <div class="row gap-32" style="align-items: stretch;">
+    <div class="flex-1">
+      <div class="mockup-frame" style="position: relative;">
+        <img src="../presentation/assets/dashboard_mockup.jpg" alt="KISAN URJA Farmer Dashboard" onerror="this.parentElement.innerHTML='<div style=&quot;padding:60px 32px;background:linear-gradient(135deg,#0f172a,#1e293b);text-align:center;&quot;><div style=&quot;font-size:2.5rem;margin-bottom:16px;&quot;>👨‍🌾</div><div style=&quot;font-family:var(--font-heading);font-weight:700;font-size:1.2rem;color:var(--emerald-light);margin-bottom:8px;&quot;>Farmer Console Dashboard</div><div style=&quot;font-size:0.85rem;color:var(--text-tertiary);&quot;>Identity Card · Water Balance · Solar Energy · Weather · Recommendations</div></div>'">
+        <div class="mockup-callout" style="top: 12%; left: 4%;">FARMER IDENTITY</div>
+        <div class="mockup-callout amber-callout" style="top: 28%; right: 4%;">SOLAR ENERGY</div>
+        <div class="mockup-callout" style="top: 12%; right: 30%;">WATER STRESS</div>
+        <div class="mockup-callout amber-callout" style="bottom: 15%; right: 4%;">LIVE WEATHER</div>
+      </div>
+    </div>
+
+    <div class="col gap-16 flex-1" style="justify-content: center;">
+      <div class="card" style="padding: 18px 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--emerald-light); margin-bottom: 6px;">👨‍🌾 Farmer Identity Card</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Full profile with state badge, farm name, solar pump specs, and modeled annual savings. Multi-state switching across 4 benchmark profiles.</div>
+      </div>
+      <div class="card" style="padding: 18px 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--emerald-light); margin-bottom: 6px;">💧 Water Balance &amp; CWSI</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Live root-zone depletion bar, stress index, ET₀, and adjusted crop water demand.</div>
+      </div>
+      <div class="card" style="padding: 18px 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--amber); margin-bottom: 6px;">☀️ Solar Energy &amp; Pump Status</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">PV generation, pump discharge status (ACTIVE_SOLAR / STANDBY), and tariff savings.</div>
+      </div>
+      <div class="card" style="padding: 18px 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--sky); margin-bottom: 6px;">⚡ Live Simulation Engine</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">Interactive telemetry simulation: Peak Sun, Rainfall, Dry Heatwave—demonstrating dynamic system response.</div>
+      </div>
+      <div class="card" style="padding: 18px 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--emerald-light); margin-bottom: 6px;">🛰️ Satellite Canopy Scanner</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">4-band spectral switcher (NDVI, CWSI, NDRE, True Color) with interactive zone hotspots.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Live: <a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+    <span>React 19 + Vite 8 · Obsidian Slate Theme · Lenis Smooth Scroll</span>
+  </div>
+  <span class="slide-number">07 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 8: ACCESSIBILITY + TRUST ========== -->
+<div class="slide" data-slide="8">
+  <div class="label">ACCESSIBILITY &amp; TRUST</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    Advanced intelligence, <span class="em-green">without hiding the reasoning</span>.
+  </h2>
+
+  <div class="split">
+    <div class="col gap-24">
+      <div style="font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: var(--emerald-light); display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.3rem;">🇮🇳</span> Farmer Accessibility
+      </div>
+      <ul class="bullets">
+        <li><strong>Hindi/Hinglish transliterator</strong> — real-time Devanagari conversion with agricultural dictionary (khet → खेत, paani → पानी)</li>
+        <li><strong>Hindi voice synthesis</strong> — Web Speech API reads recommendations aloud in Hindi</li>
+        <li><strong>Sunlight high-contrast mode</strong> — toggle for outdoor field visibility</li>
+        <li><strong>Font size scaling</strong> — adjustable text size controls (+/−)</li>
+        <li><strong>Farmer-first interface</strong> — clear recommendation cards with urgency badges, not raw data tables</li>
+      </ul>
+    </div>
+
+    <div class="col gap-24">
+      <div style="font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: var(--amber); display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.3rem;">🔒</span> Trust &amp; Traceability
+      </div>
+      <ul class="bullets amber">
+        <li><strong>Data provenance</strong> — every ingested record tagged as EXTERNAL_RETRIEVED, OBSERVED, or CALCULATED</li>
+        <li><strong>SHA-256 raw archiving</strong> — all external API payloads cryptographically hashed before parsing</li>
+        <li><strong>PostgreSQL Row-Level Security</strong> — tenant isolation via JWT claim enforcement</li>
+        <li><strong>Full traceability chains</strong> — each recommendation includes inputs, equations, assumptions, confidence, and limitations</li>
+        <li><strong>Zero fabricated telemetry</strong> — no synthetic data presented as observed measurements</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote-line mt-32" style="max-width: 100%; text-align: center; border-left: none; padding-left: 0;">
+    "Farmers should understand not only <strong style="color: var(--text-primary);">what</strong> the system recommends, but <strong style="color: var(--emerald-light);">why</strong>."
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha 2026</span>
+    <span><a href="https://kisanurja.vercel.app" target="_blank">kisanurja.vercel.app</a></span>
+  </div>
+  <span class="slide-number">08 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 9: IMPLEMENTATION ========== -->
+<div class="slide" data-slide="9">
+  <div class="label">IMPLEMENTATION</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    From concept to <span class="em-green">working full-stack system</span>.
+  </h2>
+
+  <div class="row gap-48" style="align-items: flex-start;">
+    <div class="col gap-8 flex-1" style="align-items: center;">
+      <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--text-tertiary); margin-bottom: 12px; letter-spacing: 0.08em;">SYSTEM ARCHITECTURE</div>
+
+      <div class="arch-stack" style="width: 100%;">
+        <div class="arch-layer" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--sky);">
+          🖥️ &nbsp;React 19 + Vite 8 + Lenis
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--emerald-light);">
+          ⚡ &nbsp;FastAPI 0.115+ (10 Domain Routers)
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); color: var(--amber);">
+          🧠 &nbsp;Agricultural Intelligence Engine
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.25); color: var(--text-secondary);">
+          🗄️ &nbsp;PostgreSQL 18 + PostGIS 3.6
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="background: rgba(148, 163, 184, 0.06); border: 1px solid rgba(148, 163, 184, 0.15); color: var(--text-tertiary);">
+          📡 &nbsp;Open-Meteo · SoilGrids · Sentinel-2
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap-24 flex-1">
+      <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--text-tertiary); margin-bottom: 4px; letter-spacing: 0.08em;">VERIFIED IMPLEMENTATION</div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="card" style="padding: 20px; text-align: center;">
+          <div class="stat-value" style="font-size: 2rem;">77</div>
+          <div class="stat-label">Relational Entities</div>
+        </div>
+        <div class="card" style="padding: 20px; text-align: center;">
+          <div class="stat-value amber" style="font-size: 2rem;">25</div>
+          <div class="stat-label">Verified Migrations</div>
+        </div>
+        <div class="card" style="padding: 20px; text-align: center;">
+          <div class="stat-value" style="font-size: 2rem;">10</div>
+          <div class="stat-label">API Domain Routers</div>
+        </div>
+        <div class="card" style="padding: 20px; text-align: center;">
+          <div class="stat-value amber" style="font-size: 2rem;">15/15</div>
+          <div class="stat-label">Test Suites Passing</div>
+        </div>
+      </div>
+
+      <ul class="bullets" style="gap: 10px;">
+        <li style="font-size: 0.9rem;">Docker Compose full-stack orchestration</li>
+        <li style="font-size: 0.9rem;">NIST PBKDF2-HMAC-SHA256 authentication &amp; JWT</li>
+        <li style="font-size: 0.9rem;">Multi-tenant RLS isolation per farmer</li>
+        <li style="font-size: 0.9rem;">Production deployed on Vercel (frontend)</li>
+        <li style="font-size: 0.9rem;">Pipeline orchestrator with deduplication &amp; auditing</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>GitHub: <a href="https://github.com/nikhillakra2007-tech/yuva-energy" target="_blank">nikhillakra2007-tech/yuva-energy</a></span>
+    <span>15/15 backend test suites passing — documented in README</span>
+  </div>
+  <span class="slide-number">09 / 10</span>
+</div>
+
+
+<!-- ========== SLIDE 10: IMPACT + ROADMAP ========== -->
+<div class="slide" data-slide="10">
+  <div class="label">IMPACT &amp; FUTURE</div>
+  <h2 class="headline" style="font-size: 2.2rem;">
+    Toward <span class="em-green">autonomous</span>, <span class="em-amber">sustainable</span> irrigation.
+  </h2>
+
+  <div class="impact-grid" style="margin-bottom: 32px;">
+    <div class="impact-card" style="border-color: rgba(56, 189, 248, 0.3);">
+      <div class="impact-icon">💧</div>
+      <h4 style="color: var(--sky);">Water</h4>
+      <p>More informed irrigation decisions. Better visibility into root-zone depletion and crop water stress before irreversible damage.</p>
+    </div>
+    <div class="impact-card" style="border-color: rgba(245, 158, 11, 0.3);">
+      <div class="impact-icon">☀️</div>
+      <h4 style="color: var(--amber);">Energy</h4>
+      <p>Greater alignment between irrigation timing and solar availability. Designed to reduce reliance on expensive grid/diesel pumping periods.</p>
+    </div>
+    <div class="impact-card" style="border-color: rgba(16, 185, 129, 0.3);">
+      <div class="impact-icon">👨‍🌾</div>
+      <h4 style="color: var(--emerald-light);">Farmer</h4>
+      <p>Actionable, explainable recommendations in Hindi and English. Traceable decisions that build trust through transparency.</p>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-phase" style="border-color: var(--emerald); background: rgba(16, 185, 129, 0.06);">
+      <h4 style="color: var(--emerald-light);">✅ NOW — Working Prototype</h4>
+      <ul>
+        <li>Full-stack platform deployed live</li>
+        <li>FAO-56 physics engine verified</li>
+        <li>15/15 test suites passing</li>
+        <li>4-state benchmark profiles</li>
+        <li>Interactive simulation engine</li>
+      </ul>
+    </div>
+    <div class="roadmap-phase" style="border-color: var(--amber); background: rgba(245, 158, 11, 0.04);">
+      <h4 style="color: var(--amber);">🔜 NEXT — Validation &amp; Expansion</h4>
+      <ul>
+        <li>Real-world field validation</li>
+        <li>Localized agronomic models</li>
+        <li>Expanded region/crop coverage</li>
+        <li>Stronger live data integration</li>
+        <li>Progressive irrigation autonomy</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 36px;">
+    <div class="divider" style="margin: 0 auto 20px auto;"></div>
+    <div style="font-family: var(--font-heading); font-weight: 800; font-size: 2rem; letter-spacing: -0.02em;">
+      KISAN <span style="color: var(--amber);">URJA</span>
+    </div>
+    <div style="font-family: var(--font-body); font-size: 1rem; color: var(--text-secondary); font-style: italic; margin-top: 8px;">
+      "Where agricultural intelligence meets renewable energy."
+    </div>
+    <div style="margin-top: 12px;">
+      <a href="https://kisanurja.vercel.app" target="_blank" style="color: var(--emerald); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: none;">
+        kisanurja.vercel.app
+      </a>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>KISAN URJA — Yuva Yodha Energy Tech Hackathon 2026</span>
+    <span>Challenge: Sustainable Agriculture</span>
+  </div>
+  <span class="slide-number">10 / 10</span>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar" style="width: 10%;"></div>
+
+<!-- Navigation Hint -->
+<div class="nav-hint">← → Arrow Keys &nbsp;·&nbsp; Space &nbsp;·&nbsp; Click</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progressBar');
+  let current = 0;
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
+    // Number keys for direct navigation
+    const num = parseInt(e.key);
+    if (num >= 1 && num <= 9) goTo(num - 1);
+    if (e.key === '0') goTo(9);
+  });
+
+  // Click on left/right halves to navigate
+  document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A' || e.target.closest('a')) return;
+    if (e.clientX > window.innerWidth / 2) next();
+    else prev();
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+  });
+})();
+</script>
+
+</body>
+</html>

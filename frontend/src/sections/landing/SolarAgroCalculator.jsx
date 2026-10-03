@@ -169,9 +169,10 @@ export default function SolarAgroCalculator({ onEnterConsole, lang = 'en' }) {
 
   return (
     <div id="calculator-section" style={{
-      maxWidth: '1440px',
+      maxWidth: '1760px',
+      width: '96%',
       margin: '0 auto',
-      padding: '48px 24px 80px 24px'
+      padding: '56px 36px 90px 36px'
     }}>
       {/* Section Header */}
       <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 48px auto' }}>

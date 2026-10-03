@@ -27,6 +27,29 @@
 
 ---
 
+## 📸 Platform Showcase & Live Visuals
+
+### 1. ☀️ Sun-Powered Autonomous Landing Experience
+Dimensional hero interface featuring photoreal solar-agro irrigation infrastructure, real-time solar irradiance telemetry (`820 W/m² Peak Sun`), 10-meter Sentinel-2 vegetative canopy health index (`NDVI 0.76`), and live root zone water depletion status (`Dr: 22.4 mm`).
+
+![KisanUrja Landing Platform](docs/assets/landing_hero_preview.png)
+
+---
+
+### 2. 👨‍🌾 Integrated Farm Command Console
+Real-time agronomic cockpit displaying verified farmer credentials (PM-KUSUM Component-C), active field plots, 7.5 HP solar pump telemetry, 3-ring water balance radial gauges, FAO-56 root zone depletion meters, CWSI crop water stress index, and microclimate telemetry.
+
+![Farmer Command Console Overview](docs/assets/farmer_console_dashboard.png)
+
+---
+
+### 3. 🔬 Solar-Agro ROI Calculator & 10m Sentinel-2 Canopy Scanner
+Interactive dynamic financial model for solar water extraction coupled with high-resolution multispectral canopy diagnostics (NDVI, CWSI, NDRE, True Color) and automated FAO-56 irrigation dispatch triggers.
+
+![Interactive Agronomy Intelligence & Canopy Scanner](docs/assets/interactive_calculator_scanner.png)
+
+---
+
 ## 🌟 Key Features & Innovations
 
 ### 1. 👨‍🌾 Working Farmer Login & Identity Card

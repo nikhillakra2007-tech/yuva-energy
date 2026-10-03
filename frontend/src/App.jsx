@@ -413,15 +413,15 @@ export default function App() {
 
         {/* TIER 3: FARM CONSOLE & WORKING DASHBOARD VIEW */}
         {currentView === 'dashboard' && (
-          <div className="view-transition" style={{ maxWidth: '1440px', margin: '0 auto', width: '100%', padding: '24px 24px 64px 24px' }}>
+          <div className="view-transition" style={{ maxWidth: '1760px', margin: '0 auto', width: '96%', padding: '32px 36px 90px 36px' }}>
             {/* Reverse Breadcrumb: Back to Overview */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '16px',
-              marginBottom: '24px'
+              gap: '20px',
+              marginBottom: '32px'
             }}>
               <button
                 onClick={() => {
@@ -429,19 +429,19 @@ export default function App() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="btn-secondary"
-                style={{ padding: '8px 18px', fontSize: '0.9rem' }}
+                style={{ padding: '14px 28px', fontSize: '1.08rem', borderRadius: 'var(--radius-full)', fontWeight: 700 }}
               >
-                <ArrowLeft size={16} />
+                <ArrowLeft size={20} />
                 <span>{lang === 'hi' ? '← मुख्य परिचय पृष्ठ' : '← Return to Platform Overview'}</span>
               </button>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <button
                   onClick={() => setShowVoiceModal(true)}
                   className="btn-solar"
-                  style={{ padding: '8px 18px', fontSize: '0.9rem' }}
+                  style={{ padding: '14px 28px', fontSize: '1.08rem', borderRadius: 'var(--radius-full)', fontWeight: 800 }}
                 >
-                  <Mic size={16} />
+                  <Mic size={20} />
                   <span>{lang === 'hi' ? 'वॉयस सहायक से पूछें' : 'Consult Voice Assistant'}</span>
                 </button>
               </div>

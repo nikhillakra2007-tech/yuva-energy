@@ -49,16 +49,17 @@ export default function AgriShowcaseDashboard({ onEnterConsole, lang = 'en' }) {
 
   return (
     <section style={{
-      maxWidth: '1440px',
-      margin: '0 auto 48px auto',
-      padding: '0 24px'
+      maxWidth: '1760px',
+      width: '96%',
+      margin: '0 auto 56px auto',
+      padding: '0 36px'
     }}>
       {/* Outer Container matching Image 1 */}
       <div style={{
         background: '#0d181c',
         border: '1.5px solid #1a332d',
         borderRadius: '24px',
-        padding: '24px 28px',
+        padding: '28px 34px',
         boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
         color: '#ffffff'
       }}>

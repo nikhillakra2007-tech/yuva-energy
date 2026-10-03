@@ -1,60 +1,49 @@
 # Current Session
 
 ## Date/Time
-2026-09-30T22:26:00.0000000+05:30
+2026-10-04T00:20:00.0000000+05:30
 
 ## Current Phase
-Farmer Dashboard (Pic 2 Layout & All 6 Working Sidebar Sections), Showcase Dashboard (Pic 1 Landing Feature), Voice Synthesizer Selector, Slim Navbar, and Disappear-on-Scroll Implementation — FULLY COMPLETE.
+Landing Page Hero Photoreal Visual Restoration, Clean Top Navbar De-Cluttering, Farmer ID & Profile High-Contrast Typography Enhancement, and Platform Showcase Visuals Documentation — FULLY COMPLETE.
 
 ## Current Slice
-1. **Showcase Dashboard Landing Feature (Matching Picture 1)**:
-   - Created `frontend/src/sections/landing/AgriShowcaseDashboard.jsx`.
-   - Side-by-side layout: Solar Irrigation & Yield Value Calculator on the left with crop pills, acreage slider, water source toggles, and dynamic savings; Copernicus Sentinel-2 Satellite Canopy Scanner (10m) on the right with animated scan radar and vigor diagnostics.
-   - Retained all existing landing components in `LandingFeatures.jsx` (`LiveTelemetryTicker`, `SolarAgroCalculator`, `SatelliteCanopyScanner`, `FaqSection`).
+1. **Landing Hero Right Column Photoreal Visual Restoration**:
+   - Replaced dense text telemetry matrix with the original dimensional photoreal visual asset frame (`solar_farm_irrigation.jpg`).
+   - Restored floating holographic badges: Top-Right `820 W/m² Peak Sun` and Top-Left `NDVI: 0.76 (Healthy)`.
+   - Restored bottom live telemetry cockpit overlay: `Karnal Model Agro-Solar Field` / `Automated Irrigation: 5HP Solar Pump Active`, `Dr: 22.4mm`, and `₹0 Grid Cost`.
 
-2. **Farmer Console Overview (Matching Picture 2)**:
-   - Modularized into `frontend/src/sections/dashboard/FarmerOverviewTab.jsx`.
-   - Top 3 cards: Farm Console (Active Field Plots), Verified Farmer Identity Card, Solar Pump Telemetry.
-   - Middle 4 cards: Water Balance Gauges (3-ring radial indicators), FAO-56 Root Zone Depletion bar chart, CWSI Water Stress Index speedometer gauge, Real-Time Weather with 3-day forecast.
-   - Bottom row: Actionable Agronomic Advisory (3 guidance cards).
+2. **Clean Top Navbar De-Cluttering**:
+   - Removed farmer user chip and sign out button from the top navbar across all views to prevent redundant header clutter.
+   - Kept only core controls: Brand, Navigation links (Overview, ROI Calculator, Satellite Scan, Farm Console), Voice AI, Language dropdown, Theme toggle, and High Contrast button.
+   - Navigation back to platform overview is cleanly handled by `← Return to Platform Overview` directly above the console workspace.
 
-3. **All 6 Left Sidebar Navigation Sections Functional**:
-   - `frontend/src/sections/dashboard/FarmerConsoleShowcase.jsx` (Root console layout & navigation)
-   - `frontend/src/sections/dashboard/FarmerOverviewTab.jsx` (Overview Dashboard)
-   - `frontend/src/sections/dashboard/FarmerFieldsTab.jsx` (Interactive Leaflet Map, plot switcher, NDVI toggle)
-   - `frontend/src/sections/dashboard/FarmerWeatherTab.jsx` (IMD AWS microclimate, FAO-56 Penman-Monteith ETc, 5-day solar pumping forecast)
-   - `frontend/src/sections/dashboard/FarmerPumpsTab.jsx` (PM-KUSUM 7.5 HP telemetry, daylight generation curve, test run & emergency stop controls)
-   - `frontend/src/sections/dashboard/FarmerReportsTab.jsx` (Root zone water balance statement, carbon certificate, export PDF)
-   - `frontend/src/sections/dashboard/FarmerProfileTab.jsx` (Verified farmer identity, subsidized PM-KUSUM connection, rural safety & panel maintenance protocols)
+3. **Farmer ID & Profile Page High-Contrast Typography Upgrade**:
+   - Header Bar: Title enlarged to `1.75rem` (`font-weight: 900`), subtitle to `1.1rem`, and verification badge to `1.05rem`.
+   - Farmer Identity Card: Farmer Name to `1.75rem` (`font-weight: 900`), Farmer ID to `1.22rem`, and all row labels (Mobile, Location, Landholding, Khatauni, Discom) to `1.12rem` with values in `1.25rem`.
+   - PM-KUSUM Component-C Solar Details Card: Title to `1.1rem` (`font-weight: 900`), Sanctioned badge to `1.02rem`, and all row labels to `1.12rem` with values at `1.25rem`.
+   - Rural Farmer Safety & Maintenance Protocols: Section header to `1.18rem` (`font-weight: 900`), protocol titles to `1.25rem` (`font-weight: 800`), and instruction paragraphs to `1.12rem` with `1.75` line height.
 
-4. **Vernacular Voice Assistant with Voice Changing**:
-   - Updated `frontend/src/sections/voice/VoiceAssistant.jsx`.
-   - Dynamically loads speech synthesis voices (`speechSynthesis.getVoices()`).
-   - Voice selector dropdown with language and persona tagging.
-   - Speech speed (0.8x slow, 0.95x normal, 1.15x fast) and pitch controls.
-   - Live Voice Test button (`आवाज सुनें (Test)`).
-
-5. **Compact Top Section & Disappear-on-Scroll Feature**:
-   - Updated `frontend/src/sections/navigation/Navbar.jsx`.
-   - Reduced padding and typography into a sleek single row (`flexWrap: 'nowrap'`).
-   - Implemented smooth auto-hide on scroll down: the navbar translates `-100%` and fades when scrolling down, reappearing when scrolling up or at the top.
+4. **Live Screenshot Showcase in README**:
+   - Captured and added 3 high-resolution platform screenshots to `docs/assets/`:
+     - `landing_hero_preview.png`: Sun-Powered Precision Water landing hero interface.
+     - `farmer_console_dashboard.png`: Working Agronomic Command Console (Active Plots, Water Balance Gauges, CWSI Index, Telemetry).
+     - `interactive_calculator_scanner.png`: Solar Irrigation & Yield Value Estimator alongside 10m Sentinel-2 Canopy Scanner.
+   - Integrated live visual gallery into `README.md`.
 
 ## Completed Files
+- `frontend/src/sections/landing/LandingHero.jsx`
 - `frontend/src/sections/navigation/Navbar.jsx`
-- `frontend/src/sections/landing/LandingFeatures.jsx`
-- `frontend/src/sections/landing/AgriShowcaseDashboard.jsx`
-- `frontend/src/sections/voice/VoiceAssistant.jsx`
-- `frontend/src/sections/dashboard/FarmerConsoleShowcase.jsx`
-- `frontend/src/sections/dashboard/FarmerOverviewTab.jsx`
-- `frontend/src/sections/dashboard/FarmerFieldsTab.jsx`
-- `frontend/src/sections/dashboard/FarmerWeatherTab.jsx`
-- `frontend/src/sections/dashboard/FarmerPumpsTab.jsx`
-- `frontend/src/sections/dashboard/FarmerReportsTab.jsx`
 - `frontend/src/sections/dashboard/FarmerProfileTab.jsx`
+- `frontend/src/sections/dashboard/FarmerConsoleShowcase.jsx`
+- `frontend/src/sections/hero/FarmerIdentityCard.jsx`
+- `docs/assets/landing_hero_preview.png`
+- `docs/assets/farmer_console_dashboard.png`
+- `docs/assets/interactive_calculator_scanner.png`
+- `README.md`
 - `docs/PROGRESS_REPORT.md`
 
 ## Verification & Status
-- Production Build: PASS (`npm run build` compiled client bundle with 0 errors).
-- Live Vercel Aliases: PASS (`https://kisanurja.vercel.app` and `https://kisan-urja.vercel.app` updated).
+- Production Build: PASS (`npm run build` compiled client bundle in 450ms with 0 errors).
 - Local Server: PASS (`http://localhost:5173/` running on HMR).
-- ZIP Backup: `../backups/yuva-energy-backup-2026-09-30-v8-dashboard-showcase.zip` created and verified.
+- ZIP Backup: `../backups/yuva-energy-backup-2026-10-04-v9-hero-restore-screenshots.zip` verified.
+- Git Remote: Ready to commit and push to `https://github.com/nikhillakra2007-tech/yuva-energy`.
