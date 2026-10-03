@@ -30,13 +30,23 @@
 ## 📸 Platform Showcase & Live Visuals
 
 ### 1. ☀️ Sun-Powered Autonomous Landing Experience
-Dimensional hero interface featuring photoreal solar-agro irrigation infrastructure, real-time solar irradiance telemetry (`820 W/m² Peak Sun`), 10-meter Sentinel-2 vegetative canopy health index (`NDVI 0.76`), and live root zone water depletion status (`Dr: 22.4 mm`).
+> 🚀 **Live Production Deployment**: **[https://kisanurja.vercel.app](https://kisanurja.vercel.app)** *(Alternative Mirror: [https://kisan-urja.vercel.app](https://kisan-urja.vercel.app))*
+
+The flagship landing experience introduces farmers and agricultural stakeholders to autonomous solar-agro intelligence. Built with a clean, de-cluttered top navigation bar (featuring one-click Voice AI, bilingual Hindi/English switching, and daylight high-contrast accessibility), the hero pairs an empowering mission statement with a photoreal dimensional asset frame.
 
 ![KisanUrja Landing Platform](docs/assets/landing_hero_preview.png)
+
+#### 🔍 What This Interface Delivers:
+- **Zero-Grid-Cost Solar Synchronization**: Direct synchronization with daylight solar irradiance (`☀️ 820 W/m² Peak Sun`), scheduling irrigation pumps exclusively during peak generation hours to achieve ₹0 electricity bills.
+- **10-Meter Satellite Canopy Monitoring**: Ingests Copernicus Sentinel-2 multispectral bands (NIR Band 8 & Red Band 4) to monitor real-time vegetative health (`🛰️ NDVI: 0.76 - Healthy`), ensuring crops receive moisture before visual water stress develops.
+- **Root Zone Depletion Protection**: Displays real-time root depletion (`Dr: 22.4 mm`) modeled via FAO-56 Penman-Monteith physics, ensuring water extraction stays strictly within safe Readily Available Water (RAW) thresholds to preserve groundwater aquifers.
+- **Bilingual Voice Guidance**: Instant access to the Vernacular Voice AI Assistant (`वॉयस सहायक`) and audio platform narration for rural accessibility.
 
 ---
 
 ### 2. 👨‍🌾 Integrated Farm Command Console
+> 🚜 **Explore Console Live**: **[https://kisanurja.vercel.app](https://kisanurja.vercel.app)** *(Click "Farm Console" in the top bar)*
+
 Real-time agronomic cockpit displaying verified farmer credentials (PM-KUSUM Component-C), active field plots, 7.5 HP solar pump telemetry, 3-ring water balance radial gauges, FAO-56 root zone depletion meters, CWSI crop water stress index, and microclimate telemetry.
 
 ![Farmer Command Console Overview](docs/assets/farmer_console_dashboard.png)
@@ -44,6 +54,8 @@ Real-time agronomic cockpit displaying verified farmer credentials (PM-KUSUM Com
 ---
 
 ### 3. 🔬 Solar-Agro ROI Calculator & 10m Sentinel-2 Canopy Scanner
+> ⚡ **Try the Simulator**: **[https://kisanurja.vercel.app#calculator-section](https://kisanurja.vercel.app#calculator-section)**
+
 Interactive dynamic financial model for solar water extraction coupled with high-resolution multispectral canopy diagnostics (NDVI, CWSI, NDRE, True Color) and automated FAO-56 irrigation dispatch triggers.
 
 ![Interactive Agronomy Intelligence & Canopy Scanner](docs/assets/interactive_calculator_scanner.png)
