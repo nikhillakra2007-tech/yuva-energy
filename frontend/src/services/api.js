@@ -1,6 +1,8 @@
 // Resilient API client & Multi-State Agronomy Store for KisanUrja (किसान ऊर्जा)
 const API_BASE = '/api/v1';
 
+import { markOfflineFallback } from './demoMode';
+
 // 4 Benchmark State Farmer Profiles + Regional Admin
 export const DEMO_PROFILES = [
   {
@@ -423,7 +425,21 @@ async function request(endpoint, options = {}) {
     // Backend unreachable or offline — use fallback mock store seamlessly
   }
 
-  // Resilient fallback logic so UI never crashes or blocks the user
+  // Resilient fallback logic so UI never crashes or blocks the user.
+  // Never silent: the offline banner labels sample data via demoMode.
+  markOfflineFallback(endpoint);
+
+  // Sample data is read-only. A failed write must never return sample data
+  // as if it were saved; only the offline demo login keeps working.
+  const method = (options.method || 'GET').toUpperCase();
+  const isOfflineDemoLogin =
+    endpoint.includes('/auth/login') || endpoint.includes('/auth/register');
+  if (method !== 'GET' && !isOfflineDemoLogin) {
+    throw new Error(
+      'Server offline: your change was not saved. Please try again in a moment. (सर्वर ऑफ़लाइन है, आपका बदलाव सेव नहीं हुआ)'
+    );
+  }
+
   const profile = getActiveProfile();
 
   if (endpoint.includes('/auth/login') || endpoint.includes('/auth/register')) {

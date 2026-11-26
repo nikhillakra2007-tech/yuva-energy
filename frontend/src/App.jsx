@@ -15,6 +15,7 @@ import ScientificDetailModal from './sections/modals/ScientificDetailModal';
 import FarmerConsoleShowcase from './sections/dashboard/FarmerConsoleShowcase';
 import Footer from './sections/footer/Footer';
 import { api, getCurrentUser, removeAuthToken, DEMO_PROFILES } from './services/api';
+import OfflineBanner from './components/OfflineBanner';
 import { ArrowLeft, Mic } from 'lucide-react';
 
 export default function App() {
@@ -533,6 +534,9 @@ export default function App() {
         }}
         lang={lang}
       />
+
+      {/* Offline sample-data honesty label */}
+      <OfflineBanner />
     </div>
   );
 }
