@@ -14,7 +14,7 @@ import FieldModal from './sections/modals/FieldModal';
 import ScientificDetailModal from './sections/modals/ScientificDetailModal';
 import FarmerConsoleShowcase from './sections/dashboard/FarmerConsoleShowcase';
 import Footer from './sections/footer/Footer';
-import { api, getCurrentUser, removeAuthToken, DEMO_PROFILES } from './services/api';
+import { api, getCurrentUser, getActiveProfile, removeAuthToken, DEMO_PROFILES } from './services/api';
 import OfflineBanner from './components/OfflineBanner';
 import { ArrowLeft, Mic } from 'lucide-react';
 
@@ -268,15 +268,15 @@ export default function App() {
 
       if (wbRes.status === 'fulfilled' && wbRes.value) {
         const val = wbRes.value;
+        // Per-profile telemetry is the baseline; a live API response only
+        // overrides the values it actually carries. Hardcoding any state
+        // here would pin every farmer to one state's agronomy.
+        const base = getActiveProfile().telemetry;
         setWaterBalance({
-          depletion_dr_mm: val.current_root_zone_depletion_mm != null ? val.current_root_zone_depletion_mm : 22.4,
-          raw_mm: 38.4,
-          taw_mm: 82.0,
-          cwsi: val.water_stress_index_cwsi != null ? val.water_stress_index_cwsi : 0.22,
-          etc_adj_mm_day: val.daily_etc_mm != null ? val.daily_etc_mm : 4.6,
-          root_depth_m: 0.65,
-          ks: 1.0,
-          et0_fao56_mm_day: 4.65
+          ...base,
+          depletion_dr_mm: val.current_root_zone_depletion_mm != null ? val.current_root_zone_depletion_mm : base.depletion_dr_mm,
+          cwsi: val.water_stress_index_cwsi != null ? val.water_stress_index_cwsi : base.cwsi,
+          etc_adj_mm_day: val.daily_etc_mm != null ? val.daily_etc_mm : base.etc_adj_mm_day,
         });
         if (val.weather_summary) setWeather(val.weather_summary);
         if (val.soil_hydraulics) setSoil(val.soil_hydraulics);

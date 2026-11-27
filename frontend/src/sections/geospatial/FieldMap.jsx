@@ -82,7 +82,7 @@ export default function FieldMap({
     ];
   }
 
-  const ndviScore = 0.76;
+  const ndviScore = waterBalance?.ndvi != null ? waterBalance.ndvi : 0.76;
   const cwsi = waterBalance?.cwsi != null ? waterBalance.cwsi : 0.22;
   const fillColor = showNdvi 
     ? '#059669' 

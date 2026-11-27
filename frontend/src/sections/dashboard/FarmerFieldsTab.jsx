@@ -10,6 +10,34 @@ import {
   Activity
 } from 'lucide-react';
 import FieldMap from '../geospatial/FieldMap';
+import { getActiveProfile } from '../../services/api';
+
+const HECTARE_TO_ACRES = 2.47105;
+
+const formatSoilType = (soilType) =>
+  (soilType || '')
+    .toLowerCase()
+    .split('_')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+const computeCentroid = (field, farm) => {
+  const coords = field?.boundary?.coordinates?.[0];
+  if (Array.isArray(coords) && coords.length > 0) {
+    const sum = coords.reduce(
+      (acc, pair) => ({ lon: acc.lon + pair[0], lat: acc.lat + pair[1] }),
+      { lon: 0, lat: 0 }
+    );
+    return { lat: sum.lat / coords.length, lon: sum.lon / coords.length };
+  }
+  if (farm?.latitude != null && farm?.longitude != null) {
+    return { lat: farm.latitude, lon: farm.longitude };
+  }
+  return null;
+};
+
+const ndviVigorLabel = (ndvi) =>
+  ndvi >= 0.7 ? 'Healthy Vigor' : ndvi >= 0.5 ? 'Moderate Vigor' : 'Low Vigor';
 
 export default function FarmerFieldsTab({
   field,
@@ -22,6 +50,15 @@ export default function FarmerFieldsTab({
   lang = 'en'
 }) {
   const [showNdviOverlay, setShowNdviOverlay] = useState(false);
+
+  // All agronomy figures trace to the active farmer profile (the single
+  // source of truth that the state switcher drives), never hardcoded.
+  const profile = getActiveProfile();
+  const profileField = field || profile.field;
+  const telemetry = waterBalance || profile.telemetry;
+  const centroid = computeCentroid(profileField, profile.farm);
+  const ndvi = telemetry?.ndvi ?? null;
+  const cloudPct = telemetry?.ndvi_cloud_pct ?? null;
 
   const activePlot = fieldTabs.find(f => f.id === selectedFieldTab) || fieldTabs[0];
 
@@ -112,10 +149,10 @@ export default function FarmerFieldsTab({
           </span>
           <div style={{ margin: '8px 0' }}>
             <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
-              {activePlot.area} <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 500 }}>({(parseFloat(activePlot.area) * 2.47).toFixed(1)} Acres)</span>
+              {activePlot.area} <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 500 }}>({(parseFloat(activePlot.area) * HECTARE_TO_ACRES).toFixed(1)} Acres)</span>
             </div>
             <div style={{ fontSize: '0.78rem', color: '#38bdf8', marginTop: '2px' }}>
-              Centroid: 29.6857° N, 76.9905° E
+              Centroid: {centroid ? `${centroid.lat.toFixed(4)}° N, ${centroid.lon.toFixed(4)}° E` : 'Boundary pending'}
             </div>
           </div>
           <div style={{ fontSize: '0.72rem', color: '#64748b', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px' }}>
@@ -138,10 +175,10 @@ export default function FarmerFieldsTab({
           </span>
           <div style={{ margin: '8px 0' }}>
             <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff' }}>
-              Sandy Clay Loam
+              {formatSoilType(profileField?.soil_type) || 'Soil survey pending'}
             </div>
             <div style={{ fontSize: '0.78rem', color: '#34d399', marginTop: '2px' }}>
-              Root Depth Zr: 1.2m • TAW: 82mm
+              Root Depth Zr: {telemetry?.root_depth_m ?? '—'}m • TAW: {telemetry?.taw_mm ?? '—'}mm
             </div>
           </div>
           <div style={{ fontSize: '0.72rem', color: '#64748b', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px' }}>
@@ -164,11 +201,15 @@ export default function FarmerFieldsTab({
           </span>
           <div style={{ margin: '8px 0' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-              <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#10b981' }}>NDVI 0.76</span>
-              <span style={{ fontSize: '0.78rem', color: '#34d399', fontWeight: 700 }}>Healthy Vigor</span>
+              <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#10b981' }}>
+                NDVI {ndvi != null ? ndvi.toFixed(2) : '—'}
+              </span>
+              <span style={{ fontSize: '0.78rem', color: '#34d399', fontWeight: 700 }}>
+                {ndvi != null ? ndviVigorLabel(ndvi) : 'Awaiting pass'}
+              </span>
             </div>
             <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '2px' }}>
-              Sentinel-2 Pass: 38 min ago (Cloud: 2.1%)
+              Sentinel-2 sample snapshot{cloudPct != null ? ` (Cloud: ${cloudPct}%)` : ''}
             </div>
           </div>
           <div style={{ fontSize: '0.72rem', color: '#64748b', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '6px' }}>
