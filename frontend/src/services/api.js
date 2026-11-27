@@ -51,7 +51,9 @@ export const DEMO_PROFILES = [
       soil_moisture_pct: 32.5,
       solar_irradiance_w_m2: 718,
       pump_status: 'ACTIVE_SOLAR',
-      pump_runtime_min: 45
+      pump_runtime_min: 45,
+      ndvi: 0.76,
+      ndvi_cloud_pct: 2.1
     },
     weather: {
       temperature_celsius: 31.4,
@@ -119,7 +121,9 @@ export const DEMO_PROFILES = [
       soil_moisture_pct: 36.8,
       solar_irradiance_w_m2: 742,
       pump_status: 'STANDBY_OPTIMAL',
-      pump_runtime_min: 0
+      pump_runtime_min: 0,
+      ndvi: 0.81,
+      ndvi_cloud_pct: 1.8
     },
     weather: {
       temperature_celsius: 28.5,
@@ -187,7 +191,9 @@ export const DEMO_PROFILES = [
       soil_moisture_pct: 26.2,
       solar_irradiance_w_m2: 660,
       pump_status: 'ACTIVE_SOLAR',
-      pump_runtime_min: 75
+      pump_runtime_min: 75,
+      ndvi: 0.72,
+      ndvi_cloud_pct: 3.4
     },
     weather: {
       temperature_celsius: 33.2,
@@ -255,7 +261,9 @@ export const DEMO_PROFILES = [
       soil_moisture_pct: 21.4,
       solar_irradiance_w_m2: 785,
       pump_status: 'ACTIVE_SOLAR',
-      pump_runtime_min: 50
+      pump_runtime_min: 50,
+      ndvi: 0.58,
+      ndvi_cloud_pct: 5.2
     },
     weather: {
       temperature_celsius: 34.6,
@@ -323,7 +331,9 @@ export const DEMO_PROFILES = [
       soil_moisture_pct: 30.1,
       solar_irradiance_w_m2: 730,
       pump_status: 'NETWORK_ACTIVE',
-      pump_runtime_min: 170
+      pump_runtime_min: 170,
+      ndvi: 0.74,
+      ndvi_cloud_pct: 2.8
     },
     weather: {
       temperature_celsius: 31.8,
@@ -398,8 +408,13 @@ export const setCurrentUser = (user) => {
 };
 
 export const getActiveProfile = () => {
-  const user = getCurrentUser();
-  const profileId = user?.id || localStorage.getItem('kisanurja_profile_id') || localStorage.getItem('yuva_profile_id');
+  // An explicitly selected profile id wins over the default user fallback:
+  // getCurrentUser() returns the Haryana profile when nothing is stored,
+  // which would otherwise silently pin every view to Haryana.
+  const profileId =
+    localStorage.getItem('kisanurja_profile_id') ||
+    localStorage.getItem('yuva_profile_id') ||
+    getCurrentUser()?.id;
   const matched = DEMO_PROFILES.find(p => p.id === profileId);
   return matched || DEMO_PROFILES[0];
 };
